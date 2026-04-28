@@ -1,0 +1,31 @@
+{
+  "id": "/",
+  "name": "NTV.OS Life",
+  "short_name": "NTV.OS",
+  "description": "App ca nhan de ghi nhanh, dieu hanh ngay song va theo doi cong viec.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff7ef",
+  "theme_color": "#fff6ed",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ghi nhanh",
+      "short_name": "Ghi nhanh",
+      "url": "./index.html#capture"
+    },
+    {
+      "name": "Hom nay",
+      "short_name": "Hom nay",
+      "url": "./index.html#today"
+    }
+  ]
+}
