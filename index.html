@@ -3,25 +3,29 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#fff6ed" />
     <title>NTV.OS Life</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
     <style>
       :root {
-        --bg: #fff6ed;
-        --bg-soft: #fffaf5;
-        --card: rgba(255, 255, 255, 0.78);
+        --bg: #fff7ef;
+        --bg-soft: #fbfcf8;
+        --card: rgba(255, 255, 255, 0.86);
         --card-strong: #fffdfb;
-        --line: rgba(124, 45, 18, 0.12);
-        --text: #312018;
-        --muted: #7c5f4d;
+        --line: rgba(45, 50, 45, 0.12);
+        --text: #26231f;
+        --muted: #6e665f;
         --accent: #ea580c;
         --accent-strong: #c2410c;
         --accent-soft: rgba(251, 146, 60, 0.14);
+        --green: #0f766e;
         --danger: #b42318;
         --ok: #027a48;
-        --shadow: 0 24px 72px rgba(194, 65, 12, 0.12);
-        --radius-xl: 28px;
-        --radius-lg: 22px;
-        --radius-md: 16px;
+        --shadow: 0 12px 40px rgba(38, 35, 31, 0.08);
+        --radius-xl: 14px;
+        --radius-lg: 10px;
+        --radius-md: 8px;
       }
 
       * {
@@ -36,10 +40,7 @@
         margin: 0;
         min-height: 100vh;
         color: var(--text);
-        background:
-          radial-gradient(circle at top left, rgba(249, 115, 22, 0.22), transparent 30%),
-          radial-gradient(circle at top right, rgba(245, 158, 11, 0.2), transparent 24%),
-          linear-gradient(180deg, #fff8f1 0%, var(--bg) 48%, #fff3e4 100%);
+        background: linear-gradient(180deg, #fffaf5 0%, var(--bg) 42%, #f8fbf8 100%);
         font-family: "Avenir Next", "Segoe UI", sans-serif;
       }
 
@@ -53,7 +54,7 @@
       .app {
         width: min(1080px, calc(100% - 24px));
         margin: 0 auto;
-        padding: 18px 0 calc(92px + env(safe-area-inset-bottom));
+        padding: 12px 0 calc(92px + env(safe-area-inset-bottom));
       }
 
       .topbar,
@@ -72,9 +73,9 @@
         position: sticky;
         top: 0;
         z-index: 10;
-        padding: 18px;
+        padding: 12px;
         border-radius: var(--radius-xl);
-        margin-bottom: 18px;
+        margin-bottom: 12px;
       }
 
       .brand-row,
@@ -88,7 +89,7 @@
       }
 
       .brand-row {
-        align-items: flex-start;
+        align-items: center;
       }
 
       .eyebrow {
@@ -107,22 +108,69 @@
       }
 
       h1 {
-        font-size: clamp(1.9rem, 5vw, 3.4rem);
-        line-height: 0.96;
-        letter-spacing: -0.04em;
-        max-width: 9ch;
+        font-size: 1.35rem;
+        line-height: 1.15;
+        letter-spacing: 0;
+        max-width: none;
       }
 
       .hero-copy {
-        margin-top: 12px;
+        margin-top: 6px;
         color: var(--muted);
         max-width: 62ch;
-        line-height: 1.55;
+        line-height: 1.4;
       }
 
-      .status-row {
-        margin-top: 16px;
+      .top-actions {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 10px;
+        margin-top: 12px;
+      }
+
+      .date-strip {
+        display: grid;
+        grid-template-columns: auto 1fr auto auto;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .date-strip input[type="date"] {
+        min-width: 0;
+        padding: 10px 12px;
+        border-radius: var(--radius-md);
+      }
+
+      .quiet-actions {
+        display: flex;
         flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 8px;
+      }
+
+      .icon-button {
+        display: inline-grid;
+        place-items: center;
+        width: 42px;
+        height: 42px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.84);
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      .icon-button.is-syncing {
+        color: var(--accent-strong);
+        animation: spin 0.8s linear infinite;
+      }
+
+      .icon-button.is-ok {
+        color: var(--ok);
+      }
+
+      .icon-button.is-error {
+        color: var(--danger);
       }
 
       .status-badge,
@@ -148,6 +196,41 @@
         color: var(--ok);
       }
 
+      .toast {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: calc(82px + env(safe-area-inset-bottom));
+        z-index: 30;
+        padding: 12px 14px;
+        border-radius: var(--radius-md);
+        color: white;
+        background: var(--text);
+        box-shadow: var(--shadow);
+      }
+
+      .toast.ok {
+        background: var(--ok);
+      }
+
+      .toast.error {
+        background: var(--danger);
+      }
+
+      .is-hidden {
+        display: none !important;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
       .tab-nav {
         position: fixed;
         left: 12px;
@@ -160,14 +243,14 @@
         padding: 10px;
         background: rgba(255, 253, 250, 0.92);
         border: 1px solid var(--line);
-        border-radius: 22px;
+        border-radius: 14px;
         backdrop-filter: blur(20px);
         box-shadow: 0 18px 60px rgba(124, 45, 18, 0.16);
       }
 
       .tab-button {
         border: 0;
-        border-radius: 16px;
+        border-radius: var(--radius-md);
         background: transparent;
         color: var(--muted);
         padding: 12px 8px;
@@ -238,7 +321,7 @@
       .metric-card,
       .axis-card,
       .item-card {
-        border-radius: 20px;
+        border-radius: var(--radius-md);
         padding: 16px;
       }
 
@@ -246,7 +329,7 @@
         margin-top: 10px;
         font-size: 2rem;
         font-weight: 800;
-        letter-spacing: -0.04em;
+        letter-spacing: 0;
       }
 
       .metric-card .metric-label,
@@ -290,7 +373,7 @@
 
       .empty {
         padding: 16px;
-        border-radius: 18px;
+        border-radius: var(--radius-md);
         background: rgba(255, 255, 255, 0.45);
         color: var(--muted);
       }
@@ -312,7 +395,7 @@
         width: 100%;
         border: 1px solid rgba(124, 45, 18, 0.14);
         background: rgba(255, 255, 255, 0.84);
-        border-radius: 18px;
+        border-radius: var(--radius-md);
         padding: 14px 15px;
         color: var(--text);
       }
@@ -335,7 +418,7 @@
       .btn {
         appearance: none;
         border: 0;
-        border-radius: 999px;
+        border-radius: var(--radius-md);
         padding: 13px 18px;
         font-weight: 800;
         cursor: pointer;
@@ -398,12 +481,6 @@
         text-decoration: none;
       }
 
-      .footer-note {
-        margin-top: 14px;
-        color: var(--muted);
-        line-height: 1.55;
-      }
-
       .sr-only {
         position: absolute;
         width: 1px;
@@ -417,7 +494,7 @@
 
       @media (min-width: 760px) {
         .app {
-          padding-top: 22px;
+          padding-top: 16px;
           padding-bottom: 34px;
         }
 
@@ -442,6 +519,21 @@
           grid-template-columns: repeat(5, minmax(0, 1fr));
         }
       }
+
+      @media (max-width: 700px) {
+        .brand-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .top-actions {
+          grid-template-columns: 1fr;
+        }
+
+        .quiet-actions {
+          justify-content: flex-start;
+        }
+      }
     </style>
   </head>
   <body>
@@ -452,21 +544,28 @@
             <p class="eyebrow">NTV.OS Life</p>
             <h1>Điều hành ngày sống và công việc</h1>
             <p class="hero-copy">
-              Mỗi ngày đều xây đắp hành trình sống ý nghĩa
+              Mỗi ngày đều xây đắp hành trình sống ý nghĩa.
             </p>
-          </div>
-          <div class="button-row">
-            <button class="btn btn-soft" id="refreshAllBtn" type="button">Làm mới</button>
-            <button class="btn btn-ghost" id="setupWorkbookBtn" type="button">Tạo Sheet</button>
           </div>
         </div>
 
-        <div class="status-row">
-          <span class="status-badge" id="statusBadge">Chưa kết nối API</span>
-          <span class="pill" id="transportBadge">Ưu tiên fetch JSON</span>
-          <span class="pill" id="apiModeBadge">Đang chờ kiểm tra</span>
+        <div class="top-actions">
+          <div class="date-strip">
+            <button class="icon-button" id="prevDayBtn" type="button" title="Ngày trước" aria-label="Ngày trước">‹</button>
+            <input id="viewDateInput" type="date" aria-label="Ngày đang xem" />
+            <button class="btn btn-soft" id="todayBtn" type="button">Hôm nay</button>
+            <button class="btn btn-soft" id="tomorrowBtn" type="button">Mai</button>
+          </div>
+
+          <div class="quiet-actions">
+            <button class="icon-button" id="syncButton" type="button" title="Đồng bộ" aria-label="Đồng bộ">↻</button>
+            <button class="icon-button" id="morningReminderBtn" type="button" title="Tạo nhắc sáng" aria-label="Tạo nhắc sáng">☀</button>
+            <button class="icon-button" id="setupWorkbookBtn" type="button" title="Tạo Sheet" aria-label="Tạo Sheet">▦</button>
+          </div>
         </div>
       </header>
+
+      <div class="toast is-hidden" id="toast" role="status"></div>
 
       <nav class="tab-nav" aria-label="Điều hướng">
         <button class="tab-button active" data-tab="today" type="button">Hôm nay</button>
@@ -478,8 +577,7 @@
 
       <section class="tab-pane active" id="tab-today">
         <div class="section-title">
-          <h2>Hôm nay</h2>
-          <p>Nhìn nhanh trọng tâm, năng lượng, 3 việc quan trọng nhất, và nhịp sống cần giữ.</p>
+          <h2 id="dayTitle">Hôm nay</h2>
         </div>
 
         <div class="two-col">
@@ -487,8 +585,7 @@
             <div class="panel">
               <div class="panel-header">
                 <div>
-                  <h3>Tóm tắt hôm nay</h3>
-                  <p>Bám nhịp ngày hiện tại, không để app trở thành nơi nhập liệu nặng.</p>
+                  <h3>Tóm tắt ngày</h3>
                 </div>
               </div>
 
@@ -499,7 +596,6 @@
               <div class="panel-header">
                 <div>
                   <h3>3 việc cần làm nhất</h3>
-                  <p>Ưu tiên trực diện, dễ nhìn trên điện thoại.</p>
                 </div>
               </div>
               <div class="item-list" id="topTasksList"></div>
@@ -509,7 +605,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Việc quá hạn</h3>
-                  <p>Những gì đang kéo tụt hệ thống xuống.</p>
                 </div>
               </div>
               <div class="item-list" id="overdueTasksList"></div>
@@ -521,7 +616,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Nhịp sống cần giữ</h3>
-                  <p>Gia đình, công việc, sức khỏe, sáng tạo, học tập.</p>
                 </div>
               </div>
               <div class="axis-grid" id="lifeAxisGrid"></div>
@@ -531,12 +625,11 @@
               <div class="panel-header">
                 <div>
                   <h3>Cập nhật ngày</h3>
-                  <p>Lưu nhanh trọng tâm, energy, mood, top 3 và cuối ngày.</p>
                 </div>
               </div>
               <form id="dailyLogForm">
                 <label>
-                  Trọng tâm hôm nay
+                  Trọng tâm ngày
                   <input name="main_focus" type="text" placeholder="Ví dụ: khóa 3 việc kéo hệ thống tiến lên" />
                 </label>
 
@@ -587,7 +680,7 @@
                 </label>
 
                 <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Lưu ngày hôm nay</button>
+                  <button class="btn btn-primary" type="submit">Lưu ngày</button>
                 </div>
               </form>
             </div>
@@ -598,14 +691,12 @@
       <section class="tab-pane" id="tab-capture">
         <div class="section-title">
           <h2>Ghi nhanh</h2>
-          <p>Ưu tiên nhập cực nhẹ. Nếu chưa biết phân loại, cứ dán nguyên đoạn chat AI hoặc ý đang nghĩ.</p>
         </div>
 
         <div class="panel">
           <div class="panel-header">
             <div>
               <h3>Capture mới</h3>
-              <p>Backend sẽ tự phân loại thành việc, quyết định, ý tưởng, ghi nhận đời sống hoặc tip AI nếu đủ tín hiệu.</p>
             </div>
           </div>
 
@@ -694,7 +785,6 @@
       <section class="tab-pane" id="tab-work">
         <div class="section-title">
           <h2>Công việc</h2>
-          <p>Nhìn rõ việc hôm nay, việc mới, việc đang chờ, quyết định đang mở và ý tưởng gần đây.</p>
         </div>
 
         <div class="two-col">
@@ -702,8 +792,7 @@
             <div class="panel">
               <div class="panel-header">
                 <div>
-                  <h3>Việc hôm nay</h3>
-                  <p>3 việc quan trọng nhất cần kéo đi.</p>
+                  <h3>Việc trong ngày</h3>
                 </div>
               </div>
               <div class="item-list" id="todayTasksList"></div>
@@ -713,7 +802,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Việc mới</h3>
-                  <p>Những việc vừa phát sinh từ capture hoặc nhập trước đó.</p>
                 </div>
               </div>
               <div class="item-list" id="newTasksList"></div>
@@ -723,7 +811,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Đang chờ</h3>
-                  <p>Điểm nghẽn do phụ thuộc người khác hoặc thiếu thông tin.</p>
                 </div>
               </div>
               <div class="item-list" id="waitingTasksList"></div>
@@ -735,7 +822,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Quyết định đang mở</h3>
-                  <p>Những lựa chọn chưa chốt, cần quay lại đúng lúc.</p>
                 </div>
               </div>
               <div class="item-list" id="openDecisionsList"></div>
@@ -745,7 +831,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Ý tưởng gần đây</h3>
-                  <p>Không để trôi mất những mầm quan trọng.</p>
                 </div>
               </div>
               <div class="item-list" id="recentIdeasList"></div>
@@ -757,7 +842,6 @@
       <section class="tab-pane" id="tab-life">
         <div class="section-title">
           <h2>Đời sống</h2>
-          <p>Giữ nhịp và lưu lại khoảnh khắc, thay vì chỉ quản lý việc.</p>
         </div>
 
         <div class="two-col">
@@ -766,7 +850,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Khoảnh khắc gần đây</h3>
-                  <p>Ảnh, công tác, khảo sát, điều đáng nhớ.</p>
                 </div>
               </div>
               <div class="item-list" id="recentLifeList"></div>
@@ -778,7 +861,6 @@
               <div class="panel-header">
                 <div>
                   <h3>Habit check-in</h3>
-                  <p>Đánh dấu nhanh để biết nhịp sống có đang giữ được không.</p>
                 </div>
               </div>
 
@@ -860,7 +942,6 @@
           <div class="panel-header">
             <div>
               <h3>30 ngày gần đây</h3>
-              <p>Số lượng capture, task xong, decision mở, idea và life log.</p>
             </div>
           </div>
           <div class="metric-grid" id="analysisMetrics"></div>
@@ -871,7 +952,6 @@
             <div class="panel-header">
               <div>
                 <h3>Top domains theo capture</h3>
-                <p>Đang đổ lực vào đâu nhiều nhất.</p>
               </div>
             </div>
             <div class="item-list" id="topDomainsList"></div>
@@ -881,17 +961,12 @@
             <div class="panel-header">
               <div>
                 <h3>Gợi ý nhìn lại</h3>
-                <p>Điểm nghẽn, mất cân bằng, và thứ cần lặp lại.</p>
               </div>
             </div>
             <div class="item-list" id="insightList"></div>
           </div>
         </div>
 
-        <p class="footer-note">
-          Nếu `fetch` đọc JSON trực tiếp từ Apps Script bị chặn bởi CORS ở trình duyệt nào đó, app sẽ tự fallback:
-          đọc bằng JSONP và ghi bằng form ẩn + iframe bridge. Cách này thực dụng hơn là buộc người dùng dựng thêm proxy ngay từ đầu.
-        </p>
       </section>
     </div>
 
@@ -903,13 +978,19 @@
         transportMode: "fetch",
         readMode: "fetch-json",
         bootstrap: null,
+        selectedDate: "",
+        toastTimer: null,
       };
 
       const els = {
-        statusBadge: document.getElementById("statusBadge"),
-        transportBadge: document.getElementById("transportBadge"),
-        apiModeBadge: document.getElementById("apiModeBadge"),
-        refreshAllBtn: document.getElementById("refreshAllBtn"),
+        dayTitle: document.getElementById("dayTitle"),
+        toast: document.getElementById("toast"),
+        syncButton: document.getElementById("syncButton"),
+        viewDateInput: document.getElementById("viewDateInput"),
+        prevDayBtn: document.getElementById("prevDayBtn"),
+        todayBtn: document.getElementById("todayBtn"),
+        tomorrowBtn: document.getElementById("tomorrowBtn"),
+        morningReminderBtn: document.getElementById("morningReminderBtn"),
         setupWorkbookBtn: document.getElementById("setupWorkbookBtn"),
         captureForm: document.getElementById("captureForm"),
         dailyLogForm: document.getElementById("dailyLogForm"),
@@ -925,17 +1006,42 @@
           .replaceAll("'", "&#39;");
       }
 
-      function setStatus(message, kind) {
-        els.statusBadge.textContent = message;
-        els.statusBadge.className = "status-badge" + (kind ? " " + kind : "");
+      function showToast(message, kind) {
+        if (!els.toast) return;
+        window.clearTimeout(state.toastTimer);
+        els.toast.textContent = message;
+        els.toast.className = "toast " + (kind || "");
+        state.toastTimer = window.setTimeout(() => {
+          els.toast.className = "toast is-hidden";
+        }, kind === "error" ? 6500 : 2400);
+      }
+
+      function setSyncState(kind, message) {
+        if (!els.syncButton) return;
+        els.syncButton.classList.remove("is-syncing", "is-ok", "is-error");
+        els.syncButton.disabled = kind === "syncing";
+        els.syncButton.textContent = kind === "syncing" ? "↻" : kind === "ok" ? "✓" : kind === "error" ? "!" : "↻";
+        els.syncButton.title = message || "Đồng bộ";
+        els.syncButton.setAttribute("aria-label", message || "Đồng bộ");
+
+        if (kind) {
+          els.syncButton.classList.add("is-" + kind);
+        }
       }
 
       function setTransportBadge(message) {
-        els.transportBadge.textContent = message;
+        state.transportMode = message;
       }
 
       function setApiModeBadge(message) {
-        els.apiModeBadge.textContent = message;
+        state.readMode = message;
+      }
+
+      function setStatus(message, kind) {
+        setSyncState(kind === "error" ? "error" : kind === "ok" ? "ok" : "syncing", message);
+        if (kind === "error" || kind === "ok") {
+          showToast(message, kind);
+        }
       }
 
       function setButtonLoading(button, loading, text) {
@@ -948,12 +1054,49 @@
         button.textContent = loading ? text : button.dataset.defaultLabel;
       }
 
-      function todayYmd() {
-        const now = new Date();
-        const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, "0");
-        const day = String(now.getDate()).padStart(2, "0");
+      function toYmd(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
         return `${year}-${month}-${day}`;
+      }
+
+      function todayYmd() {
+        return toYmd(new Date());
+      }
+
+      function addDays(ymd, days) {
+        const date = new Date(`${ymd}T12:00:00`);
+        date.setDate(date.getDate() + days);
+        return toYmd(date);
+      }
+
+      function getSelectedDate() {
+        return state.selectedDate || todayYmd();
+      }
+
+      function formatDateLabel(ymd) {
+        const today = todayYmd();
+        const tomorrow = addDays(today, 1);
+        if (ymd === today) return "Hôm nay";
+        if (ymd === tomorrow) return "Ngày mai";
+
+        const date = new Date(`${ymd}T12:00:00`);
+        return date.toLocaleDateString("vi-VN", {
+          weekday: "long",
+          day: "2-digit",
+          month: "2-digit",
+        });
+      }
+
+      function setSelectedDate(ymd) {
+        state.selectedDate = ymd || todayYmd();
+        if (els.viewDateInput) {
+          els.viewDateInput.value = state.selectedDate;
+        }
+        if (els.dayTitle) {
+          els.dayTitle.textContent = formatDateLabel(state.selectedDate);
+        }
       }
 
       function buildUrl(action, params = {}) {
@@ -1144,6 +1287,108 @@
         });
       }
 
+      function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
+          reader.onerror = () => reject(new Error("Không đọc được ảnh đã nén"));
+          reader.readAsDataURL(blob);
+        });
+      }
+
+      function loadImage(file) {
+        return new Promise((resolve, reject) => {
+          const url = URL.createObjectURL(file);
+          const image = new Image();
+
+          image.onload = () => {
+            URL.revokeObjectURL(url);
+            resolve(image);
+          };
+
+          image.onerror = () => {
+            URL.revokeObjectURL(url);
+            reject(new Error("Không đọc được ảnh"));
+          };
+
+          image.src = url;
+        });
+      }
+
+      function canvasToBlob(canvas, quality) {
+        return new Promise((resolve, reject) => {
+          canvas.toBlob(
+            (blob) => {
+              if (blob) resolve(blob);
+              else reject(new Error("Không nén được ảnh"));
+            },
+            "image/jpeg",
+            quality
+          );
+        });
+      }
+
+      async function compressImageFile(file, maxBytes = 350 * 1024) {
+        const image = await loadImage(file);
+        const canvas = document.createElement("canvas");
+        const context = canvas.getContext("2d");
+        const originalMaxSide = Math.max(image.naturalWidth, image.naturalHeight);
+        let maxSide = Math.min(originalMaxSide, 1800);
+        let bestBlob = null;
+
+        while (maxSide >= 80) {
+          const scale = Math.min(1, maxSide / originalMaxSide);
+          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
+          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
+          context.fillStyle = "#ffffff";
+          context.fillRect(0, 0, canvas.width, canvas.height);
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+          for (const quality of [0.82, 0.72, 0.62, 0.52, 0.44]) {
+            const blob = await canvasToBlob(canvas, quality);
+            bestBlob = blob;
+            if (blob.size <= maxBytes) {
+              return blob;
+            }
+          }
+
+          maxSide = Math.floor(maxSide * 0.78);
+        }
+
+        if (!bestBlob) {
+          throw new Error("Không nén được ảnh");
+        }
+
+        if (bestBlob.size > maxBytes) {
+          throw new Error("Ảnh quá lớn, không thể nén dưới 350KB");
+        }
+
+        return bestBlob;
+      }
+
+      async function prepareUploadFile(file) {
+        if (!file.type.startsWith("image/")) {
+          return {
+            file_name: file.name,
+            mime_type: file.type || "application/octet-stream",
+            file_data: await fileToBase64(file),
+            original_size: file.size,
+            optimized_size: file.size,
+          };
+        }
+
+        const compressed = await compressImageFile(file);
+        const safeName = file.name.replace(/\.[^.]+$/, "") || "image";
+
+        return {
+          file_name: `${safeName}.jpg`,
+          mime_type: "image/jpeg",
+          file_data: await blobToBase64(compressed),
+          original_size: file.size,
+          optimized_size: compressed.size,
+        };
+      }
+
       function renderCards(containerId, items, renderFn, emptyText) {
         const container = document.getElementById(containerId);
         if (!container) return;
@@ -1207,6 +1452,7 @@
 
       function renderBootstrap(data) {
         state.bootstrap = data;
+        setSelectedDate(data.viewDate || getSelectedDate());
 
         const today = data.today || {};
         const metrics = [
@@ -1333,7 +1579,10 @@
         ];
 
         fields.forEach((name) => {
-          if (form.elements[name] && today[name] !== undefined && today[name] !== null) {
+          if (!form.elements[name]) return;
+          form.elements[name].value = "";
+
+          if (today[name] !== undefined && today[name] !== null) {
             form.elements[name].value = today[name];
           }
         });
@@ -1341,9 +1590,9 @@
 
       async function loadBootstrap() {
         setStatus("Đang tải dữ liệu...", "");
-        const data = await apiGet("app.bootstrap");
+        const data = await apiGet("app.bootstrap", { date: getSelectedDate() });
         renderBootstrap(data);
-        setStatus("Đã tải dữ liệu thành công", "ok");
+        setStatus("Đã đồng bộ", "ok");
       }
 
       async function healthCheck() {
@@ -1362,7 +1611,7 @@
 
         try {
           const data = await apiPost("workbook.setup", {});
-          setStatus("Đã tạo hoặc kiểm tra workbook xong", "ok");
+          setStatus("Đã kiểm tra Sheet", "ok");
           await loadBootstrap();
           return data;
         } finally {
@@ -1382,11 +1631,8 @@
           let file = null;
 
           if (attachment instanceof File && attachment.size > 0) {
-            file = {
-              file_name: attachment.name,
-              mime_type: attachment.type || "application/octet-stream",
-              file_data: await fileToBase64(attachment),
-            };
+            setStatus(attachment.type.startsWith("image/") ? "Đang nén ảnh..." : "Đang đọc file...", "");
+            file = await prepareUploadFile(attachment);
           }
 
           const payload = {
@@ -1402,7 +1648,7 @@
           };
 
           const result = await apiPost("captures.create", payload);
-          setStatus("Đã lưu capture: " + (result.capture && result.capture.auto_type ? result.capture.auto_type : "thành công"), "ok");
+          setStatus("Đã lưu " + (result.capture && result.capture.auto_type ? result.capture.auto_type.toLowerCase() : "capture"), "ok");
           els.captureForm.reset();
           await loadBootstrap();
         } catch (error) {
@@ -1421,7 +1667,7 @@
         try {
           const formData = new FormData(els.dailyLogForm);
           const payload = {
-            date: todayYmd(),
+            date: getSelectedDate(),
             main_focus: String(formData.get("main_focus") || "").trim(),
             top1: String(formData.get("top1") || "").trim(),
             top2: String(formData.get("top2") || "").trim(),
@@ -1435,7 +1681,7 @@
           };
 
           await apiPost("daily.save", payload);
-          setStatus("Đã lưu Daily Log", "ok");
+          setStatus("Đã lưu ngày", "ok");
           await loadBootstrap();
         } catch (error) {
           setStatus("Lỗi lưu Daily Log: " + error.message, "error");
@@ -1453,7 +1699,7 @@
         try {
           const formData = new FormData(els.habitForm);
           const payload = {
-            date: todayYmd(),
+            date: getSelectedDate(),
             family: formData.get("family"),
             work: formData.get("work"),
             health: formData.get("health"),
@@ -1479,15 +1725,71 @@
         }
       }
 
+      function createMorningReminder() {
+        const start = new Date();
+        start.setDate(start.getDate() + 1);
+        start.setHours(7, 0, 0, 0);
+
+        const formatIcsDate = (date) =>
+          date
+            .toISOString()
+            .replace(/[-:]/g, "")
+            .replace(/\.\d{3}Z$/, "Z");
+
+        const appUrl = location.href.split("#")[0];
+        const ics = [
+          "BEGIN:VCALENDAR",
+          "VERSION:2.0",
+          "PRODID:-//NTV.OS Life//Morning Reminder//VI",
+          "BEGIN:VEVENT",
+          `UID:ntv-os-life-morning-${Date.now()}@ntv-os-life`,
+          `DTSTAMP:${formatIcsDate(new Date())}`,
+          `DTSTART:${formatIcsDate(start)}`,
+          "RRULE:FREQ=DAILY",
+          "SUMMARY:Mo NTV.OS Life",
+          `DESCRIPTION:Mo app tai ${appUrl}`,
+          `URL:${appUrl}`,
+          "BEGIN:VALARM",
+          "TRIGGER:-PT0M",
+          "ACTION:DISPLAY",
+          "DESCRIPTION:Mo NTV.OS Life",
+          "END:VALARM",
+          "END:VEVENT",
+          "END:VCALENDAR",
+        ].join("\r\n");
+
+        const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = "ntv-os-life-nhac-sang.ics";
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(link.href);
+        setStatus("Đã tạo file nhắc sáng", "ok");
+      }
+
+      function activateTab(tab, shouldScroll) {
+        const button = document.querySelector(`.tab-button[data-tab="${tab}"]`);
+        const pane = document.getElementById("tab-" + tab);
+        if (!button || !pane) return;
+
+        document.querySelectorAll(".tab-button").forEach((item) => item.classList.remove("active"));
+        document.querySelectorAll(".tab-pane").forEach((item) => item.classList.remove("active"));
+        button.classList.add("active");
+        pane.classList.add("active");
+        if (location.hash !== "#" + tab) {
+          history.replaceState(null, "", "#" + tab);
+        }
+        if (shouldScroll) {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+      }
+
       function bindTabs() {
         document.querySelectorAll(".tab-button").forEach((button) => {
           button.addEventListener("click", () => {
-            const tab = button.dataset.tab;
-            document.querySelectorAll(".tab-button").forEach((item) => item.classList.remove("active"));
-            document.querySelectorAll(".tab-pane").forEach((pane) => pane.classList.remove("active"));
-            button.classList.add("active");
-            document.getElementById("tab-" + tab).classList.add("active");
-            window.scrollTo({ top: 0, behavior: "smooth" });
+            activateTab(button.dataset.tab, true);
           });
         });
       }
@@ -1505,11 +1807,30 @@
       function bindEvents() {
         bindTabs();
         bindRangeOutputs();
+        setSelectedDate(todayYmd());
+        activateTab((location.hash || "#today").slice(1), false);
         els.captureForm.addEventListener("submit", handleCaptureSubmit);
         els.dailyLogForm.addEventListener("submit", handleDailySubmit);
         els.habitForm.addEventListener("submit", handleHabitSubmit);
-        els.refreshAllBtn.addEventListener("click", loadBootstrap);
+        els.syncButton.addEventListener("click", loadBootstrap);
         els.setupWorkbookBtn.addEventListener("click", setupWorkbook);
+        els.morningReminderBtn.addEventListener("click", createMorningReminder);
+        els.prevDayBtn.addEventListener("click", async () => {
+          setSelectedDate(addDays(getSelectedDate(), -1));
+          await loadBootstrap();
+        });
+        els.todayBtn.addEventListener("click", async () => {
+          setSelectedDate(todayYmd());
+          await loadBootstrap();
+        });
+        els.tomorrowBtn.addEventListener("click", async () => {
+          setSelectedDate(addDays(todayYmd(), 1));
+          await loadBootstrap();
+        });
+        els.viewDateInput.addEventListener("change", async () => {
+          setSelectedDate(els.viewDateInput.value || todayYmd());
+          await loadBootstrap();
+        });
         document.getElementById("clearCaptureBtn").addEventListener("click", () => els.captureForm.reset());
       }
 
