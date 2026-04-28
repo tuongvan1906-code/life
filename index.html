@@ -130,7 +130,7 @@
 
       .date-strip {
         display: grid;
-        grid-template-columns: auto 1fr auto auto;
+        grid-template-columns: auto 1fr auto;
         gap: 8px;
         align-items: center;
       }
@@ -274,6 +274,109 @@
         display: block;
       }
 
+      .day-command {
+        display: grid;
+        gap: 12px;
+      }
+
+      .day-focus {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-lg);
+        background: rgba(255, 255, 255, 0.58);
+      }
+
+      .focus-label,
+      .compact-label {
+        color: var(--muted);
+        font-size: 0.82rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .focus-value {
+        margin-top: 4px;
+        font-size: 1.15rem;
+        font-weight: 800;
+        line-height: 1.25;
+      }
+
+      .priority-strip {
+        display: grid;
+        gap: 8px;
+      }
+
+      .priority-chip {
+        display: grid;
+        grid-template-columns: 28px 1fr;
+        gap: 8px;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .priority-chip span:first-child {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        color: white;
+        background: var(--green);
+        font-weight: 800;
+      }
+
+      .mode-switch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .mode-button {
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        padding: 12px 10px;
+        background: rgba(255, 255, 255, 0.72);
+        color: var(--muted);
+        font-weight: 800;
+      }
+
+      .mode-button.active {
+        border-color: transparent;
+        background: var(--green);
+        color: white;
+      }
+
+      .mode-panel {
+        display: none;
+      }
+
+      .mode-panel.active {
+        display: grid;
+        gap: 12px;
+      }
+
+      .quick-inputs {
+        display: grid;
+        gap: 10px;
+      }
+
+      .checkout-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .habit-compact {
+        display: grid;
+        gap: 8px;
+      }
+
       .section-title {
         margin-bottom: 14px;
       }
@@ -286,8 +389,8 @@
 
       .panel {
         border-radius: var(--radius-lg);
-        padding: 16px;
-        margin-bottom: 16px;
+        padding: 14px;
+        margin-bottom: 12px;
       }
 
       .panel-header {
@@ -406,7 +509,7 @@
       }
 
       .capture-textarea {
-        min-height: 220px;
+        min-height: 180px;
       }
 
       .button-row {
@@ -507,6 +610,16 @@
           grid-template-columns: 1.15fr 0.85fr;
         }
 
+        .day-command {
+          grid-template-columns: 0.92fr 1.08fr;
+          align-items: start;
+        }
+
+        .checkout-grid,
+        .quick-inputs {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
         .triple-fields {
           grid-template-columns: repeat(3, minmax(0, 1fr));
         }
@@ -554,7 +667,6 @@
             <button class="icon-button" id="prevDayBtn" type="button" title="Ngày trước" aria-label="Ngày trước">‹</button>
             <input id="viewDateInput" type="date" aria-label="Ngày đang xem" />
             <button class="btn btn-soft" id="todayBtn" type="button">Hôm nay</button>
-            <button class="btn btn-soft" id="tomorrowBtn" type="button">Mai</button>
           </div>
 
           <div class="quiet-actions">
@@ -580,71 +692,41 @@
           <h2 id="dayTitle">Hôm nay</h2>
         </div>
 
-        <div class="two-col">
-          <div>
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Tóm tắt ngày</h3>
-                </div>
+        <div class="day-command">
+          <div class="panel">
+            <div class="day-focus">
+              <div>
+                <div class="focus-label">Trọng tâm</div>
+                <div class="focus-value" id="focusPreview">Chưa đặt trọng tâm</div>
               </div>
-
-              <div class="metric-grid" id="todayMetrics"></div>
+              <div>
+                <div class="focus-label">3 ưu tiên</div>
+                <div class="priority-strip" id="priorityPreview"></div>
+              </div>
             </div>
 
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>3 việc cần làm nhất</h3>
-                </div>
+            <div class="panel-header">
+              <div>
+                <h3>Việc cần nhìn ngay</h3>
               </div>
-              <div class="item-list" id="topTasksList"></div>
             </div>
-
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Việc quá hạn</h3>
-                </div>
-              </div>
-              <div class="item-list" id="overdueTasksList"></div>
-            </div>
+            <div class="item-list" id="urgentTasksList"></div>
           </div>
 
-          <div>
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Nhịp sống cần giữ</h3>
-                </div>
-              </div>
-              <div class="axis-grid" id="lifeAxisGrid"></div>
+          <div class="panel">
+            <div class="mode-switch" aria-label="Chế độ cập nhật ngày">
+              <button class="mode-button active" data-day-mode="start" type="button">Khởi động</button>
+              <button class="mode-button" data-day-mode="checkout" type="button">Check-out</button>
             </div>
 
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Cập nhật ngày</h3>
-                </div>
-              </div>
-              <form id="dailyLogForm">
+            <form id="dailyLogForm">
+              <section class="mode-panel active" data-mode-panel="start">
                 <label>
-                  Trọng tâm ngày
-                  <input name="main_focus" type="text" placeholder="Ví dụ: khóa 3 việc kéo hệ thống tiến lên" />
+                  Trọng tâm
+                  <input name="main_focus" type="text" placeholder="Một câu đủ rõ để giữ hướng cả ngày" />
                 </label>
 
-                <div class="inline-fields">
-                  <label>
-                    Energy
-                    <input name="energy" type="number" min="1" max="10" value="7" />
-                  </label>
-                  <label>
-                    Mood
-                    <input name="mood" type="number" min="1" max="10" value="7" />
-                  </label>
-                </div>
-
-                <div class="triple-fields">
+                <div class="quick-inputs">
                   <label>
                     Top 1
                     <input name="top1" type="text" />
@@ -659,31 +741,75 @@
                   </label>
                 </div>
 
-                <div class="triple-fields">
-                  <label>
-                    Kế hoạch ngày
-                    <textarea name="day_plan"></textarea>
-                  </label>
-                  <label>
-                    Đã xong gì
-                    <textarea name="done_summary"></textarea>
-                  </label>
-                  <label>
-                    Đang kẹt gì
-                    <textarea name="stuck_summary"></textarea>
-                  </label>
-                </div>
-
                 <label>
-                  Ngày mai cần chỉnh gì
-                  <textarea name="tomorrow_hint"></textarea>
+                  Ghi chú kế hoạch
+                  <textarea name="day_plan" rows="3"></textarea>
                 </label>
 
+                <input name="energy" type="hidden" />
+                <input name="mood" type="hidden" />
+
                 <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Lưu ngày</button>
+                  <button class="btn btn-primary" type="submit">Lưu khởi động</button>
+                  <button class="btn btn-soft" type="button" data-switch-mode="checkout">Tối check-out</button>
                 </div>
-              </form>
-            </div>
+              </section>
+
+              <section class="mode-panel" data-mode-panel="checkout">
+                <div class="checkout-grid">
+                  <label>
+                    Đã xong
+                    <textarea name="done_summary" rows="3"></textarea>
+                  </label>
+                  <label>
+                    Đang kẹt
+                    <textarea name="stuck_summary" rows="3"></textarea>
+                  </label>
+                  <label>
+                    Ngày mai chỉnh gì
+                    <textarea name="tomorrow_hint" rows="3"></textarea>
+                  </label>
+                </div>
+
+                <div class="habit-compact">
+                  <div class="compact-label">Nhịp sống</div>
+                  <div class="range-row">
+                    <span>Gia đình</span>
+                    <input type="range" name="family" min="0" max="10" value="7" />
+                    <span data-range-value="family">7</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Công việc</span>
+                    <input type="range" name="work" min="0" max="10" value="7" />
+                    <span data-range-value="work">7</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Sức khỏe</span>
+                    <input type="range" name="health" min="0" max="10" value="7" />
+                    <span data-range-value="health">7</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Sáng tạo</span>
+                    <input type="range" name="creative" min="0" max="10" value="6" />
+                    <span data-range-value="creative">6</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Học tập</span>
+                    <input type="range" name="learning" min="0" max="10" value="6" />
+                    <span data-range-value="learning">6</span>
+                  </div>
+                  <input type="hidden" name="movement" value="0" />
+                  <input type="hidden" name="reading_learning" value="0" />
+                  <input type="hidden" name="photo_memory" value="0" />
+                  <input type="hidden" name="deep_work" value="0" />
+                  <input type="hidden" name="tea_pause" value="0" />
+                </div>
+
+                <div class="button-row">
+                  <button class="btn btn-primary" type="submit">Lưu check-out</button>
+                </div>
+              </section>
+            </form>
           </div>
         </div>
       </section>
@@ -750,17 +876,6 @@
                   <option value="AI Workflow">AI Workflow</option>
                   <option value="Khảo sát-Đi công tác">Khảo sát-Đi công tác</option>
                 </select>
-              </label>
-            </div>
-
-            <div class="inline-fields">
-              <label>
-                Mood
-                <input name="mood" type="text" placeholder="Ví dụ: tỉnh, căng, ổn" />
-              </label>
-              <label>
-                Energy
-                <input name="energy" type="text" placeholder="Ví dụ: 8/10" />
               </label>
             </div>
 
@@ -844,91 +959,13 @@
           <h2>Đời sống</h2>
         </div>
 
-        <div class="two-col">
-          <div>
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Khoảnh khắc gần đây</h3>
-                </div>
-              </div>
-              <div class="item-list" id="recentLifeList"></div>
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Khoảnh khắc gần đây</h3>
             </div>
           </div>
-
-          <div>
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Habit check-in</h3>
-                </div>
-              </div>
-
-              <form id="habitForm">
-                <div class="range-grid">
-                  <div class="range-row">
-                    <span>Gia đình</span>
-                    <input type="range" name="family" min="0" max="10" value="7" />
-                    <span data-range-value="family">7</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Công việc</span>
-                    <input type="range" name="work" min="0" max="10" value="7" />
-                    <span data-range-value="work">7</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Sức khỏe</span>
-                    <input type="range" name="health" min="0" max="10" value="7" />
-                    <span data-range-value="health">7</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Sáng tạo</span>
-                    <input type="range" name="creative" min="0" max="10" value="6" />
-                    <span data-range-value="creative">6</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Học tập</span>
-                    <input type="range" name="learning" min="0" max="10" value="6" />
-                    <span data-range-value="learning">6</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Vận động</span>
-                    <input type="range" name="movement" min="0" max="10" value="5" />
-                    <span data-range-value="movement">5</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Đọc / học</span>
-                    <input type="range" name="reading_learning" min="0" max="10" value="5" />
-                    <span data-range-value="reading_learning">5</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Ảnh nhớ</span>
-                    <input type="range" name="photo_memory" min="0" max="10" value="5" />
-                    <span data-range-value="photo_memory">5</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Deep work</span>
-                    <input type="range" name="deep_work" min="0" max="10" value="5" />
-                    <span data-range-value="deep_work">5</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Tea pause</span>
-                    <input type="range" name="tea_pause" min="0" max="10" value="5" />
-                    <span data-range-value="tea_pause">5</span>
-                  </div>
-                </div>
-
-                <label>
-                  Ghi chú
-                  <textarea name="note" placeholder="Ví dụ: hôm nay mất nhịp vì chạy nhiều việc lắt nhắt"></textarea>
-                </label>
-
-                <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Lưu habit check-in</button>
-                </div>
-              </form>
-            </div>
-          </div>
+          <div class="item-list" id="recentLifeList"></div>
         </div>
       </section>
 
@@ -971,7 +1008,7 @@
     </div>
 
     <script>
-      const API_URL = "https://script.google.com/macros/s/AKfycbwNqmXQ4nIZ7eDpi7FX1Y-PX--a6XYrmsAFOopzABPyuIah9XTqrZmDXmc01Q4LS7OW/exec";
+      const API_URL = "https://script.google.com/macros/s/AKfycbzXGJf-uKXn0BWLmLnAUv7CGRmA-hDC5XZQimgUpWOod6kAiED584F6kT7mSdmv1P4u/exec";
       const API_TOKEN = "";
 
       const state = {
@@ -989,12 +1026,10 @@
         viewDateInput: document.getElementById("viewDateInput"),
         prevDayBtn: document.getElementById("prevDayBtn"),
         todayBtn: document.getElementById("todayBtn"),
-        tomorrowBtn: document.getElementById("tomorrowBtn"),
         morningReminderBtn: document.getElementById("morningReminderBtn"),
         setupWorkbookBtn: document.getElementById("setupWorkbookBtn"),
         captureForm: document.getElementById("captureForm"),
         dailyLogForm: document.getElementById("dailyLogForm"),
-        habitForm: document.getElementById("habitForm"),
       };
 
       function escapeHtml(value) {
@@ -1165,9 +1200,19 @@
         });
       }
 
+      function fetchWithTimeout(url, options = {}, timeoutMs = 25000) {
+        const controller = new AbortController();
+        const timer = window.setTimeout(() => controller.abort(), timeoutMs);
+
+        return fetch(url, {
+          ...options,
+          signal: controller.signal,
+        }).finally(() => window.clearTimeout(timer));
+      }
+
       async function apiGet(action, params = {}) {
         try {
-          const response = await fetch(buildUrl(action, params), {
+          const response = await fetchWithTimeout(buildUrl(action, params), {
             method: "GET",
             redirect: "follow",
           });
@@ -1253,7 +1298,7 @@
         const safePayload = API_TOKEN ? { ...payload, token: API_TOKEN } : payload;
 
         try {
-          const response = await fetch(buildUrl(action), {
+          const response = await fetchWithTimeout(buildUrl(action), {
             method: "POST",
             redirect: "follow",
             headers: {
@@ -1450,48 +1495,56 @@
         `;
       }
 
+      function renderPriorityPreview(today) {
+        const priorities = [today.top1, today.top2, today.top3].filter(Boolean);
+        const container = document.getElementById("priorityPreview");
+        if (!container) return;
+
+        if (!priorities.length) {
+          container.innerHTML = '<div class="empty">Chưa chọn 3 ưu tiên.</div>';
+          return;
+        }
+
+        container.innerHTML = priorities
+          .map((item, index) => `
+            <div class="priority-chip">
+              <span>${index + 1}</span>
+              <strong>${escapeHtml(item)}</strong>
+            </div>
+          `)
+          .join("");
+      }
+
+      function renderDayCommand(today, data) {
+        const focus = document.getElementById("focusPreview");
+        if (focus) {
+          focus.textContent = today.main_focus || "Chưa đặt trọng tâm";
+        }
+
+        renderPriorityPreview(today);
+
+        const urgent = [
+          ...(data.overdueTasks || []),
+          ...(data.todayTasks || []),
+          ...(data.waitingTasks || []),
+        ];
+        const seen = new Set();
+        const uniqueUrgent = urgent.filter((task) => {
+          const id = task.task_id || task.title;
+          if (seen.has(id)) return false;
+          seen.add(id);
+          return true;
+        });
+
+        renderCards("urgentTasksList", uniqueUrgent.slice(0, 4), taskCard, "Chưa có việc cần nhìn ngay.");
+      }
+
       function renderBootstrap(data) {
         state.bootstrap = data;
         setSelectedDate(data.viewDate || getSelectedDate());
 
         const today = data.today || {};
-        const metrics = [
-          { label: "Energy", value: today.energy || "-" },
-          { label: "Mood", value: today.mood || "-" },
-          { label: "Capture 30 ngày", value: data.analysis.capture30 || 0 },
-          { label: "Task xong 30 ngày", value: data.analysis.tasksDone30 || 0 },
-          { label: "Decision mở", value: data.analysis.openDecisions || 0 },
-          { label: "Life log 30 ngày", value: data.analysis.life30 || 0 },
-        ];
-
-        document.getElementById("todayMetrics").innerHTML = metrics
-          .map((item) => `
-            <article class="metric-card">
-              <div class="metric-label">${escapeHtml(item.label)}</div>
-              <div class="metric-value">${escapeHtml(item.value)}</div>
-            </article>
-          `)
-          .join("");
-
-        const axisLabels = [
-          ["Gia đình", today.life_axis_family],
-          ["Công việc", today.life_axis_work],
-          ["Sức khỏe", today.life_axis_health],
-          ["Sáng tạo", today.life_axis_creative],
-          ["Học tập", today.life_axis_learning],
-        ];
-
-        document.getElementById("lifeAxisGrid").innerHTML = axisLabels
-          .map(([label, value]) => `
-            <article class="axis-card">
-              <div class="metric-label">${escapeHtml(label)}</div>
-              <div class="metric-value">${escapeHtml(value || "-")}</div>
-            </article>
-          `)
-          .join("");
-
-        renderCards("topTasksList", data.todayTasks || [], taskCard, "Chưa có top task hôm nay.");
-        renderCards("overdueTasksList", data.overdueTasks || [], taskCard, "Không có việc quá hạn.");
+        renderDayCommand(today, data);
         renderCards("todayTasksList", data.todayTasks || [], taskCard, "Chưa có việc trạng thái Hôm nay.");
         renderCards("newTasksList", data.newTasks || [], taskCard, "Chưa có việc mới.");
         renderCards("waitingTasksList", data.waitingTasks || [], taskCard, "Không có việc đang chờ.");
@@ -1586,13 +1639,33 @@
             form.elements[name].value = today[name];
           }
         });
+
+        const axisMap = {
+          family: today.life_axis_family,
+          work: today.life_axis_work,
+          health: today.life_axis_health,
+          creative: today.life_axis_creative,
+          learning: today.life_axis_learning,
+        };
+
+        Object.entries(axisMap).forEach(([name, value]) => {
+          if (!form.elements[name]) return;
+          form.elements[name].value = value || form.elements[name].defaultValue || 0;
+        });
+
+        bindRangeOutputs();
       }
 
       async function loadBootstrap() {
-        setStatus("Đang tải dữ liệu...", "");
-        const data = await apiGet("app.bootstrap", { date: getSelectedDate() });
-        renderBootstrap(data);
-        setStatus("Đã đồng bộ", "ok");
+        try {
+          setStatus("Đang tải dữ liệu...", "");
+          const data = await apiGet("app.bootstrap", { date: getSelectedDate() });
+          renderBootstrap(data);
+          setStatus("Đã đồng bộ", "ok");
+        } catch (error) {
+          setStatus("Không đồng bộ được: " + error.message, "error");
+          throw error;
+        }
       }
 
       async function healthCheck() {
@@ -1662,10 +1735,12 @@
         event.preventDefault();
         const button = event.submitter || els.dailyLogForm.querySelector('button[type="submit"]');
         setButtonLoading(button, true, "Đang lưu...");
-        setStatus("Đang lưu log ngày...", "");
+        const isCheckout = document.querySelector('.mode-panel[data-mode-panel="checkout"].active') !== null;
+        setStatus(isCheckout ? "Đang lưu check-out..." : "Đang lưu khởi động...", "");
 
         try {
           const formData = new FormData(els.dailyLogForm);
+          const currentDaily = (state.bootstrap && state.bootstrap.today) || {};
           const payload = {
             date: getSelectedDate(),
             main_focus: String(formData.get("main_focus") || "").trim(),
@@ -1674,52 +1749,40 @@
             top3: String(formData.get("top3") || "").trim(),
             energy: String(formData.get("energy") || "").trim(),
             mood: String(formData.get("mood") || "").trim(),
+            life_axis_family: isCheckout ? String(formData.get("family") || "").trim() : currentDaily.life_axis_family || "",
+            life_axis_work: isCheckout ? String(formData.get("work") || "").trim() : currentDaily.life_axis_work || "",
+            life_axis_health: isCheckout ? String(formData.get("health") || "").trim() : currentDaily.life_axis_health || "",
+            life_axis_creative: isCheckout ? String(formData.get("creative") || "").trim() : currentDaily.life_axis_creative || "",
+            life_axis_learning: isCheckout ? String(formData.get("learning") || "").trim() : currentDaily.life_axis_learning || "",
             day_plan: String(formData.get("day_plan") || "").trim(),
-            done_summary: String(formData.get("done_summary") || "").trim(),
-            stuck_summary: String(formData.get("stuck_summary") || "").trim(),
-            tomorrow_hint: String(formData.get("tomorrow_hint") || "").trim(),
+            done_summary: isCheckout ? String(formData.get("done_summary") || "").trim() : currentDaily.done_summary || "",
+            stuck_summary: isCheckout ? String(formData.get("stuck_summary") || "").trim() : currentDaily.stuck_summary || "",
+            tomorrow_hint: isCheckout ? String(formData.get("tomorrow_hint") || "").trim() : currentDaily.tomorrow_hint || "",
           };
 
           await apiPost("daily.save", payload);
-          setStatus("Đã lưu ngày", "ok");
+
+          if (isCheckout) {
+            await apiPost("habits.checkin", {
+              date: getSelectedDate(),
+              family: formData.get("family"),
+              work: formData.get("work"),
+              health: formData.get("health"),
+              creative: formData.get("creative"),
+              learning: formData.get("learning"),
+              movement: formData.get("movement"),
+              reading_learning: formData.get("reading_learning"),
+              photo_memory: formData.get("photo_memory"),
+              deep_work: formData.get("deep_work"),
+              tea_pause: formData.get("tea_pause"),
+              note: "",
+            });
+          }
+
+          setStatus(isCheckout ? "Đã lưu check-out" : "Đã lưu khởi động", "ok");
           await loadBootstrap();
         } catch (error) {
-          setStatus("Lỗi lưu Daily Log: " + error.message, "error");
-        } finally {
-          setButtonLoading(button, false);
-        }
-      }
-
-      async function handleHabitSubmit(event) {
-        event.preventDefault();
-        const button = event.submitter || els.habitForm.querySelector('button[type="submit"]');
-        setButtonLoading(button, true, "Đang lưu...");
-        setStatus("Đang lưu habit check-in...", "");
-
-        try {
-          const formData = new FormData(els.habitForm);
-          const payload = {
-            date: getSelectedDate(),
-            family: formData.get("family"),
-            work: formData.get("work"),
-            health: formData.get("health"),
-            creative: formData.get("creative"),
-            learning: formData.get("learning"),
-            movement: formData.get("movement"),
-            reading_learning: formData.get("reading_learning"),
-            photo_memory: formData.get("photo_memory"),
-            deep_work: formData.get("deep_work"),
-            tea_pause: formData.get("tea_pause"),
-            note: String(formData.get("note") || "").trim(),
-          };
-
-          await apiPost("habits.checkin", payload);
-          setStatus("Đã lưu habit check-in", "ok");
-          els.habitForm.reset();
-          bindRangeOutputs();
-          await loadBootstrap();
-        } catch (error) {
-          setStatus("Lỗi lưu habit check-in: " + error.message, "error");
+          setStatus("Lỗi lưu ngày: " + error.message, "error");
         } finally {
           setButtonLoading(button, false);
         }
@@ -1786,6 +1849,15 @@
         }
       }
 
+      function activateDayMode(mode) {
+        document.querySelectorAll("[data-day-mode]").forEach((button) => {
+          button.classList.toggle("active", button.dataset.dayMode === mode);
+        });
+        document.querySelectorAll("[data-mode-panel]").forEach((panel) => {
+          panel.classList.toggle("active", panel.dataset.modePanel === mode);
+        });
+      }
+
       function bindTabs() {
         document.querySelectorAll(".tab-button").forEach((button) => {
           button.addEventListener("click", () => {
@@ -1809,9 +1881,14 @@
         bindRangeOutputs();
         setSelectedDate(todayYmd());
         activateTab((location.hash || "#today").slice(1), false);
+        document.querySelectorAll("[data-day-mode]").forEach((button) => {
+          button.addEventListener("click", () => activateDayMode(button.dataset.dayMode));
+        });
+        document.querySelectorAll("[data-switch-mode]").forEach((button) => {
+          button.addEventListener("click", () => activateDayMode(button.dataset.switchMode));
+        });
         els.captureForm.addEventListener("submit", handleCaptureSubmit);
         els.dailyLogForm.addEventListener("submit", handleDailySubmit);
-        els.habitForm.addEventListener("submit", handleHabitSubmit);
         els.syncButton.addEventListener("click", loadBootstrap);
         els.setupWorkbookBtn.addEventListener("click", setupWorkbook);
         els.morningReminderBtn.addEventListener("click", createMorningReminder);
@@ -1821,10 +1898,6 @@
         });
         els.todayBtn.addEventListener("click", async () => {
           setSelectedDate(todayYmd());
-          await loadBootstrap();
-        });
-        els.tomorrowBtn.addEventListener("click", async () => {
-          setSelectedDate(addDays(todayYmd(), 1));
           await loadBootstrap();
         });
         els.viewDateInput.addEventListener("change", async () => {
