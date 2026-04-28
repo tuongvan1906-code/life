@@ -24,19 +24,19 @@ input:focus,select:focus,textarea:focus{border-color:var(--g3);box-shadow:0 0 0 
 .app{width:min(720px,calc(100% - 20px));margin:0 auto;padding:10px 0 calc(94px + env(safe-area-inset-bottom))}
 .top{position:sticky;top:0;z-index:20;background:#f8fbf6e8;backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:0 0 24px 24px;padding:12px;margin-bottom:12px}
 .brand{display:flex;align-items:center;justify-content:space-between;gap:10px}.logo{display:flex;align-items:center;gap:10px}.mark{width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,var(--g3),var(--g));display:grid;place-items:center;color:#fff;font-weight:950}
-h1,h2,h3,p{margin:0}h1{font-size:1.16rem;letter-spacing:-.03em}
+h1,h2,h3,p{margin:0}h1{font-size:1.16rem;letter-spacing:-.03em}.brand-text{min-width:0}.quote-line{margin-top:3px;color:var(--muted);font-size:.78rem;line-height:1.25;max-width:560px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .datebar{display:grid;grid-template-columns:42px 1fr 72px 42px;gap:8px;margin-top:10px}
 .selected-date{margin-top:8px;padding:9px 11px;border-radius:14px;background:rgba(255,255,255,.72);border:1px solid var(--line);color:var(--g);font-size:.88rem;font-weight:850;text-align:center}.icon{width:42px;height:42px;border-radius:15px;border:1px solid var(--line);background:#fff;color:var(--g);font-weight:950}
 .btn{border:0;border-radius:15px;padding:13px 15px;min-height:44px;font-weight:900}.primary{background:linear-gradient(135deg,var(--g2),var(--g));color:#fff;box-shadow:0 10px 24px rgba(5,150,105,.18)}.soft{background:#fff;color:var(--g);border:1px solid var(--line)}.danger{background:#fff1f2;color:var(--red);border:1px solid #fecdd3}
 .tabs{position:fixed;left:10px;right:10px;bottom:10px;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:8px;background:#ffffffef;border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(20px);box-shadow:0 18px 60px rgba(15,118,110,.16)}
-.tab{border:0;background:transparent;border-radius:16px;color:var(--muted);font-size:.82rem;font-weight:950;line-height:1.15;padding:10px 4px;min-height:50px}.tab.active{background:linear-gradient(135deg,var(--g3),var(--g));color:#fff}
+.tab{border:0;background:transparent;border-radius:16px;color:var(--muted);font-size:.82rem;font-weight:950;line-height:1.15;padding:10px 4px;min-height:46px}.tab.active{background:linear-gradient(135deg,var(--g3),var(--g));color:#fff}
 .pane{display:none}.pane.active{display:block}.panel,.item,.drawer{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(12px)}
 .panel{border-radius:var(--r);padding:14px;margin-bottom:12px}.step{display:flex;align-items:center;gap:9px;margin-bottom:12px}.no{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--g3),var(--g));color:#fff;font-weight:950;flex:0 0 auto}h2{font-size:1.06rem;letter-spacing:-.02em}
 label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack{display:grid;gap:10px}.grid2,.grid3{display:grid;gap:10px;grid-template-columns:1fr}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.focus{background:linear-gradient(135deg,#064e3b,#0f766e 62%,#14b8a6);border-radius:26px;padding:16px;color:#fff;box-shadow:0 18px 50px rgba(15,118,110,.22);margin-bottom:12px}.focus small{text-transform:uppercase;letter-spacing:.12em;color:#c8fff0;font-weight:950}.focus-text{font-size:1.45rem;line-height:1.13;font-weight:950;letter-spacing:-.04em;margin:7px 0 13px;min-height:50px}.focus input{border:0;background:#fffffff0}.sync-note{font-size:.82rem;color:#c8fff0;margin-top:8px}
+.focus{background:linear-gradient(135deg,#064e3b,#0f766e 62%,#14b8a6);border-radius:26px;padding:16px;color:#fff;box-shadow:0 18px 50px rgba(15,118,110,.22);margin-bottom:12px}.focus small{text-transform:uppercase;letter-spacing:.12em;color:#c8fff0;font-weight:950}.focus-text{font-size:1.45rem;line-height:1.13;font-weight:950;letter-spacing:-.04em;margin:7px 0 13px;min-height:46px}.focus input{border:0;background:#fffffff0}.sync-note{font-size:.82rem;color:#c8fff0;margin-top:8px}
 .topgrid{display:grid;gap:10px}.top-item,.check-item{background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px}.top-item{display:grid;grid-template-columns:34px 1fr;gap:9px;align-items:start}.num{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:var(--g);color:#fff;font-weight:950}
 .range-row{display:grid;grid-template-columns:84px 1fr 34px;gap:8px;align-items:center;padding:5px 0}.range-row span:last-child{text-align:right;color:var(--g);font-weight:950}input[type=range]{padding:0;border:0;background:transparent;accent-color:var(--g);box-shadow:none}
-.item-list{display:grid;gap:10px}.item{border-radius:17px;padding:12px}.item.clickable{cursor:pointer}.item:active{transform:scale(.99)}.item h3{font-size:1rem;line-height:1.32}.meta{margin-top:7px;color:var(--muted);font-size:.86rem;line-height:1.45}.body{white-space:pre-wrap;margin-top:8px;line-height:1.45}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{background:var(--mint);color:#047857;border-radius:999px;padding:6px 9px;font-size:.78rem;font-weight:900}.empty{padding:14px;border-radius:15px;background:#ffffff96;color:var(--muted);line-height:1.4}
+.item-list{display:grid;gap:10px}.item{border-radius:17px;padding:12px}.item.clickable{cursor:pointer}.item:active{transform:scale(.99)}.item h3{font-size:1rem;line-height:1.32}.meta{margin-top:7px;color:var(--muted);font-size:.86rem;line-height:1.45}.body{white-space:pre-wrap;margin-top:8px;line-height:1.45}.preview-img{width:100%;max-height:360px;object-fit:cover;border-radius:16px;border:1px solid var(--line);margin-top:10px;background:#f6fff9}.thumb{width:100%;max-height:170px;object-fit:cover;border-radius:14px;border:1px solid var(--line);margin-top:9px}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{background:var(--mint);color:#047857;border-radius:999px;padding:6px 9px;font-size:.78rem;font-weight:900}.empty{padding:14px;border-radius:15px;background:#ffffff96;color:var(--muted);line-height:1.4}
 .capture{min-height:170px}.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.metric{text-align:left;background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px;color:var(--text)}.metric span{font-size:.8rem;color:var(--muted);font-weight:900}.metric b{display:block;color:var(--g);font-size:1.75rem;margin-top:6px}.bar{height:9px;background:var(--mint);border-radius:999px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g3),var(--g));width:20%}
 .toast{position:fixed;left:10px;right:10px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:40;padding:12px 14px;border-radius:15px;background:#12342b;color:#fff;box-shadow:var(--shadow)}.toast.ok{background:var(--ok)}.toast.error{background:var(--red)}.hidden{display:none!important}
 .drawer-bg{position:fixed;inset:0;background:rgba(16,52,43,.32);z-index:50;display:none}.drawer-bg.open{display:block}.drawer{position:fixed;inset:0 0 0 auto;z-index:60;width:min(520px,100%);overflow:auto;background:#fbfffb;border-radius:26px 0 0 26px;padding:16px;transform:translateX(105%);transition:.22s}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.drawer-form{display:grid;gap:10px}.hint{color:var(--muted);font-size:.85rem}
@@ -46,18 +46,18 @@ label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack
 <body>
 <div class="app">
 <header class="top">
-  <div class="brand"><div class="logo"><div class="mark">N</div><h1>NTV.OS</h1></div><button class="icon" id="syncBtn">↻</button></div>
+  <div class="brand"><div class="logo"><div class="mark">N</div><div class="brand-text"><h1>NTV.OS</h1><div id="dailyQuote" class="quote-line"></div></div></div><button class="icon" id="syncBtn">↻</button></div>
   <div class="datebar"><button class="icon" id="prevBtn">‹</button><input id="dateInput" type="date"><button class="btn soft" id="todayBtn">Hôm nay</button><button class="icon" id="setupBtn">▦</button></div>
-  <div class="selected-date" id="selectedDateLabel">Đang nhập ngày hôm nay</div>
+  <div class="selected-date" id="selectedDateLabel">Ngày (hôm nay)</div>
 </header>
 
 <div id="toast" class="toast hidden"></div>
 
 <nav class="tabs">
-  <button class="tab active" data-tab="day">1<br>Ngày</button>
-  <button class="tab" data-tab="inbox">2<br>Ghi</button>
-  <button class="tab" data-tab="work">3<br>Xử lý</button>
-  <button class="tab" data-tab="data">4<br>Dữ liệu</button>
+  <button class="tab active" data-tab="day">Ngày</button>
+  <button class="tab" data-tab="inbox">Ghi nhanh</button>
+  <button class="tab" data-tab="work">Xử lý</button>
+  <button class="tab" data-tab="data">Dữ liệu</button>
 </nav>
 
 <section class="pane active" id="pane-day">
@@ -101,6 +101,7 @@ label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack
   </div>
 
   <div class="panel"><div class="step"><span class="no">4</span><h2>Cần nhìn</h2></div><div class="item-list" id="urgentList"></div></div>
+  <div class="panel"><div class="step"><span class="no">5</span><h2>Gợi ý ngày mai</h2></div><div class="item-list" id="tomorrowSuggestions"></div></div>
 </section>
 
 <section class="pane" id="pane-inbox">
@@ -115,6 +116,7 @@ label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack
     </form>
   </div>
   <div class="panel"><div class="step"><span class="no">2</span><h2>Vừa ghi</h2></div><div id="lastCapture" class="empty">Chưa có dữ liệu mới.</div></div>
+  <div class="panel"><div class="step"><span class="no">3</span><h2>Ghi đã lưu</h2></div><div class="item-list" id="savedCaptures"></div></div>
 </section>
 
 <section class="pane" id="pane-work">
@@ -127,8 +129,9 @@ label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack
 <section class="pane" id="pane-data">
   <div class="panel"><div class="step"><span class="no">1</span><h2>Ngày đã ghi</h2></div><div class="item-list" id="dayList"></div></div>
   <div class="panel"><div class="step"><span class="no">2</span><h2>Chỉ số</h2></div><div class="metric-grid" id="metrics"></div></div>
-  <div class="panel"><div class="step"><span class="no">3</span><h2>Mảng</h2></div><div class="item-list" id="domains"></div></div>
-  <div class="panel"><div class="step"><span class="no">4</span><h2>Tư liệu</h2></div><div class="item-list" id="life"></div></div>
+  <div class="panel"><div class="step"><span class="no">3</span><h2>Tuần / tháng</h2></div><div class="item-list" id="periodAnalysis"></div></div>
+  <div class="panel"><div class="step"><span class="no">4</span><h2>Mảng</h2></div><div class="item-list" id="domains"></div></div>
+  <div class="panel"><div class="step"><span class="no">5</span><h2>Tư liệu</h2></div><div class="item-list" id="life"></div></div>
 </section>
 </div>
 
@@ -136,12 +139,48 @@ label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack
 <aside class="drawer" id="drawer"><div class="drawer-head"><div><p class="hint" id="drawerType">Chi tiết</p><h2 id="drawerTitle">—</h2></div><button class="icon" id="closeDrawer">×</button></div><form id="drawerForm" class="drawer-form"></form></aside>
 
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbwNqmXQ4nIZ7eDpi7FX1Y-PX--a6XYrmsAFOopzABPyuIah9XTqrZmDXmc01Q4LS7OW/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbx-18CghzXlZnyJNzBVK_ozFyTdknd-qfpXuy9MQLN4Fpc5EqVghqi8TsJl6uI0p8km/exec";
 const API_TOKEN="";
 const state={data:null,date:"",timer:null,detail:null,hydrating:false,lastCreated:null,composing:false,autosaveTimer:null};
 
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function esc(v){return String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;")}
+
+const QUOTES=[
+  "Sống sâu hơn một chút, làm rõ hơn một chút.",
+  "Kỷ luật không làm mất tự do; nó tạo ra tự do.",
+  "Điều quan trọng không phải làm nhiều, mà là làm đúng việc.",
+  "Một ngày có hướng sẽ nhẹ hơn một ngày có nhiều việc.",
+  "Học tập là cách giữ cho tâm trí còn trẻ.",
+  "Cái đẹp được ghi lại sẽ trở thành năng lượng.",
+  "Một quyết định rõ ràng tiết kiệm rất nhiều sức lực.",
+  "Hôm nay chỉ cần tiến một bước đúng.",
+  "Gia đình, sức khỏe, công việc: giữ nhịp trước khi tăng tốc.",
+  "Ý tưởng tốt cần được ghi lại trước khi nó tan đi.",
+  "Sáng tạo bắt đầu từ khả năng quan sát đời sống.",
+  "Không cần hoàn hảo; cần có vòng lặp để tốt lên.",
+  "Người biết nhìn lại sẽ đi xa hơn người chỉ chạy tiếp.",
+  "Tĩnh một chút để thấy việc nào thật sự đáng làm.",
+  "Một hệ thống tốt là hệ thống làm tâm trí nhẹ đi."
+];
+function setDailyQuote(){
+  const q=QUOTES[Math.floor(Math.random()*QUOTES.length)];
+  const el=$("#dailyQuote"); if(el) el.textContent=q;
+}
+
+/* Âm lịch Việt Nam, thuật toán phổ biến dựa trên astronomical new moon */
+const PI=Math.PI;
+function INT(d){return Math.floor(d)}
+function jdFromDate(dd,mm,yy){const a=INT((14-mm)/12), y=yy+4800-a, m=mm+12*a-3;let jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-INT(y/100)+INT(y/400)-32045;if(jd<2299161)jd=dd+INT((153*m+2)/5)+365*y+INT(y/4)-32083;return jd}
+function jdToDate(jd){let a,b,c;if(jd>2299160){a=jd+32044;b=INT((4*a+3)/146097);c=a-INT((b*146097)/4)}else{b=0;c=jd+32082}const d=INT((4*c+3)/1461),e=c-INT((1461*d)/4),m=INT((5*e+2)/153);const day=e-INT((153*m+2)/5)+1,month=m+3-12*INT(m/10),year=b*100+d-4800+INT(m/10);return [day,month,year]}
+function NewMoon(k){const T=k/1236.85,T2=T*T,T3=T2*T,dr=PI/180;let Jd1=2415020.75933+29.53058868*k+0.0001178*T2-0.000000155*T3;Jd1+=0.00033*Math.sin((166.56+132.87*T-0.009173*T2)*dr);const M=359.2242+29.10535608*k-0.0000333*T2-0.00000347*T3;const Mpr=306.0253+385.81691806*k+0.0107306*T2+0.00001236*T3;const F=21.2964+390.67050646*k-0.0016528*T2-0.00000239*T3;let C1=(0.1734-0.000393*T)*Math.sin(M*dr)+0.0021*Math.sin(2*dr*M)-0.4068*Math.sin(Mpr*dr)+0.0161*Math.sin(2*dr*Mpr)-0.0004*Math.sin(3*dr*Mpr)+0.0104*Math.sin(2*dr*F)-0.0051*Math.sin((M+Mpr)*dr)-0.0074*Math.sin((M-Mpr)*dr)+0.0004*Math.sin((2*F+M)*dr)-0.0004*Math.sin((2*F-M)*dr)-0.0006*Math.sin((2*F+Mpr)*dr)+0.0010*Math.sin((2*F-Mpr)*dr)+0.0005*Math.sin((2*Mpr+M)*dr);let deltat=T< -11?0.001+0.000839*T+0.0002261*T2-0.00000845*T3-0.000000081*T*T3:-0.000278+0.000265*T+0.000262*T2;return Jd1+C1-deltat}
+function getNewMoonDay(k,tz){return INT(NewMoon(k)+0.5+tz/24)}
+function getSunLongitude(jdn,tz){const T=(jdn-2451545.5-tz/24)/36525,T2=T*T,dr=PI/180;const M=357.52910+35999.05030*T-0.0001559*T2-0.00000048*T*T2;const L0=280.46645+36000.76983*T+0.0003032*T2;let DL=(1.914600-0.004817*T-0.000014*T2)*Math.sin(dr*M)+(0.019993-0.000101*T)*Math.sin(2*dr*M)+0.000290*Math.sin(3*dr*M);let L=L0+DL;L=L*dr;L=L-PI*2*(INT(L/(PI*2)));return INT(L/PI*6)}
+function getLunarMonth11(yy,tz){const off=jdFromDate(31,12,yy)-2415021,k=INT(off/29.530588853),nm=getNewMoonDay(k,tz),sunLong=getSunLongitude(nm,tz);return sunLong>=9?getNewMoonDay(k-1,tz):nm}
+function getLeapMonthOffset(a11,tz){const k=INT((a11-2415021.076998695)/29.530588853+0.5);let last=0,i=1,arc=getSunLongitude(getNewMoonDay(k+i,tz),tz);do{last=arc;i++;arc=getSunLongitude(getNewMoonDay(k+i,tz),tz)}while(arc!==last&&i<14);return i-1}
+function convertSolar2Lunar(dd,mm,yy,tz=7){const dayNumber=jdFromDate(dd,mm,yy),k=INT((dayNumber-2415021.076998695)/29.530588853),monthStart0=getNewMoonDay(k+1,tz);let monthStart=monthStart0;if(monthStart>dayNumber)monthStart=getNewMoonDay(k,tz);let a11=getLunarMonth11(yy,tz),b11=a11,lunarYear;if(a11>=monthStart){lunarYear=yy;a11=getLunarMonth11(yy-1,tz)}else{lunarYear=yy+1;b11=getLunarMonth11(yy+1,tz)}const lunarDay=dayNumber-monthStart+1;let diff=INT((monthStart-a11)/29),lunarLeap=0,lunarMonth=diff+11;if(b11-a11>365){const leapMonthDiff=getLeapMonthOffset(a11,tz);if(diff>=leapMonthDiff){lunarMonth=diff+10;if(diff===leapMonthDiff)lunarLeap=1}}if(lunarMonth>12)lunarMonth-=12;if(lunarMonth>=11&&diff<4)lunarYear-=1;return [lunarDay,lunarMonth,lunarYear,lunarLeap]}
+function getLunarLabel(ymd){try{const [y,m,d]=ymd.split("-").map(Number);const [ld,lm,ly,leap]=convertSolar2Lunar(d,m,y,7);return `ÂL ${ld}/${lm}${leap?" nhuận":""}`}catch(e){return "ÂL —"}}
+
 function toast(msg,kind=""){clearTimeout(state.timer);const el=$("#toast");el.textContent=msg;el.className="toast "+kind;state.timer=setTimeout(()=>el.className="toast hidden",kind==="error"?6000:2300)}
 function ymd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
 function today(){return ymd(new Date())}
@@ -150,9 +189,10 @@ function setDate(s){
   state.date=s||today();
   $("#dateInput").value=state.date;
   const d=new Date(`${state.date}T12:00:00`);
+  const lunar=getLunarLabel(state.date);
   const label=state.date===today()
-    ? "Đang nhập: Hôm nay"
-    : "Đang nhập: "+d.toLocaleDateString("vi-VN",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"});
+    ? `Ngày (hôm nay) · ${lunar}`
+    : "Ngày: "+d.toLocaleDateString("vi-VN",{weekday:"long",day:"2-digit",month:"2-digit",year:"numeric"})+" · "+lunar;
   const el=$("#selectedDateLabel"); if(el) el.textContent=label;
 }
 function url(action,params={}){const u=new URL(API_URL);u.searchParams.set("action",action);Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=="")u.searchParams.set(k,v)});if(API_TOKEN)u.searchParams.set("token",API_TOKEN);return u.toString()}
@@ -166,7 +206,25 @@ function setIdx(a){localStorage.setItem(indexKey(),JSON.stringify([...new Set(a)
 function readDay(d=state.date){try{return JSON.parse(localStorage.getItem(key(d))||"{}")}catch(e){return{}}}
 function saveDayLocal(p,synced=false){const date=p.date||state.date||today();const old=readDay(date);const next={...old,...p,date,_saved_at:new Date().toISOString(),_synced:synced};localStorage.setItem(key(date),JSON.stringify(next));const a=idx();if(!a.includes(date)){a.push(date);setIdx(a)}}
 function caps(){try{return JSON.parse(localStorage.getItem(capKey())||"[]")}catch(e){return[]}}
-function addCap(p,result={}){const a=caps();a.unshift({date:state.date||today(),created_at:new Date().toISOString(),raw_text:p.raw_text||"",type:result.capture?.auto_type||p.forced_type||"Ghi",domain:result.capture?.domain||p.domain||"",project:result.capture?.project||p.project||""});localStorage.setItem(capKey(),JSON.stringify(a.slice(0,80)))}
+function addCap(p,result={}){
+  const a=caps();
+  a.unshift({
+    local_id:"LCAP-"+Date.now()+"-"+Math.floor(Math.random()*1000),
+    capture_id:result.capture_id||result.capture?.capture_id||"",
+    linked_type:result.linked_type||result.capture?.linked_type||"",
+    linked_id:result.linked_id||result.capture?.linked_id||"",
+    date:state.date||today(),
+    created_at:new Date().toISOString(),
+    raw_text:p.raw_text||"",
+    type:result.capture?.auto_type||p.forced_type||"Ghi",
+    domain:result.capture?.domain||p.domain||"",
+    project:result.capture?.project||p.project||"",
+    file_url:result.capture?.file_url||"",
+    file_preview:p.file && p.file.mime_type && p.file.mime_type.startsWith("image/") ? ("data:"+p.file.mime_type+";base64,"+p.file.file_data) : "",
+    file_name:p.file?.file_name||""
+  });
+  localStorage.setItem(capKey(),JSON.stringify(a.slice(0,120)));
+}
 function fileToBase64(file){return new Promise((res,rej)=>{const rd=new FileReader();rd.onload=()=>res(String(rd.result||"").split(",")[1]||"");rd.onerror=()=>rej(new Error("Không đọc được file"));rd.readAsDataURL(file)})}
 function loadImage(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file);const img=new Image();img.onload=()=>{URL.revokeObjectURL(u);res(img)};img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("Không đọc được ảnh"))};img.src=u})}
 function canvasBlob(c,q){return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error("Không nén được ảnh")),"image/jpeg",q))}
@@ -191,13 +249,58 @@ function updateFocusVisual(p){$("#focusText").textContent=p.main_focus||"Chưa �
 function hydrateDay(server={}){state.hydrating=true;const local=readDay(state.date);const p={...server,...local,date:state.date};const f=$("#dayForm");["energy","mood","main_focus","top1","top2","top3","day_plan","top1_status","top1_note","top2_status","top2_note","top3_status","top3_note","done_summary","stuck_summary","tomorrow_hint","life_axis_family","life_axis_work","life_axis_health","life_axis_creative","life_axis_learning"].forEach(n=>{if(f.elements[n])f.elements[n].value=p[n]||f.elements[n].defaultValue||""});updateFocusVisual(p);bindRanges();state.hydrating=false}
 function renderCards(id,items,fn,empty){const el=$("#"+id);if(!items||!items.length){el.innerHTML=`<div class="empty">${esc(empty||"Chưa có dữ liệu")}</div>`;return}el.innerHTML=items.map(fn).join("")}
 function card(type,item){const title=item.title||"Không tiêu đề",id=item.task_id||item.decision_id||item.idea_id||item.life_id||"";const meta=[item.status,item.priority,item.domain,item.project,item.date].filter(Boolean).join(" · ");return`<article class="item clickable" data-type="${esc(type)}" data-id="${esc(id)}"><h3>${esc(title)}</h3><p class="meta">${esc(meta)}</p>${item.note?`<p class="body">${esc(item.note)}</p>`:""}<div class="tags">${item.due_date?`<span class="tag">Hạn ${esc(item.due_date)}</span>`:""}${item.file_url?`<span class="tag">Có file</span>`:""}</div></article>`}
-function render(data){state.data=data;setDate(data.viewDate||state.date||today());hydrateDay(data.today||{});const urgent=[...(data.overdueTasks||[]),...(data.todayTasks||[]),...(data.waitingTasks||[])];const seen=new Set();const uniq=urgent.filter(x=>{const id=x.task_id||x.title;if(seen.has(id))return false;seen.add(id);return true});renderCards("urgentList",uniq.slice(0,5),x=>card("task",x),"Chưa có việc cần nhìn.");renderCards("newTasks",data.newTasks||[],x=>card("task",x),"Chưa có việc mới.");renderCards("waitingTasks",data.waitingTasks||[],x=>card("task",x),"Không có việc đang chờ.");renderCards("decisions",data.openDecisionsList||[],x=>card("decision",x),"Không có quyết định.");renderCards("ideas",data.recentIdeas||[],x=>card("idea",x),"Chưa có ý tưởng.");renderCards("life",data.recentLife||[],x=>card("life",x),"Chưa có tư liệu.");renderMetrics(data);renderDayList();bindItems()}
+
+function renderSavedCaptures(){
+  const server=(state.data&&state.data.captureHistory)||[];
+  const local=caps();
+  const merged=[...local,...server].slice(0,80);
+  renderCards("savedCaptures",merged,c=>`<article class="item clickable" data-capture-local="${esc(c.local_id||"")}" data-capture-id="${esc(c.capture_id||"")}"><h3>${esc(c.type||"Ghi")} · ${esc(c.date||"")}</h3><p class="meta">${esc([c.domain,c.project].filter(Boolean).join(" · "))}</p>${c.file_preview?`<img class="thumb" src="${c.file_preview}" alt="Ảnh đã lưu">`:""}<p class="body">${esc(c.raw_text||"")}</p><div class="tags">${c.file_preview||c.file_url?`<span class="tag">Có ảnh/file</span>`:""}<span class="tag">Bấm xem</span></div></article>`,"Chưa có ghi đã lưu.");
+  $$("[data-capture-local],[data-capture-id]").forEach(el=>el.onclick=()=>openCaptureDetail(el.dataset.captureLocal,el.dataset.captureId));
+}
+function renderTomorrowSuggestions(){
+  const d=readDay(state.date);
+  const arr=[];
+  [["top1","top1_status"],["top2","top2_status"],["top3","top3_status"]].forEach(([k,s],i)=>{
+    if(d[k] && d[s]!=="Xong") arr.push({title:d[k],meta:`Từ Top ${i+1} · ${d[s]||"Chưa check"}`});
+  });
+  (state.data?.waitingTasks||[]).slice(0,3).forEach(t=>arr.push({title:t.title,meta:"Đang chờ · "+(t.domain||"")}));
+  (state.data?.overdueTasks||[]).slice(0,3).forEach(t=>arr.push({title:t.title,meta:"Quá hạn · "+(t.domain||"")}));
+  renderCards("tomorrowSuggestions",arr,x=>`<article class="item"><h3>${esc(x.title)}</h3><p class="meta">${esc(x.meta||"")}</p></article>`,"Chưa có gợi ý. Nếu Top 1–3 chưa xong, app sẽ đưa vào đây.");
+}
+function renderPeriodAnalysis(){
+  const days=idx().map(d=>readDay(d)).filter(x=>x.date).sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  const last7=days.slice(0,7), last30=days.slice(0,30);
+  const score=(arr,key)=>arr.length?Math.round(arr.reduce((s,x)=>s+(Number(x[key])||0),0)/arr.length*10)/10:0;
+  const topDone=arr=>arr.reduce((s,x)=>s+(x.top1_status==="Xong")+(x.top2_status==="Xong")+(x.top3_status==="Xong"),0);
+  const items=[
+    {title:"7 ngày",meta:`${last7.length} ngày có dữ liệu · Top xong ${topDone(last7)}/${last7.length*3} · Sức khỏe TB ${score(last7,"life_axis_health")}`},
+    {title:"30 ngày",meta:`${last30.length} ngày có dữ liệu · Top xong ${topDone(last30)}/${last30.length*3} · Gia đình TB ${score(last30,"life_axis_family")} · Công việc TB ${score(last30,"life_axis_work")}`},
+    {title:"Gợi ý",meta:last7.some(x=>Number(x.life_axis_health||0)<5)?"Sức khỏe có ngày thấp. Nên giảm kỳ vọng task hoặc đặt vận động nhẹ.":"Chưa thấy cảnh báo lớn từ dữ liệu cục bộ."}
+  ];
+  renderCards("periodAnalysis",items,x=>`<article class="item"><h3>${esc(x.title)}</h3><p class="meta">${esc(x.meta)}</p></article>`,"Chưa đủ dữ liệu.");
+}
+function openCaptureDetail(localId,captureId){
+  const list=caps();
+  const c=list.find(x=>x.local_id===localId)||{};
+  $("#drawerType").textContent="Ghi đã lưu";
+  $("#drawerTitle").textContent=c.type||"Ghi";
+  $("#drawerForm").innerHTML=`${c.file_preview?`<img class="preview-img" src="${c.file_preview}" alt="Ảnh đã lưu">`:""}${c.file_url?`<a class="btn soft" href="${esc(c.file_url)}" target="_blank" rel="noopener">Mở file trên Drive</a>`:""}<label>Loại<input name="type" value="${esc(c.type||"")}"></label><div class="grid2"><label>Mảng<input name="domain" value="${esc(c.domain||"")}"></label><label>Dự án<input name="project" value="${esc(c.project||"")}"></label></div><label>Nội dung<textarea name="raw_text">${esc(c.raw_text||"")}</textarea></label><div class="actions"><button class="btn primary" type="submit">Lưu trên máy</button><button class="btn danger" type="button" id="deleteLocalCap">Xóa</button></div>`;
+  state.detail={type:"captureLocal",id:localId,item:c};
+  $("#deleteLocalCap").onclick=async()=>{
+    const next=caps().filter(x=>x.local_id!==localId);
+    localStorage.setItem(capKey(),JSON.stringify(next));
+    if(captureId){try{await apiPost("captures.delete",{id:captureId})}catch(e){}}
+    toast("Đã xóa ghi", "ok");closeDrawer();renderSavedCaptures();
+  };
+  $("#drawerBg").classList.add("open");$("#drawer").classList.add("open");
+}
+function render(data){state.data=data;setDate(data.viewDate||state.date||today());hydrateDay(data.today||{});const urgent=[...(data.overdueTasks||[]),...(data.todayTasks||[]),...(data.waitingTasks||[])];const seen=new Set();const uniq=urgent.filter(x=>{const id=x.task_id||x.title;if(seen.has(id))return false;seen.add(id);return true});renderCards("urgentList",uniq.slice(0,5),x=>card("task",x),"Chưa có việc cần nhìn.");renderCards("newTasks",data.newTasks||[],x=>card("task",x),"Chưa có việc mới.");renderCards("waitingTasks",data.waitingTasks||[],x=>card("task",x),"Không có việc đang chờ.");renderCards("decisions",data.openDecisionsList||[],x=>card("decision",x),"Không có quyết định.");renderCards("ideas",data.recentIdeas||[],x=>card("idea",x),"Chưa có ý tưởng.");renderCards("life",data.recentLife||[],x=>card("life",x),"Chưa có tư liệu.");renderMetrics(data);renderDayList();renderSavedCaptures();renderTomorrowSuggestions();renderPeriodAnalysis();bindItems()}
 function renderDayList(){const days=idx().map(d=>readDay(d)).filter(x=>x.date).sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,30);renderCards("dayList",days,d=>`<article class="item clickable" data-day="${esc(d.date)}"><h3>${esc(d.date)} · ${esc(d.main_focus||d.top1||"Chưa có trọng tâm")}</h3><p class="meta">${d._synced?"Đã đồng bộ":"Lưu trên máy"} · ${esc(d.energy||"—")}</p>${d.done_summary?`<p class="body">${esc(d.done_summary)}</p>`:""}</article>`,"Chưa có ngày đã ghi.");$$("[data-day]").forEach(el=>el.onclick=()=>{setDate(el.dataset.day);hydrateDay({});load();tab("day")})}
 function renderMetrics(data){const a=data.analysis||{};const m=[["Capture",a.capture30||0],["Ý tưởng",a.ideas30||0],["Tư liệu",a.life30||0],["Task xong",a.tasksDone30||0],["Decision",a.openDecisions||0],["Check-in",a.habits30||0]];$("#metrics").innerHTML=m.map(([l,v])=>`<button class="metric"><span>${esc(l)}</span><b>${esc(v)}</b></button>`).join("");const top=a.topDomains||[],max=Math.max(1,...top.map(x=>Number(x.count)||0));renderCards("domains",top,x=>`<article class="item"><h3>${esc(x.domain||"Chưa rõ")}</h3><p class="meta">${esc(x.count)} capture</p><div class="bar"><i style="width:${Math.max(5,(Number(x.count)||0)/max*100)}%"></i></div></article>`,"Chưa đủ dữ liệu.")}
 async function load(){try{$("#syncBtn").textContent="…";const d=await apiGet("app.bootstrap",{date:state.date||today()});render(d);toast("Đã đồng bộ","ok")}catch(e){hydrateDay({});renderDayList();toast("Lỗi đồng bộ, vẫn dùng dữ liệu trên máy: "+e.message,"error")}finally{$("#syncBtn").textContent="↻"}}
 async function saveDay(e){if(e)e.preventDefault();const p=formPayload();saveDayLocal(p,false);hydrateDay(p);renderDayList();try{await apiPost("daily.save",p);saveDayLocal(p,true);hydrateDay(readDay(state.date));toast("Đã lưu","ok");await load()}catch(err){toast("Đã lưu trên máy. Chưa đồng bộ Sheet: "+err.message,"error")}}
 async function captureSubmit(e){e.preventDefault();const f=$("#captureForm"),fd=new FormData(f);let p={source:"GitHub Pages"};for(const [k,v] of fd.entries())if(k!=="attachment")p[k]=String(v||"").trim();const file=fd.get("attachment");try{if(file instanceof File&&file.size>0){toast("Đang xử lý file...");p.file=await prepareFile(file)}const result=await apiPost("captures.create",p);
-addCap(p,result);
+addCap(p,result);renderSavedCaptures();
 renderLastCreated(normalizeCreated(result,p));
 f.reset();
 toast("Đã lưu capture","ok");
@@ -242,7 +345,26 @@ function renderLastCreated(obj){
   el.onclick=()=>openDetail(obj.type,obj.id);
 }
 function openDetail(type,id){const d=state.data||{};let item=null;if(type==="task")item=[...(d.todayTasks||[]),...(d.newTasks||[]),...(d.waitingTasks||[]),...(d.overdueTasks||[])].find(x=>x.task_id===id);if(type==="decision")item=(d.openDecisionsList||[]).find(x=>x.decision_id===id);if(type==="idea")item=(d.recentIdeas||[]).find(x=>x.idea_id===id);if(type==="life")item=(d.recentLife||[]).find(x=>x.life_id===id);if(!item && state.lastCreated && state.lastCreated.type===type && state.lastCreated.id===id) item=state.lastCreated.item;
-if(!item)return toast("Không tìm thấy dữ liệu","error");state.detail={type,id,item};$("#drawerType").textContent=type;$("#drawerTitle").textContent=item.title||"Chi tiết";$("#drawerForm").innerHTML=`<label>Tiêu đề<input name="title" value="${esc(item.title||"")}"></label><div class="grid2"><label>Mảng<input name="domain" value="${esc(item.domain||"")}"></label><label>Dự án<input name="project" value="${esc(item.project||"")}"></label></div><label>Trạng thái<input name="status" value="${esc(item.status||"")}"></label><label>Ghi chú<textarea name="note">${esc(item.note||item.criteria||item.final_decision||"")}</textarea></label><div class="actions"><button class="btn primary" type="submit">Lưu</button><button class="btn soft" type="button" id="doneBtn">Xong</button><button class="btn danger" type="button" id="delBtn">Xóa</button></div>`;$("#doneBtn").onclick=()=>quickUpdate("status",type==="decision"?"Đã quyết":"Xong");$("#delBtn").onclick=()=>quickUpdate("deleted_at",new Date().toISOString());$("#drawerBg").classList.add("open");$("#drawer").classList.add("open")}
+if(!item)return toast("Không tìm thấy dữ liệu","error");state.detail={type,id,item};$("#drawerType").textContent=type;$("#drawerTitle").textContent=item.title||"Chi tiết";$("#drawerForm").innerHTML=`<label>Tiêu đề<input name="title" value="${esc(item.title||"")}"></label><div class="grid2"><label>Mảng<input name="domain" value="${esc(item.domain||"")}"></label><label>Dự án<input name="project" value="${esc(item.project||"")}"></label></div><label>Trạng thái<input name="status" value="${esc(item.status||"")}"></label><label>Ghi chú<textarea name="note">${esc(item.note||item.criteria||item.final_decision||"")}</textarea></label>${type==="task"?`<div class="grid3"><label>Ngày lịch<input name="cal_date" type="date" value="${esc(item.due_date||state.date||today())}"></label><label>Giờ<input name="cal_time" type="time" value="09:00"></label><label>Phút<input name="cal_duration" type="number" value="60"></label></div>`:""}<div class="actions"><button class="btn primary" type="submit">Lưu</button><button class="btn soft" type="button" id="doneBtn">Xong</button>${type==="task"?`<button class="btn soft" type="button" id="calendarBtn">Lên lịch</button>`:""}<button class="btn danger" type="button" id="delBtn">Xóa</button></div>`;$("#doneBtn").onclick=()=>quickUpdate("status",type==="decision"?"Đã quyết":"Xong");
+  const calBtn=$("#calendarBtn"); if(calBtn) calBtn.onclick=()=>createCalendarFromDrawer();
+  $("#delBtn").onclick=()=>quickUpdate("deleted_at",new Date().toISOString());$("#drawerBg").classList.add("open");$("#drawer").classList.add("open")}
+async function createCalendarFromDrawer(){
+  const {type,id,item}=state.detail||{};
+  if(type!=="task") return;
+  const f=$("#drawerForm");
+  const payload={
+    id,
+    title:f.elements.title?.value||item.title||"NTV.OS Task",
+    note:f.elements.note?.value||"",
+    date:f.elements.cal_date?.value||state.date||today(),
+    time:f.elements.cal_time?.value||"09:00",
+    duration:Number(f.elements.cal_duration?.value||60)
+  };
+  try{
+    await apiPost("calendar.create",payload);
+    toast("Đã thêm vào Google Calendar","ok");
+  }catch(e){toast("Chưa thêm được Calendar: "+e.message,"error")}
+}
 async function quickUpdate(k,v){
   const {type,id}=state.detail||{};
   const action = k==="deleted_at" ? pluralAction(type,"delete") : pluralAction(type,"update");
@@ -278,7 +400,7 @@ async function saveDetail(e){
 }
 function closeDrawer(){$("#drawerBg").classList.remove("open");$("#drawer").classList.remove("open")}
 function tab(t){$$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));$$(".pane").forEach(p=>p.classList.toggle("active",p.id==="pane-"+t));history.replaceState(null,"","#"+t);scrollTo({top:0,behavior:"smooth"})}
-function bind(){$$(".tab").forEach(b=>b.onclick=()=>tab(b.dataset.tab));$$("[data-jump]").forEach(b=>b.onclick=()=>tab(b.dataset.jump));$("#syncBtn").onclick=load;$("#setupBtn").onclick=async()=>{try{await apiPost("workbook.setup",{});toast("Đã kiểm tra Sheet","ok");await load()}catch(e){toast("Lỗi setup: "+e.message,"error")}};$("#prevBtn").onclick=()=>{saveDraftOnly();setDate(addDays(state.date,-1));hydrateDay({});load()};
+function bind(){setDailyQuote();$$(".tab").forEach(b=>b.onclick=()=>tab(b.dataset.tab));$$("[data-jump]").forEach(b=>b.onclick=()=>tab(b.dataset.jump));$("#syncBtn").onclick=load;$("#setupBtn").onclick=async()=>{try{await apiPost("workbook.setup",{});toast("Đã kiểm tra Sheet","ok");await load()}catch(e){toast("Lỗi setup: "+e.message,"error")}};$("#prevBtn").onclick=()=>{saveDraftOnly();setDate(addDays(state.date,-1));hydrateDay({});load()};
 $("#todayBtn").onclick=()=>{saveDraftOnly();setDate(today());hydrateDay({});load()};
 $("#dateInput").onchange=()=>{saveDraftOnly();setDate($("#dateInput").value||today());hydrateDay({});load()};$("#dayForm").onsubmit=saveDay;$("#focusQuick").oninput=()=>{
   const f=$("#dayForm");
@@ -292,7 +414,7 @@ $("#dateInput").onchange=()=>{saveDraftOnly();setDate($("#dateInput").value||tod
   el.addEventListener("change",()=>{saveDraftOnly()});
 });
 $("#focusQuick").addEventListener("compositionstart",()=>{state.composing=true});
-$("#focusQuick").addEventListener("compositionend",()=>{state.composing=false;scheduleDraftSave()});bindRanges();setDate(today());hydrateDay({});renderDayList();tab((location.hash||"#day").slice(1)||"day")}
+$("#focusQuick").addEventListener("compositionend",()=>{state.composing=false;scheduleDraftSave()});bindRanges();setDate(today());hydrateDay({});renderDayList();renderSavedCaptures();renderPeriodAnalysis();tab((location.hash||"#day").slice(1)||"day")}
 bind();load();
 </script>
 </body>
