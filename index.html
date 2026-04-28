@@ -1,1923 +1,869 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <meta name="theme-color" content="#fff6ed" />
-    <title>NTV.OS Life</title>
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="icon" href="./icon.svg" type="image/svg+xml" />
-    <style>
-      :root {
-        --bg: #fff7ef;
-        --bg-soft: #fbfcf8;
-        --card: rgba(255, 255, 255, 0.86);
-        --card-strong: #fffdfb;
-        --line: rgba(45, 50, 45, 0.12);
-        --text: #26231f;
-        --muted: #6e665f;
-        --accent: #ea580c;
-        --accent-strong: #c2410c;
-        --accent-soft: rgba(251, 146, 60, 0.14);
-        --green: #0f766e;
-        --danger: #b42318;
-        --ok: #027a48;
-        --shadow: 0 12px 40px rgba(38, 35, 31, 0.08);
-        --radius-xl: 14px;
-        --radius-lg: 10px;
-        --radius-md: 8px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#eef8f1" />
+  <title>NTV.OS Life</title>
+  <style>
+    :root {
+      --bg: #eef8f1;
+      --bg-2: #f7fbf5;
+      --card: rgba(255,255,255,.88);
+      --card-strong: #ffffff;
+      --line: rgba(15, 91, 70, .14);
+      --text: #123029;
+      --muted: #687a72;
+      --green: #0f766e;
+      --green-2: #059669;
+      --green-3: #14b8a6;
+      --mint: #dff7ea;
+      --mint-2: #ecfdf5;
+      --bluegreen: #0e7490;
+      --danger: #b42318;
+      --ok: #027a48;
+      --shadow: 0 16px 48px rgba(17, 78, 65, .10);
+      --r-xl: 24px;
+      --r-lg: 18px;
+      --r-md: 14px;
+    }
 
-      * {
-        box-sizing: border-box;
-      }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 12% 0%, rgba(20,184,166,.18), transparent 34%),
+        radial-gradient(circle at 90% 12%, rgba(5,150,105,.14), transparent 34%),
+        linear-gradient(180deg, var(--bg) 0%, #f7fbf5 52%, #ffffff 100%);
+      font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
 
-      html {
-        scroll-behavior: smooth;
-      }
+    button, input, select, textarea { font: inherit; }
+    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      border-radius: var(--r-md);
+      padding: 13px 14px;
+      color: var(--text);
+      outline: none;
+      font-size: 16px;
+    }
+    textarea { resize: vertical; min-height: 94px; line-height: 1.45; }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--green-3);
+      box-shadow: 0 0 0 4px rgba(20,184,166,.16);
+    }
 
-      body {
-        margin: 0;
-        min-height: 100vh;
-        color: var(--text);
-        background: linear-gradient(180deg, #fffaf5 0%, var(--bg) 42%, #f8fbf8 100%);
-        font-family: "Avenir Next", "Segoe UI", sans-serif;
-      }
+    .app {
+      width: min(720px, calc(100% - 22px));
+      margin: 0 auto;
+      padding: 10px 0 calc(92px + env(safe-area-inset-bottom));
+    }
 
-      button,
-      input,
-      select,
-      textarea {
-        font: inherit;
-      }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 12;
+      background: rgba(247,251,245,.88);
+      backdrop-filter: blur(18px);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: 0 0 var(--r-xl) var(--r-xl);
+      padding: 12px;
+      margin: 0 -1px 12px;
+    }
 
-      .app {
-        width: min(1080px, calc(100% - 24px));
-        margin: 0 auto;
-        padding: 12px 0 calc(92px + env(safe-area-inset-bottom));
-      }
+    .brand-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
 
-      .topbar,
-      .panel,
-      .metric-card,
-      .item-card,
-      .axis-card,
-      .tab-pane {
-        background: var(--card);
-        backdrop-filter: blur(14px);
-        border: 1px solid var(--line);
-        box-shadow: var(--shadow);
-      }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
 
-      .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 10;
-        padding: 12px;
-        border-radius: var(--radius-xl);
-        margin-bottom: 12px;
-      }
+    .mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--green-3), var(--green));
+      color: white;
+      font-weight: 950;
+      box-shadow: 0 12px 30px rgba(15,118,110,.24);
+      flex: 0 0 auto;
+    }
 
-      .brand-row,
-      .status-row,
-      .panel-header,
-      .mini-actions {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-      }
+    h1, h2, h3, p { margin: 0; }
+    h1 {
+      font-size: 1.18rem;
+      letter-spacing: -.03em;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
 
-      .brand-row {
-        align-items: center;
-      }
+    .date-row {
+      display: grid;
+      grid-template-columns: 42px 1fr 68px 42px;
+      gap: 8px;
+      align-items: center;
+      margin-top: 10px;
+    }
 
-      .eyebrow {
-        margin: 0 0 6px;
-        font-size: 0.76rem;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--accent-strong);
-      }
+    .icon-btn {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--line);
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,.88);
+      color: var(--green);
+      font-weight: 900;
+    }
 
-      h1,
-      h2,
-      h3,
-      p {
-        margin: 0;
-      }
+    .btn {
+      border: 0;
+      border-radius: var(--r-md);
+      padding: 13px 14px;
+      font-weight: 850;
+      min-height: 44px;
+    }
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--green-2), var(--green));
+      box-shadow: 0 12px 24px rgba(5,150,105,.20);
+    }
+    .btn-soft {
+      color: var(--green);
+      background: rgba(255,255,255,.88);
+      border: 1px solid var(--line);
+    }
+    .btn-muted {
+      color: var(--muted);
+      background: rgba(255,255,255,.56);
+      border: 1px dashed var(--line);
+    }
+    .btn-danger {
+      color: var(--danger);
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+    }
 
-      h1 {
-        font-size: 1.35rem;
-        line-height: 1.15;
-        letter-spacing: 0;
-        max-width: none;
-      }
+    .tabs {
+      position: fixed;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      z-index: 20;
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      padding: 8px;
+      background: rgba(255,255,255,.92);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      backdrop-filter: blur(22px);
+      box-shadow: 0 18px 60px rgba(15,118,110,.18);
+    }
 
-      .hero-copy {
-        margin-top: 6px;
-        color: var(--muted);
-        max-width: 62ch;
-        line-height: 1.4;
-      }
+    .tab {
+      border: 0;
+      border-radius: 15px;
+      background: transparent;
+      color: var(--muted);
+      font-size: .79rem;
+      line-height: 1.15;
+      font-weight: 850;
+      padding: 10px 5px;
+      min-height: 48px;
+    }
+    .tab.active {
+      color: white;
+      background: linear-gradient(135deg, var(--green-3), var(--green));
+    }
 
-      .top-actions {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 10px;
-        margin-top: 12px;
-      }
+    .pane { display: none; }
+    .pane.active { display: block; }
 
-      .date-strip {
-        display: grid;
-        grid-template-columns: auto 1fr auto;
-        gap: 8px;
-        align-items: center;
-      }
+    .panel, .card, .drawer {
+      background: var(--card);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
 
-      .date-strip input[type="date"] {
-        min-width: 0;
-        padding: 10px 12px;
-        border-radius: var(--radius-md);
-      }
+    .panel {
+      border-radius: var(--r-xl);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
 
-      .quiet-actions {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-        gap: 8px;
-      }
+    .step-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 12px;
+    }
 
-      .icon-button {
-        display: inline-grid;
-        place-items: center;
-        width: 42px;
-        height: 42px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-md);
-        background: rgba(255, 255, 255, 0.84);
-        color: var(--text);
-        cursor: pointer;
-      }
+    .step-no {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: white;
+      background: linear-gradient(135deg, var(--green-3), var(--green));
+      font-weight: 950;
+      font-size: .86rem;
+      flex: 0 0 auto;
+    }
 
-      .icon-button.is-syncing {
-        color: var(--accent-strong);
-        animation: spin 0.8s linear infinite;
-      }
+    h2 { font-size: 1.08rem; letter-spacing: -.02em; }
+    h3 { font-size: 1rem; letter-spacing: -.02em; }
+    .hint {
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.4;
+      margin-top: 4px;
+    }
 
-      .icon-button.is-ok {
-        color: var(--ok);
-      }
+    label {
+      display: grid;
+      gap: 7px;
+      color: var(--green);
+      font-weight: 800;
+      font-size: .9rem;
+    }
 
-      .icon-button.is-error {
-        color: var(--danger);
-      }
+    .stack { display: grid; gap: 10px; }
+    .grid2 { display: grid; gap: 10px; grid-template-columns: 1fr; }
+    .grid3 { display: grid; gap: 10px; grid-template-columns: 1fr; }
 
-      .status-badge,
-      .pill,
-      .tag {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 10px 14px;
-        border-radius: 999px;
-        background: var(--accent-soft);
-        color: var(--accent-strong);
-        font-size: 0.92rem;
-      }
+    .focus-card {
+      color: white;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(255,255,255,.16), transparent 32%),
+        linear-gradient(135deg, #064e3b, #0f766e 58%, #14b8a6);
+      border-radius: 26px;
+      padding: 16px;
+      box-shadow: 0 18px 50px rgba(15,118,110,.22);
+      margin-bottom: 12px;
+    }
 
-      .status-badge.error {
-        background: rgba(180, 35, 24, 0.09);
-        color: var(--danger);
-      }
+    .focus-label {
+      color: rgba(255,255,255,.72);
+      font-size: .75rem;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 900;
+    }
 
-      .status-badge.ok {
-        background: rgba(2, 122, 72, 0.09);
-        color: var(--ok);
-      }
+    .focus-value {
+      font-size: 1.55rem;
+      line-height: 1.13;
+      font-weight: 950;
+      letter-spacing: -.05em;
+      margin: 7px 0 14px;
+      min-height: 56px;
+    }
 
-      .toast {
-        position: fixed;
-        left: 12px;
-        right: 12px;
-        bottom: calc(82px + env(safe-area-inset-bottom));
-        z-index: 30;
-        padding: 12px 14px;
-        border-radius: var(--radius-md);
-        color: white;
-        background: var(--text);
-        box-shadow: var(--shadow);
-      }
+    .focus-card input {
+      background: rgba(255,255,255,.94);
+      border: 0;
+    }
 
-      .toast.ok {
-        background: var(--ok);
-      }
+    .top-grid {
+      display: grid;
+      gap: 10px;
+    }
 
-      .toast.error {
-        background: var(--danger);
-      }
+    .top-card {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 9px;
+      align-items: start;
+      padding: 12px;
+      border-radius: var(--r-lg);
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+    }
 
-      .is-hidden {
-        display: none !important;
-      }
+    .num {
+      width: 31px;
+      height: 31px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--green);
+      color: white;
+      font-weight: 950;
+    }
 
-      @keyframes spin {
-        from {
-          transform: rotate(0deg);
-        }
+    .checkout-card {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      border-radius: var(--r-lg);
+      padding: 12px;
+      display: grid;
+      gap: 10px;
+    }
 
-        to {
-          transform: rotate(360deg);
-        }
-      }
+    .range-row {
+      display: grid;
+      grid-template-columns: 84px 1fr 34px;
+      gap: 8px;
+      align-items: center;
+      padding: 6px 0;
+    }
+    .range-row span:last-child {
+      text-align: right;
+      color: var(--green);
+      font-weight: 950;
+    }
+    input[type="range"] {
+      padding: 0;
+      accent-color: var(--green);
+      box-shadow: none;
+      border: 0;
+      background: transparent;
+    }
 
-      .tab-nav {
-        position: fixed;
-        left: 12px;
-        right: 12px;
-        bottom: 12px;
-        z-index: 20;
-        display: grid;
-        grid-template-columns: repeat(5, minmax(0, 1fr));
-        gap: 8px;
-        padding: 10px;
-        background: rgba(255, 253, 250, 0.92);
-        border: 1px solid var(--line);
-        border-radius: 14px;
-        backdrop-filter: blur(20px);
-        box-shadow: 0 18px 60px rgba(124, 45, 18, 0.16);
-      }
+    .item-list { display: grid; gap: 10px; }
+    .item {
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      border-radius: var(--r-lg);
+      padding: 13px;
+    }
+    .item.clickable { cursor: pointer; transition: .18s; }
+    .item.clickable:active { transform: scale(.99); }
+    .item h3 { font-size: 1rem; line-height: 1.32; }
+    .meta {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: .86rem;
+      line-height: 1.45;
+    }
+    .body {
+      margin-top: 9px;
+      white-space: pre-wrap;
+      line-height: 1.48;
+      font-size: .95rem;
+    }
+    .tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 9px;
+    }
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      background: var(--mint);
+      color: #047857;
+      padding: 6px 9px;
+      font-size: .78rem;
+      font-weight: 850;
+    }
 
-      .tab-button {
-        border: 0;
-        border-radius: var(--radius-md);
-        background: transparent;
-        color: var(--muted);
-        padding: 12px 8px;
-        font-size: 0.86rem;
-        font-weight: 700;
-      }
+    .empty {
+      padding: 14px;
+      border-radius: var(--r-md);
+      background: rgba(255,255,255,.54);
+      color: var(--muted);
+      line-height: 1.4;
+    }
 
-      .tab-button.active {
-        background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
-        color: white;
-      }
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
 
-      .tab-pane {
-        display: none;
-        border-radius: var(--radius-xl);
-        padding: 18px;
-        margin-bottom: 18px;
-      }
+    .capture-textarea { min-height: 170px; }
 
-      .tab-pane.active {
-        display: block;
-      }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    .metric {
+      text-align: left;
+      background: rgba(255,255,255,.86);
+      border: 1px solid var(--line);
+      border-radius: var(--r-lg);
+      padding: 13px;
+      color: var(--text);
+    }
+    .metric span {
+      color: var(--muted);
+      font-size: .8rem;
+      font-weight: 800;
+    }
+    .metric b {
+      display: block;
+      color: var(--green);
+      font-size: 1.8rem;
+      margin-top: 6px;
+    }
 
-      .day-command {
-        display: grid;
-        gap: 12px;
-      }
+    .bar {
+      height: 9px;
+      background: var(--mint);
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .bar i {
+      display: block;
+      height: 100%;
+      background: linear-gradient(90deg, var(--green-3), var(--green));
+      width: 20%;
+    }
 
-      .day-focus {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 10px;
-        padding: 14px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-lg);
-        background: rgba(255, 255, 255, 0.58);
-      }
+    .toast {
+      position: fixed;
+      left: 10px;
+      right: 10px;
+      bottom: calc(86px + env(safe-area-inset-bottom));
+      z-index: 40;
+      padding: 12px 14px;
+      border-radius: var(--r-md);
+      background: #123029;
+      color: white;
+      box-shadow: var(--shadow);
+    }
+    .toast.ok { background: var(--ok); }
+    .toast.error { background: var(--danger); }
+    .hidden { display: none !important; }
 
-      .focus-label,
-      .compact-label {
-        color: var(--muted);
-        font-size: 0.82rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(18,48,41,.30);
+      z-index: 50;
+      display: none;
+    }
+    .drawer-backdrop.open { display: block; }
 
-      .focus-value {
-        margin-top: 4px;
-        font-size: 1.15rem;
-        font-weight: 800;
-        line-height: 1.25;
-      }
+    .drawer {
+      position: fixed;
+      inset: 0 0 0 auto;
+      z-index: 60;
+      width: min(520px, 100%);
+      overflow: auto;
+      background: #fbfefb;
+      border-radius: 26px 0 0 26px;
+      padding: 16px;
+      transform: translateX(105%);
+      transition: .22s ease;
+    }
+    .drawer.open { transform: translateX(0); }
+    .drawer-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+    .drawer h2 { line-height: 1.18; }
+    .detail-form { display: grid; gap: 11px; }
 
-      .priority-strip {
-        display: grid;
-        gap: 8px;
-      }
-
-      .priority-chip {
-        display: grid;
-        grid-template-columns: 28px 1fr;
-        gap: 8px;
-        align-items: center;
-        padding: 10px;
-        border: 1px solid var(--line);
-        border-radius: var(--radius-md);
-        background: rgba(255, 255, 255, 0.7);
-      }
-
-      .priority-chip span:first-child {
-        display: grid;
-        place-items: center;
-        width: 28px;
-        height: 28px;
-        border-radius: 50%;
-        color: white;
-        background: var(--green);
-        font-weight: 800;
-      }
-
-      .mode-switch {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 8px;
-      }
-
-      .mode-button {
-        border: 1px solid var(--line);
-        border-radius: var(--radius-md);
-        padding: 12px 10px;
-        background: rgba(255, 255, 255, 0.72);
-        color: var(--muted);
-        font-weight: 800;
-      }
-
-      .mode-button.active {
-        border-color: transparent;
-        background: var(--green);
-        color: white;
-      }
-
-      .mode-panel {
-        display: none;
-      }
-
-      .mode-panel.active {
-        display: grid;
-        gap: 12px;
-      }
-
-      .quick-inputs {
-        display: grid;
-        gap: 10px;
-      }
-
-      .checkout-grid {
-        display: grid;
-        gap: 10px;
-      }
-
-      .habit-compact {
-        display: grid;
-        gap: 8px;
-      }
-
-      .section-title {
+    @media (min-width: 760px) {
+      .app { padding-bottom: 28px; }
+      .tabs {
+        position: static;
         margin-bottom: 14px;
       }
+      .grid2 { grid-template-columns: 1fr 1fr; }
+      .grid3 { grid-template-columns: repeat(3, 1fr); }
+      .metric-grid { grid-template-columns: repeat(6, 1fr); }
+      .top-grid { grid-template-columns: repeat(3, 1fr); }
+      .checkout-grid { grid-template-columns: repeat(3, 1fr); display: grid; gap: 10px; }
+    }
+  </style>
+</head>
 
-      .section-title p {
-        margin-top: 8px;
-        color: var(--muted);
-        line-height: 1.5;
-      }
-
-      .panel {
-        border-radius: var(--radius-lg);
-        padding: 14px;
-        margin-bottom: 12px;
-      }
-
-      .panel-header {
-        margin-bottom: 14px;
-      }
-
-      .panel-header p {
-        color: var(--muted);
-      }
-
-      .grid,
-      .metric-grid,
-      .axis-grid,
-      .two-col {
-        display: grid;
-        gap: 14px;
-      }
-
-      .metric-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .axis-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .two-col {
-        grid-template-columns: 1fr;
-      }
-
-      .metric-card,
-      .axis-card,
-      .item-card {
-        border-radius: var(--radius-md);
-        padding: 16px;
-      }
-
-      .metric-card .metric-value {
-        margin-top: 10px;
-        font-size: 2rem;
-        font-weight: 800;
-        letter-spacing: 0;
-      }
-
-      .metric-card .metric-label,
-      .meta,
-      .hint {
-        color: var(--muted);
-      }
-
-      .item-list {
-        display: grid;
-        gap: 12px;
-      }
-
-      .item-card h3 {
-        font-size: 1.02rem;
-        line-height: 1.3;
-      }
-
-      .item-card .meta {
-        margin-top: 8px;
-        font-size: 0.9rem;
-      }
-
-      .item-card .body {
-        margin-top: 10px;
-        line-height: 1.55;
-        white-space: pre-wrap;
-      }
-
-      .tag-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 10px;
-      }
-
-      .tag {
-        padding: 7px 10px;
-        font-size: 0.84rem;
-      }
-
-      .empty {
-        padding: 16px;
-        border-radius: var(--radius-md);
-        background: rgba(255, 255, 255, 0.45);
-        color: var(--muted);
-      }
-
-      form {
-        display: grid;
-        gap: 14px;
-      }
-
-      label {
-        display: grid;
-        gap: 8px;
-        font-weight: 600;
-      }
-
-      input,
-      textarea,
-      select {
-        width: 100%;
-        border: 1px solid rgba(124, 45, 18, 0.14);
-        background: rgba(255, 255, 255, 0.84);
-        border-radius: var(--radius-md);
-        padding: 14px 15px;
-        color: var(--text);
-      }
-
-      textarea {
-        resize: vertical;
-        min-height: 110px;
-      }
-
-      .capture-textarea {
-        min-height: 180px;
-      }
-
-      .button-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-      }
-
-      .btn {
-        appearance: none;
-        border: 0;
-        border-radius: var(--radius-md);
-        padding: 13px 18px;
-        font-weight: 800;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
-        color: white;
-      }
-
-      .btn-soft {
-        background: rgba(255, 255, 255, 0.78);
-        color: var(--accent-strong);
-        border: 1px solid rgba(234, 88, 12, 0.16);
-      }
-
-      .btn-ghost {
-        background: transparent;
-        color: var(--muted);
-        border: 1px dashed rgba(124, 45, 18, 0.16);
-      }
-
-      .inline-fields {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-
-      .triple-fields {
-        display: grid;
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      .range-grid {
-        display: grid;
-        gap: 10px;
-      }
-
-      .range-row {
-        display: grid;
-        grid-template-columns: 112px 1fr 40px;
-        gap: 10px;
-        align-items: center;
-      }
-
-      .range-row span:last-child {
-        text-align: right;
-        color: var(--accent-strong);
-        font-weight: 700;
-      }
-
-      .mini-actions {
-        margin-top: 10px;
-        flex-wrap: wrap;
-      }
-
-      .link-inline {
-        color: var(--accent-strong);
-        text-decoration: none;
-      }
-
-      .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        border: 0;
-      }
-
-      @media (min-width: 760px) {
-        .app {
-          padding-top: 16px;
-          padding-bottom: 34px;
-        }
-
-        .tab-nav {
-          position: static;
-          margin-bottom: 18px;
-        }
-
-        .two-col {
-          grid-template-columns: 1.15fr 0.85fr;
-        }
-
-        .day-command {
-          grid-template-columns: 0.92fr 1.08fr;
-          align-items: start;
-        }
-
-        .checkout-grid,
-        .quick-inputs {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .triple-fields {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .metric-grid {
-          grid-template-columns: repeat(3, minmax(0, 1fr));
-        }
-
-        .axis-grid {
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-        }
-      }
-
-      @media (max-width: 700px) {
-        .brand-row {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .top-actions {
-          grid-template-columns: 1fr;
-        }
-
-        .quiet-actions {
-          justify-content: flex-start;
-        }
-      }
-    </style>
-  </head>
-  <body>
-    <div class="app">
-      <header class="topbar">
-        <div class="brand-row">
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand-line">
+        <div class="brand">
+          <div class="mark">N</div>
           <div>
-            <p class="eyebrow">NTV.OS Life</p>
-            <h1>Điều hành ngày sống và công việc</h1>
-            <p class="hero-copy">
-              Mỗi ngày đều xây đắp hành trình sống ý nghĩa.
-            </p>
+            <h1>NTV.OS Life</h1>
           </div>
         </div>
+        <button class="icon-btn" id="syncButton" type="button" title="Đồng bộ">↻</button>
+      </div>
 
-        <div class="top-actions">
-          <div class="date-strip">
-            <button class="icon-button" id="prevDayBtn" type="button" title="Ngày trước" aria-label="Ngày trước">‹</button>
-            <input id="viewDateInput" type="date" aria-label="Ngày đang xem" />
-            <button class="btn btn-soft" id="todayBtn" type="button">Hôm nay</button>
+      <div class="date-row">
+        <button class="icon-btn" id="prevDayBtn" type="button">‹</button>
+        <input id="viewDateInput" type="date" />
+        <button class="btn btn-soft" id="todayBtn" type="button">Hôm nay</button>
+        <button class="icon-btn" id="setupWorkbookBtn" type="button" title="Tạo Sheet">▦</button>
+      </div>
+    </header>
+
+    <div id="toast" class="toast hidden"></div>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="today" type="button">1<br>Ngày</button>
+      <button class="tab" data-tab="capture" type="button">2<br>Ghi</button>
+      <button class="tab" data-tab="process" type="button">3<br>Xử lý</button>
+      <button class="tab" data-tab="library" type="button">4<br>Tư liệu</button>
+      <button class="tab" data-tab="analysis" type="button">5<br>Số liệu</button>
+    </nav>
+
+    <section class="pane active" id="pane-today">
+      <div class="focus-card">
+        <div class="focus-label">Trọng tâm</div>
+        <div class="focus-value" id="focusPreview">Chưa đặt trọng tâm</div>
+        <label>
+          <input id="mainFocusQuick" placeholder="Việc quan trọng nhất hôm nay" />
+        </label>
+        <div class="actions">
+          <button class="btn btn-soft" id="quickFocusSave" type="button">Lưu</button>
+          <button class="btn btn-soft" data-jump="capture" type="button">Ghi nhanh</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="step-title">
+          <span class="step-no">1</span>
+          <h2>Khởi động</h2>
+        </div>
+
+        <form id="dailyLogForm" class="stack">
+          <div class="grid2">
+            <label>Năng lượng
+              <select name="energy">
+                <option value="">—</option>
+                <option>Thấp</option>
+                <option>Vừa</option>
+                <option>Cao</option>
+              </select>
+            </label>
+            <label>Tâm trạng
+              <select name="mood">
+                <option value="">—</option>
+                <option>Ổn</option>
+                <option>Căng</option>
+                <option>Phân tán</option>
+                <option>Hào hứng</option>
+                <option>Mệt</option>
+                <option>Bình an</option>
+              </select>
+            </label>
           </div>
 
-          <div class="quiet-actions">
-            <button class="icon-button" id="syncButton" type="button" title="Đồng bộ" aria-label="Đồng bộ">↻</button>
-            <button class="icon-button" id="morningReminderBtn" type="button" title="Tạo nhắc sáng" aria-label="Tạo nhắc sáng">☀</button>
-            <button class="icon-button" id="setupWorkbookBtn" type="button" title="Tạo Sheet" aria-label="Tạo Sheet">▦</button>
-          </div>
-        </div>
-      </header>
+          <label>Trọng tâm
+            <input name="main_focus" placeholder="Một câu giữ hướng cả ngày" />
+          </label>
 
-      <div class="toast is-hidden" id="toast" role="status"></div>
-
-      <nav class="tab-nav" aria-label="Điều hướng">
-        <button class="tab-button active" data-tab="today" type="button">Hôm nay</button>
-        <button class="tab-button" data-tab="capture" type="button">Ghi nhanh</button>
-        <button class="tab-button" data-tab="work" type="button">Công việc</button>
-        <button class="tab-button" data-tab="life" type="button">Đời sống</button>
-        <button class="tab-button" data-tab="analysis" type="button">Phân tích</button>
-      </nav>
-
-      <section class="tab-pane active" id="tab-today">
-        <div class="section-title">
-          <h2 id="dayTitle">Hôm nay</h2>
-        </div>
-
-        <div class="day-command">
-          <div class="panel">
-            <div class="day-focus">
-              <div>
-                <div class="focus-label">Trọng tâm</div>
-                <div class="focus-value" id="focusPreview">Chưa đặt trọng tâm</div>
-              </div>
-              <div>
-                <div class="focus-label">3 ưu tiên</div>
-                <div class="priority-strip" id="priorityPreview"></div>
-              </div>
+          <div class="top-grid">
+            <div class="top-card">
+              <span class="num">1</span>
+              <label>Top 1<input name="top1" /></label>
             </div>
-
-            <div class="panel-header">
-              <div>
-                <h3>Việc cần nhìn ngay</h3>
-              </div>
+            <div class="top-card">
+              <span class="num">2</span>
+              <label>Top 2<input name="top2" /></label>
             </div>
-            <div class="item-list" id="urgentTasksList"></div>
+            <div class="top-card">
+              <span class="num">3</span>
+              <label>Top 3<input name="top3" /></label>
+            </div>
           </div>
 
-          <div class="panel">
-            <div class="mode-switch" aria-label="Chế độ cập nhật ngày">
-              <button class="mode-button active" data-day-mode="start" type="button">Khởi động</button>
-              <button class="mode-button" data-day-mode="checkout" type="button">Check-out</button>
-            </div>
+          <label>Kế hoạch ngắn
+            <textarea name="day_plan" rows="3"></textarea>
+          </label>
 
-            <form id="dailyLogForm">
-              <section class="mode-panel active" data-mode-panel="start">
-                <label>
-                  Trọng tâm
-                  <input name="main_focus" type="text" placeholder="Một câu đủ rõ để giữ hướng cả ngày" />
-                </label>
-
-                <div class="quick-inputs">
-                  <label>
-                    Top 1
-                    <input name="top1" type="text" />
-                  </label>
-                  <label>
-                    Top 2
-                    <input name="top2" type="text" />
-                  </label>
-                  <label>
-                    Top 3
-                    <input name="top3" type="text" />
-                  </label>
-                </div>
-
-                <label>
-                  Ghi chú kế hoạch
-                  <textarea name="day_plan" rows="3"></textarea>
-                </label>
-
-                <input name="energy" type="hidden" />
-                <input name="mood" type="hidden" />
-
-                <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Lưu khởi động</button>
-                  <button class="btn btn-soft" type="button" data-switch-mode="checkout">Tối check-out</button>
-                </div>
-              </section>
-
-              <section class="mode-panel" data-mode-panel="checkout">
-                <div class="checkout-grid">
-                  <label>
-                    Đã xong
-                    <textarea name="done_summary" rows="3"></textarea>
-                  </label>
-                  <label>
-                    Đang kẹt
-                    <textarea name="stuck_summary" rows="3"></textarea>
-                  </label>
-                  <label>
-                    Ngày mai chỉnh gì
-                    <textarea name="tomorrow_hint" rows="3"></textarea>
-                  </label>
-                </div>
-
-                <div class="habit-compact">
-                  <div class="compact-label">Nhịp sống</div>
-                  <div class="range-row">
-                    <span>Gia đình</span>
-                    <input type="range" name="family" min="0" max="10" value="7" />
-                    <span data-range-value="family">7</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Công việc</span>
-                    <input type="range" name="work" min="0" max="10" value="7" />
-                    <span data-range-value="work">7</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Sức khỏe</span>
-                    <input type="range" name="health" min="0" max="10" value="7" />
-                    <span data-range-value="health">7</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Sáng tạo</span>
-                    <input type="range" name="creative" min="0" max="10" value="6" />
-                    <span data-range-value="creative">6</span>
-                  </div>
-                  <div class="range-row">
-                    <span>Học tập</span>
-                    <input type="range" name="learning" min="0" max="10" value="6" />
-                    <span data-range-value="learning">6</span>
-                  </div>
-                  <input type="hidden" name="movement" value="0" />
-                  <input type="hidden" name="reading_learning" value="0" />
-                  <input type="hidden" name="photo_memory" value="0" />
-                  <input type="hidden" name="deep_work" value="0" />
-                  <input type="hidden" name="tea_pause" value="0" />
-                </div>
-
-                <div class="button-row">
-                  <button class="btn btn-primary" type="submit">Lưu check-out</button>
-                </div>
-              </section>
-            </form>
+          <div class="step-title" style="margin-top:8px">
+            <span class="step-no">2</span>
+            <h2>Check-out</h2>
           </div>
+
+          <div class="checkout-grid">
+            <div class="checkout-card">
+              <label>Top 1
+                <select name="top1_status">
+                  <option value="">Chưa check</option>
+                  <option>Xong</option>
+                  <option>Một phần</option>
+                  <option>Chưa làm</option>
+                  <option>Bỏ/đổi hướng</option>
+                </select>
+              </label>
+              <textarea name="top1_note" rows="2" placeholder="Ghi chú"></textarea>
+            </div>
+            <div class="checkout-card">
+              <label>Top 2
+                <select name="top2_status">
+                  <option value="">Chưa check</option>
+                  <option>Xong</option>
+                  <option>Một phần</option>
+                  <option>Chưa làm</option>
+                  <option>Bỏ/đổi hướng</option>
+                </select>
+              </label>
+              <textarea name="top2_note" rows="2" placeholder="Ghi chú"></textarea>
+            </div>
+            <div class="checkout-card">
+              <label>Top 3
+                <select name="top3_status">
+                  <option value="">Chưa check</option>
+                  <option>Xong</option>
+                  <option>Một phần</option>
+                  <option>Chưa làm</option>
+                  <option>Bỏ/đổi hướng</option>
+                </select>
+              </label>
+              <textarea name="top3_note" rows="2" placeholder="Ghi chú"></textarea>
+            </div>
+          </div>
+
+          <div class="grid3">
+            <label>Đã xong<textarea name="done_summary" rows="3"></textarea></label>
+            <label>Đang kẹt<textarea name="stuck_summary" rows="3"></textarea></label>
+            <label>Ngày mai<textarea name="tomorrow_hint" rows="3"></textarea></label>
+          </div>
+
+          <div class="step-title" style="margin-top:8px">
+            <span class="step-no">3</span>
+            <h2>Nhịp sống</h2>
+          </div>
+
+          <div class="range-row"><span>Gia đình</span><input type="range" name="life_axis_family" min="0" max="10" value="0"><span data-range-value="life_axis_family">0</span></div>
+          <div class="range-row"><span>Công việc</span><input type="range" name="life_axis_work" min="0" max="10" value="0"><span data-range-value="life_axis_work">0</span></div>
+          <div class="range-row"><span>Sức khỏe</span><input type="range" name="life_axis_health" min="0" max="10" value="0"><span data-range-value="life_axis_health">0</span></div>
+          <div class="range-row"><span>Sáng tạo</span><input type="range" name="life_axis_creative" min="0" max="10" value="0"><span data-range-value="life_axis_creative">0</span></div>
+          <div class="range-row"><span>Học tập</span><input type="range" name="life_axis_learning" min="0" max="10" value="0"><span data-range-value="life_axis_learning">0</span></div>
+
+          <button class="btn btn-primary" type="submit">Lưu ngày</button>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="step-title">
+          <span class="step-no">4</span>
+          <h2>Cần nhìn</h2>
         </div>
-      </section>
+        <div class="item-list" id="urgentTasksList"></div>
+      </div>
+    </section>
 
-      <section class="tab-pane" id="tab-capture">
-        <div class="section-title">
+    <section class="pane" id="pane-capture">
+      <div class="panel">
+        <div class="step-title">
+          <span class="step-no">1</span>
           <h2>Ghi nhanh</h2>
         </div>
 
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <h3>Capture mới</h3>
-            </div>
-          </div>
+        <form id="captureForm" class="stack">
+          <label>Nội dung
+            <textarea class="capture-textarea" name="raw_text" placeholder="Gõ nhanh hoặc dán đoạn chat AI..." required></textarea>
+          </label>
 
-          <form id="captureForm">
-            <label>
-              Nội dung
-              <textarea class="capture-textarea" name="raw_text" placeholder="Gõ nhanh hoặc dán đoạn chat AI dài vào đây..." required></textarea>
+          <div class="grid3">
+            <label>Loại
+              <select name="forced_type">
+                <option value="">Tự nhận diện</option>
+                <option>Việc</option>
+                <option>Quyết định</option>
+                <option>Ý tưởng</option>
+                <option>Ghi nhận đời sống</option>
+                <option>Tip AI</option>
+                <option>Quan sát</option>
+                <option>Ảnh</option>
+                <option>Ghi chú</option>
+              </select>
             </label>
-
-            <div class="triple-fields">
-              <label>
-                Loại
-                <select name="forced_type">
-                  <option value="">Tự nhận diện</option>
-                  <option value="Việc">Việc</option>
-                  <option value="Quyết định">Quyết định</option>
-                  <option value="Ý tưởng">Ý tưởng</option>
-                  <option value="Ghi nhận đời sống">Ghi nhận đời sống</option>
-                  <option value="Tip AI">Tip AI</option>
-                  <option value="Quan sát">Quan sát</option>
-                  <option value="Ảnh">Ảnh</option>
-                  <option value="Ghi chú">Ghi chú</option>
-                </select>
-              </label>
-
-              <label>
-                Mảng
-                <select name="domain">
-                  <option value="">Tự nhận diện</option>
-                  <option value="Kiro/Sunbot">Kiro-Sunbot</option>
-                  <option value="VJT">VJT</option>
-                  <option value="Pefso">Pefso</option>
-                  <option value="Gia đình">Gia đình</option>
-                  <option value="Sức khỏe">Sức khỏe</option>
-                  <option value="Sáng tạo">Sáng tạo</option>
-                  <option value="Học tập">Học tập</option>
-                  <option value="Cá nhân">Cá nhân</option>
-                </select>
-              </label>
-
-              <label>
-                Dự án
-                <select name="project">
-                  <option value="">Tự nhận diện</option>
-                  <option value="Sunbot HTML Factory">Sunbot HTML Factory</option>
-                  <option value="Sunbot Festival">Sunbot Festival</option>
-                  <option value="CRM & Hotline">CRM & Hotline</option>
-                  <option value="VJT 11 tháng">VJT 11 tháng</option>
-                  <option value="Pefso B2B">Pefso B2B</option>
-                  <option value="Personal OS">Personal OS</option>
-                  <option value="AI Workflow">AI Workflow</option>
-                  <option value="Khảo sát-Đi công tác">Khảo sát-Đi công tác</option>
-                </select>
-              </label>
-            </div>
-
-            <label>
-              Tags
-              <input name="tags" type="text" placeholder="Ví dụ: AI, khảo sát, quyết định gấp" />
+            <label>Mảng
+              <select name="domain">
+                <option value="">Tự nhận diện</option>
+                <option>Kiro/Sunbot</option>
+                <option>VJT</option>
+                <option>Pefso</option>
+                <option>Gia đình</option>
+                <option>Sức khỏe</option>
+                <option>Sáng tạo</option>
+                <option>Học tập</option>
+                <option>Cá nhân</option>
+              </select>
             </label>
-
-            <label>
-              Ảnh hoặc file đính kèm
-              <input name="attachment" type="file" />
+            <label>Dự án
+              <select name="project">
+                <option value="">Tự nhận diện</option>
+                <option>Sunbot HTML Factory</option>
+                <option>Sunbot Festival</option>
+                <option>CRM & Hotline</option>
+                <option>VJT 11 tháng</option>
+                <option>Pefso B2B</option>
+                <option>Personal OS</option>
+                <option>AI Workflow</option>
+                <option>Khảo sát-Đi công tác</option>
+              </select>
             </label>
-
-            <div class="button-row">
-              <button class="btn btn-primary" type="submit">Lưu capture</button>
-              <button class="btn btn-soft" id="clearCaptureBtn" type="button">Xóa nội dung</button>
-            </div>
-          </form>
-        </div>
-      </section>
-
-      <section class="tab-pane" id="tab-work">
-        <div class="section-title">
-          <h2>Công việc</h2>
-        </div>
-
-        <div class="two-col">
-          <div>
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Việc trong ngày</h3>
-                </div>
-              </div>
-              <div class="item-list" id="todayTasksList"></div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Việc mới</h3>
-                </div>
-              </div>
-              <div class="item-list" id="newTasksList"></div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Đang chờ</h3>
-                </div>
-              </div>
-              <div class="item-list" id="waitingTasksList"></div>
-            </div>
           </div>
 
-          <div>
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Quyết định đang mở</h3>
-                </div>
-              </div>
-              <div class="item-list" id="openDecisionsList"></div>
-            </div>
-
-            <div class="panel">
-              <div class="panel-header">
-                <div>
-                  <h3>Ý tưởng gần đây</h3>
-                </div>
-              </div>
-              <div class="item-list" id="recentIdeasList"></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="tab-pane" id="tab-life">
-        <div class="section-title">
-          <h2>Đời sống</h2>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <h3>Khoảnh khắc gần đây</h3>
-            </div>
-          </div>
-          <div class="item-list" id="recentLifeList"></div>
-        </div>
-      </section>
-
-      <section class="tab-pane" id="tab-analysis">
-        <div class="section-title">
-          <h2>Phân tích</h2>
-          <p>Phát triển tư duy là giá trị lớn nhất của đời người.</p>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <h3>30 ngày gần đây</h3>
-            </div>
-          </div>
-          <div class="metric-grid" id="analysisMetrics"></div>
-        </div>
-
-        <div class="two-col">
-          <div class="panel">
-            <div class="panel-header">
-              <div>
-                <h3>Top domains theo capture</h3>
-              </div>
-            </div>
-            <div class="item-list" id="topDomainsList"></div>
+          <div class="grid2">
+            <label>Tags<input name="tags" /></label>
+            <label>Địa điểm<input name="location" /></label>
           </div>
 
-          <div class="panel">
-            <div class="panel-header">
-              <div>
-                <h3>Gợi ý nhìn lại</h3>
-              </div>
-            </div>
-            <div class="item-list" id="insightList"></div>
-          </div>
-        </div>
+          <label>Ảnh/file<input name="attachment" type="file" /></label>
 
-      </section>
+          <div class="actions">
+            <button class="btn btn-primary" type="submit">Lưu</button>
+            <button class="btn btn-soft" id="clearCaptureBtn" type="button">Xóa</button>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel">
+        <div class="step-title">
+          <span class="step-no">2</span>
+          <h2>Vừa lưu</h2>
+        </div>
+        <div id="lastCaptureResult" class="empty">Chưa có dữ liệu mới.</div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-process">
+      <div class="panel">
+        <div class="step-title"><span class="step-no">1</span><h2>Việc mới</h2></div>
+        <div class="item-list" id="newTasksList"></div>
+      </div>
+      <div class="panel">
+        <div class="step-title"><span class="step-no">2</span><h2>Đang chờ</h2></div>
+        <div class="item-list" id="waitingTasksList"></div>
+      </div>
+      <div class="panel">
+        <div class="step-title"><span class="step-no">3</span><h2>Quyết định</h2></div>
+        <div class="item-list" id="openDecisionsList"></div>
+      </div>
+      <div class="panel">
+        <div class="step-title"><span class="step-no">4</span><h2>Ý tưởng</h2></div>
+        <div class="item-list" id="recentIdeasList"></div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-library">
+      <div class="panel">
+        <div class="step-title"><span class="step-no">1</span><h2>Tư liệu</h2></div>
+        <div class="item-list" id="recentLifeList"></div>
+      </div>
+    </section>
+
+    <section class="pane" id="pane-analysis">
+      <div class="panel">
+        <div class="step-title"><span class="step-no">1</span><h2>Chỉ số</h2></div>
+        <div class="metric-grid" id="analysisMetrics"></div>
+      </div>
+
+      <div class="panel">
+        <div class="step-title"><span class="step-no">2</span><h2>Mảng</h2></div>
+        <div class="item-list" id="topDomainsList"></div>
+      </div>
+
+      <div class="panel">
+        <div class="step-title"><span class="step-no">3</span><h2>Nhìn lại</h2></div>
+        <div class="item-list" id="insightList"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+  <aside class="drawer" id="detailDrawer" aria-hidden="true">
+    <div class="drawer-head">
+      <div>
+        <p class="hint" id="drawerType">Chi tiết</p>
+        <h2 id="drawerTitle">—</h2>
+      </div>
+      <button class="icon-btn" id="closeDrawer" type="button">×</button>
     </div>
-
-    <script>
-      const API_URL = "https://script.google.com/macros/s/AKfycbzXGJf-uKXn0BWLmLnAUv7CGRmA-hDC5XZQimgUpWOod6kAiED584F6kT7mSdmv1P4u/exec";
-      const API_TOKEN = "";
-
-      const state = {
-        transportMode: "fetch",
-        readMode: "fetch-json",
-        bootstrap: null,
-        selectedDate: "",
-        toastTimer: null,
-      };
-
-      const els = {
-        dayTitle: document.getElementById("dayTitle"),
-        toast: document.getElementById("toast"),
-        syncButton: document.getElementById("syncButton"),
-        viewDateInput: document.getElementById("viewDateInput"),
-        prevDayBtn: document.getElementById("prevDayBtn"),
-        todayBtn: document.getElementById("todayBtn"),
-        morningReminderBtn: document.getElementById("morningReminderBtn"),
-        setupWorkbookBtn: document.getElementById("setupWorkbookBtn"),
-        captureForm: document.getElementById("captureForm"),
-        dailyLogForm: document.getElementById("dailyLogForm"),
-      };
-
-      function escapeHtml(value) {
-        return String(value || "")
-          .replaceAll("&", "&amp;")
-          .replaceAll("<", "&lt;")
-          .replaceAll(">", "&gt;")
-          .replaceAll('"', "&quot;")
-          .replaceAll("'", "&#39;");
-      }
-
-      function showToast(message, kind) {
-        if (!els.toast) return;
-        window.clearTimeout(state.toastTimer);
-        els.toast.textContent = message;
-        els.toast.className = "toast " + (kind || "");
-        state.toastTimer = window.setTimeout(() => {
-          els.toast.className = "toast is-hidden";
-        }, kind === "error" ? 6500 : 2400);
-      }
-
-      function setSyncState(kind, message) {
-        if (!els.syncButton) return;
-        els.syncButton.classList.remove("is-syncing", "is-ok", "is-error");
-        els.syncButton.disabled = kind === "syncing";
-        els.syncButton.textContent = kind === "syncing" ? "↻" : kind === "ok" ? "✓" : kind === "error" ? "!" : "↻";
-        els.syncButton.title = message || "Đồng bộ";
-        els.syncButton.setAttribute("aria-label", message || "Đồng bộ");
-
-        if (kind) {
-          els.syncButton.classList.add("is-" + kind);
-        }
-      }
-
-      function setTransportBadge(message) {
-        state.transportMode = message;
-      }
-
-      function setApiModeBadge(message) {
-        state.readMode = message;
-      }
-
-      function setStatus(message, kind) {
-        setSyncState(kind === "error" ? "error" : kind === "ok" ? "ok" : "syncing", message);
-        if (kind === "error" || kind === "ok") {
-          showToast(message, kind);
-        }
-      }
-
-      function setButtonLoading(button, loading, text) {
-        if (!button) return;
-        if (!button.dataset.defaultLabel) {
-          button.dataset.defaultLabel = button.textContent;
-        }
-
-        button.disabled = loading;
-        button.textContent = loading ? text : button.dataset.defaultLabel;
-      }
-
-      function toYmd(date) {
-        const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const day = String(date.getDate()).padStart(2, "0");
-        return `${year}-${month}-${day}`;
-      }
-
-      function todayYmd() {
-        return toYmd(new Date());
-      }
-
-      function addDays(ymd, days) {
-        const date = new Date(`${ymd}T12:00:00`);
-        date.setDate(date.getDate() + days);
-        return toYmd(date);
-      }
-
-      function getSelectedDate() {
-        return state.selectedDate || todayYmd();
-      }
-
-      function formatDateLabel(ymd) {
-        const today = todayYmd();
-        const tomorrow = addDays(today, 1);
-        if (ymd === today) return "Hôm nay";
-        if (ymd === tomorrow) return "Ngày mai";
-
-        const date = new Date(`${ymd}T12:00:00`);
-        return date.toLocaleDateString("vi-VN", {
-          weekday: "long",
-          day: "2-digit",
-          month: "2-digit",
-        });
-      }
-
-      function setSelectedDate(ymd) {
-        state.selectedDate = ymd || todayYmd();
-        if (els.viewDateInput) {
-          els.viewDateInput.value = state.selectedDate;
-        }
-        if (els.dayTitle) {
-          els.dayTitle.textContent = formatDateLabel(state.selectedDate);
-        }
-      }
-
-      function buildUrl(action, params = {}) {
-        const url = new URL(API_URL);
-        url.searchParams.set("action", action);
-
-        Object.entries(params).forEach(([key, value]) => {
-          if (value !== undefined && value !== null && value !== "") {
-            url.searchParams.set(key, value);
-          }
-        });
-
-        if (API_TOKEN) {
-          url.searchParams.set("token", API_TOKEN);
-        }
-
-        return url.toString();
-      }
-
-      async function parseJsonResponse(response) {
-        const data = await response.json();
-        if (!response.ok || !data.ok) {
-          throw new Error(data.error || "API không trả về dữ liệu hợp lệ");
-        }
-        return data.data;
-      }
-
-      function shouldFallback(error) {
-        const text = String(error && error.message ? error.message : error || "");
-        return (
-          error instanceof TypeError ||
-          /cors/i.test(text) ||
-          /network/i.test(text) ||
-          /load failed/i.test(text) ||
-          /failed to fetch/i.test(text)
-        );
-      }
-
-      function jsonpGet(action, params = {}) {
-        return new Promise((resolve, reject) => {
-          const callbackName = "__ntvJsonp_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-          const script = document.createElement("script");
-          const cleanup = () => {
-            delete window[callbackName];
-            script.remove();
-          };
-
-          window[callbackName] = (payload) => {
-            cleanup();
-            if (!payload || !payload.ok) {
-              reject(new Error((payload && payload.error) || "JSONP trả lỗi"));
-              return;
-            }
-            resolve(payload.data);
-          };
-
-          script.onerror = () => {
-            cleanup();
-            reject(new Error("JSONP không tải được"));
-          };
-
-          const url = new URL(buildUrl(action, params));
-          url.searchParams.set("prefix", callbackName);
-          script.src = url.toString();
-          document.body.appendChild(script);
-        });
-      }
-
-      function fetchWithTimeout(url, options = {}, timeoutMs = 25000) {
-        const controller = new AbortController();
-        const timer = window.setTimeout(() => controller.abort(), timeoutMs);
-
-        return fetch(url, {
-          ...options,
-          signal: controller.signal,
-        }).finally(() => window.clearTimeout(timer));
-      }
-
-      async function apiGet(action, params = {}) {
-        try {
-          const response = await fetchWithTimeout(buildUrl(action, params), {
-            method: "GET",
-            redirect: "follow",
-          });
-          state.readMode = "fetch-json";
-          setApiModeBadge("Đọc: fetch JSON");
-          return await parseJsonResponse(response);
-        } catch (error) {
-          if (!shouldFallback(error)) throw error;
-          state.readMode = "jsonp";
-          setApiModeBadge("Đọc: JSONP fallback");
-          return jsonpGet(action, params);
-        }
-      }
-
-      function iframePost(action, payload) {
-        return new Promise((resolve, reject) => {
-          const requestId = "req_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-          const iframe = document.createElement("iframe");
-          const form = document.createElement("form");
-          const timeout = window.setTimeout(() => {
-            cleanup();
-            reject(new Error("Fallback form bridge hết thời gian chờ"));
-          }, 45000);
-
-          function cleanup() {
-            window.clearTimeout(timeout);
-            window.removeEventListener("message", onMessage);
-            iframe.remove();
-            form.remove();
-          }
-
-          function onMessage(event) {
-            const data = event.data;
-            if (!data || data.source !== "ntv-os-life" || data.requestId !== requestId) {
-              return;
-            }
-
-            cleanup();
-
-            if (!data.ok) {
-              reject(new Error(data.error || "Form bridge trả lỗi"));
-              return;
-            }
-
-            resolve(data.data);
-          }
-
-          iframe.name = requestId;
-          iframe.className = "sr-only";
-
-          form.method = "POST";
-          form.action = buildUrl(action);
-          form.target = requestId;
-          form.className = "sr-only";
-
-          const transportInput = document.createElement("input");
-          transportInput.type = "hidden";
-          transportInput.name = "transport";
-          transportInput.value = "form";
-
-          const requestIdInput = document.createElement("input");
-          requestIdInput.type = "hidden";
-          requestIdInput.name = "request_id";
-          requestIdInput.value = requestId;
-
-          const payloadInput = document.createElement("input");
-          payloadInput.type = "hidden";
-          payloadInput.name = "payload";
-          payloadInput.value = JSON.stringify(payload || {});
-
-          form.appendChild(transportInput);
-          form.appendChild(requestIdInput);
-          form.appendChild(payloadInput);
-
-          document.body.appendChild(iframe);
-          document.body.appendChild(form);
-          window.addEventListener("message", onMessage);
-          form.submit();
-        });
-      }
-
-      async function apiPost(action, payload = {}) {
-        const safePayload = API_TOKEN ? { ...payload, token: API_TOKEN } : payload;
-
-        try {
-          const response = await fetchWithTimeout(buildUrl(action), {
-            method: "POST",
-            redirect: "follow",
-            headers: {
-              "Content-Type": "text/plain;charset=utf-8",
-            },
-            body: JSON.stringify(safePayload),
-          });
-
-          state.transportMode = "fetch";
-          setTransportBadge("Ghi: fetch JSON");
-          return await parseJsonResponse(response);
-        } catch (error) {
-          if (!shouldFallback(error)) throw error;
-          state.transportMode = "iframe";
-          setTransportBadge("Ghi: form bridge fallback");
-          return iframePost(action, safePayload);
-        }
-      }
-
-      function fileToBase64(file) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-
-          reader.onload = () => {
-            const result = String(reader.result || "");
-            resolve(result.split(",")[1] || "");
-          };
-
-          reader.onerror = () => reject(new Error("Không đọc được file"));
-          reader.readAsDataURL(file);
-        });
-      }
-
-      function blobToBase64(blob) {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(String(reader.result || "").split(",")[1] || "");
-          reader.onerror = () => reject(new Error("Không đọc được ảnh đã nén"));
-          reader.readAsDataURL(blob);
-        });
-      }
-
-      function loadImage(file) {
-        return new Promise((resolve, reject) => {
-          const url = URL.createObjectURL(file);
-          const image = new Image();
-
-          image.onload = () => {
-            URL.revokeObjectURL(url);
-            resolve(image);
-          };
-
-          image.onerror = () => {
-            URL.revokeObjectURL(url);
-            reject(new Error("Không đọc được ảnh"));
-          };
-
-          image.src = url;
-        });
-      }
-
-      function canvasToBlob(canvas, quality) {
-        return new Promise((resolve, reject) => {
-          canvas.toBlob(
-            (blob) => {
-              if (blob) resolve(blob);
-              else reject(new Error("Không nén được ảnh"));
-            },
-            "image/jpeg",
-            quality
-          );
-        });
-      }
-
-      async function compressImageFile(file, maxBytes = 350 * 1024) {
-        const image = await loadImage(file);
-        const canvas = document.createElement("canvas");
-        const context = canvas.getContext("2d");
-        const originalMaxSide = Math.max(image.naturalWidth, image.naturalHeight);
-        let maxSide = Math.min(originalMaxSide, 1800);
-        let bestBlob = null;
-
-        while (maxSide >= 80) {
-          const scale = Math.min(1, maxSide / originalMaxSide);
-          canvas.width = Math.max(1, Math.round(image.naturalWidth * scale));
-          canvas.height = Math.max(1, Math.round(image.naturalHeight * scale));
-          context.fillStyle = "#ffffff";
-          context.fillRect(0, 0, canvas.width, canvas.height);
-          context.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-          for (const quality of [0.82, 0.72, 0.62, 0.52, 0.44]) {
-            const blob = await canvasToBlob(canvas, quality);
-            bestBlob = blob;
-            if (blob.size <= maxBytes) {
-              return blob;
-            }
-          }
-
-          maxSide = Math.floor(maxSide * 0.78);
-        }
-
-        if (!bestBlob) {
-          throw new Error("Không nén được ảnh");
-        }
-
-        if (bestBlob.size > maxBytes) {
-          throw new Error("Ảnh quá lớn, không thể nén dưới 350KB");
-        }
-
-        return bestBlob;
-      }
-
-      async function prepareUploadFile(file) {
-        if (!file.type.startsWith("image/")) {
-          return {
-            file_name: file.name,
-            mime_type: file.type || "application/octet-stream",
-            file_data: await fileToBase64(file),
-            original_size: file.size,
-            optimized_size: file.size,
-          };
-        }
-
-        const compressed = await compressImageFile(file);
-        const safeName = file.name.replace(/\.[^.]+$/, "") || "image";
-
-        return {
-          file_name: `${safeName}.jpg`,
-          mime_type: "image/jpeg",
-          file_data: await blobToBase64(compressed),
-          original_size: file.size,
-          optimized_size: compressed.size,
-        };
-      }
-
-      function renderCards(containerId, items, renderFn, emptyText) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        if (!items || !items.length) {
-          container.innerHTML = `<div class="empty">${escapeHtml(emptyText || "Chưa có dữ liệu")}</div>`;
-          return;
-        }
-
-        container.innerHTML = items.map(renderFn).join("");
-      }
-
-      function taskCard(task) {
-        return `
-          <article class="item-card">
-            <h3>${escapeHtml(task.title || "Không có tiêu đề")}</h3>
-            <p class="meta">${escapeHtml(task.status || "")} • ${escapeHtml(task.priority || "P2 Bình thường")} • ${escapeHtml(task.domain || "Chưa rõ mảng")}</p>
-            <div class="tag-row">
-              ${task.project ? `<span class="tag">${escapeHtml(task.project)}</span>` : ""}
-              ${task.due_date ? `<span class="tag">Hạn ${escapeHtml(task.due_date)}</span>` : ""}
-            </div>
-            ${task.note ? `<p class="body">${escapeHtml(task.note)}</p>` : ""}
-          </article>
-        `;
-      }
-
-      function decisionCard(item) {
-        return `
-          <article class="item-card">
-            <h3>${escapeHtml(item.title || "Quyết định")}</h3>
-            <p class="meta">${escapeHtml(item.status || "")} • ${escapeHtml(item.domain || "Chưa rõ mảng")}</p>
-            ${item.final_decision ? `<p class="body">${escapeHtml(item.final_decision)}</p>` : item.criteria ? `<p class="body">${escapeHtml(item.criteria)}</p>` : ""}
-          </article>
-        `;
-      }
-
-      function ideaCard(item) {
-        return `
-          <article class="item-card">
-            <h3>${escapeHtml(item.title || "Ý tưởng")}</h3>
-            <p class="meta">${escapeHtml(item.status || "")} • ${escapeHtml(item.domain || "Chưa rõ mảng")}</p>
-            ${item.note ? `<p class="body">${escapeHtml(item.note)}</p>` : ""}
-          </article>
-        `;
-      }
-
-      function lifeCard(item) {
-        const fileHtml = item.file_url
-          ? `<div class="mini-actions"><a class="link-inline" href="${escapeHtml(item.file_url)}" target="_blank" rel="noreferrer">Mở ảnh / file</a></div>`
-          : "";
-
-        return `
-          <article class="item-card">
-            <h3>${escapeHtml(item.title || "Khoảnh khắc")}</h3>
-            <p class="meta">${escapeHtml(item.category || "Đời sống")} • ${escapeHtml(item.domain || "Cá nhân")} • ${escapeHtml(item.date || "")}</p>
-            ${item.note ? `<p class="body">${escapeHtml(item.note)}</p>` : ""}
-            ${fileHtml}
-          </article>
-        `;
-      }
-
-      function renderPriorityPreview(today) {
-        const priorities = [today.top1, today.top2, today.top3].filter(Boolean);
-        const container = document.getElementById("priorityPreview");
-        if (!container) return;
-
-        if (!priorities.length) {
-          container.innerHTML = '<div class="empty">Chưa chọn 3 ưu tiên.</div>';
-          return;
-        }
-
-        container.innerHTML = priorities
-          .map((item, index) => `
-            <div class="priority-chip">
-              <span>${index + 1}</span>
-              <strong>${escapeHtml(item)}</strong>
-            </div>
-          `)
-          .join("");
-      }
-
-      function renderDayCommand(today, data) {
-        const focus = document.getElementById("focusPreview");
-        if (focus) {
-          focus.textContent = today.main_focus || "Chưa đặt trọng tâm";
-        }
-
-        renderPriorityPreview(today);
-
-        const urgent = [
-          ...(data.overdueTasks || []),
-          ...(data.todayTasks || []),
-          ...(data.waitingTasks || []),
-        ];
-        const seen = new Set();
-        const uniqueUrgent = urgent.filter((task) => {
-          const id = task.task_id || task.title;
-          if (seen.has(id)) return false;
-          seen.add(id);
-          return true;
-        });
-
-        renderCards("urgentTasksList", uniqueUrgent.slice(0, 4), taskCard, "Chưa có việc cần nhìn ngay.");
-      }
-
-      function renderBootstrap(data) {
-        state.bootstrap = data;
-        setSelectedDate(data.viewDate || getSelectedDate());
-
-        const today = data.today || {};
-        renderDayCommand(today, data);
-        renderCards("todayTasksList", data.todayTasks || [], taskCard, "Chưa có việc trạng thái Hôm nay.");
-        renderCards("newTasksList", data.newTasks || [], taskCard, "Chưa có việc mới.");
-        renderCards("waitingTasksList", data.waitingTasks || [], taskCard, "Không có việc đang chờ.");
-        renderCards("openDecisionsList", data.openDecisionsList || [], decisionCard, "Không có quyết định đang mở.");
-        renderCards("recentIdeasList", data.recentIdeas || [], ideaCard, "Chưa có ý tưởng gần đây.");
-        renderCards("recentLifeList", data.recentLife || [], lifeCard, "Chưa có ghi nhận đời sống gần đây.");
-
-        const analysisMetrics = [
-          ["Capture", data.analysis.capture30 || 0],
-          ["Ý tưởng", data.analysis.ideas30 || 0],
-          ["Life log", data.analysis.life30 || 0],
-          ["Task xong", data.analysis.tasksDone30 || 0],
-          ["Decision mở", data.analysis.openDecisions || 0],
-          ["Habit check-in", data.analysis.habits30 || 0],
-        ];
-
-        document.getElementById("analysisMetrics").innerHTML = analysisMetrics
-          .map(([label, value]) => `
-            <article class="metric-card">
-              <div class="metric-label">${escapeHtml(label)}</div>
-              <div class="metric-value">${escapeHtml(value)}</div>
-            </article>
-          `)
-          .join("");
-
-        renderCards(
-          "topDomainsList",
-          data.analysis.topDomains || [],
-          (item) => `
-            <article class="item-card">
-              <h3>${escapeHtml(item.domain || "Chưa rõ")}</h3>
-              <p class="meta">${escapeHtml(item.count)} capture trong 30 ngày</p>
-            </article>
-          `,
-          "Chưa có đủ dữ liệu domain."
-        );
-
-        const insights = [];
-        if ((data.overdueTasks || []).length) {
-          insights.push({ title: "Việc quá hạn đang tồn", body: `${data.overdueTasks.length} việc cần xử lý hoặc đổi trạng thái.` });
-        }
-        if ((data.waitingTasks || []).length) {
-          insights.push({ title: "Có cụm việc đang chờ", body: `${data.waitingTasks.length} việc phụ thuộc người khác hoặc thiếu thông tin.` });
-        }
-        if ((data.analysis.topDomains || [])[0]) {
-          insights.push({
-            title: "Mảng đang hút lực mạnh nhất",
-            body: `${data.analysis.topDomains[0].domain} đang có nhiều capture nhất trong 30 ngày gần đây.`,
-          });
-        }
-        if (!insights.length) {
-          insights.push({ title: "Hệ thống đang nhẹ", body: "Chưa thấy điểm nghẽn lớn từ dữ liệu hiện tại." });
-        }
-
-        renderCards(
-          "insightList",
-          insights,
-          (item) => `
-            <article class="item-card">
-              <h3>${escapeHtml(item.title)}</h3>
-              <p class="body">${escapeHtml(item.body)}</p>
-            </article>
-          `,
-          "Chưa có insight."
-        );
-
-        populateTodayForm(today);
-      }
-
-      function populateTodayForm(today) {
-        const form = els.dailyLogForm;
-        if (!form || !today) return;
-
-        const fields = [
-          "main_focus",
-          "top1",
-          "top2",
-          "top3",
-          "energy",
-          "mood",
-          "day_plan",
-          "done_summary",
-          "stuck_summary",
-          "tomorrow_hint",
-        ];
-
-        fields.forEach((name) => {
-          if (!form.elements[name]) return;
-          form.elements[name].value = "";
-
-          if (today[name] !== undefined && today[name] !== null) {
-            form.elements[name].value = today[name];
-          }
-        });
-
-        const axisMap = {
-          family: today.life_axis_family,
-          work: today.life_axis_work,
-          health: today.life_axis_health,
-          creative: today.life_axis_creative,
-          learning: today.life_axis_learning,
-        };
-
-        Object.entries(axisMap).forEach(([name, value]) => {
-          if (!form.elements[name]) return;
-          form.elements[name].value = value || form.elements[name].defaultValue || 0;
-        });
-
-        bindRangeOutputs();
-      }
-
-      async function loadBootstrap() {
-        try {
-          setStatus("Đang tải dữ liệu...", "");
-          const data = await apiGet("app.bootstrap", { date: getSelectedDate() });
-          renderBootstrap(data);
-          setStatus("Đã đồng bộ", "ok");
-        } catch (error) {
-          setStatus("Không đồng bộ được: " + error.message, "error");
-          throw error;
-        }
-      }
-
-      async function healthCheck() {
-        try {
-          await apiGet("health");
-          setStatus("API sẵn sàng", "ok");
-        } catch (error) {
-          setStatus("Không kết nối được API: " + error.message, "error");
-          throw error;
-        }
-      }
-
-      async function setupWorkbook() {
-        const button = els.setupWorkbookBtn;
-        setButtonLoading(button, true, "Đang tạo...");
-
-        try {
-          const data = await apiPost("workbook.setup", {});
-          setStatus("Đã kiểm tra Sheet", "ok");
-          await loadBootstrap();
-          return data;
-        } finally {
-          setButtonLoading(button, false);
-        }
-      }
-
-      async function handleCaptureSubmit(event) {
-        event.preventDefault();
-        const button = event.submitter || els.captureForm.querySelector('button[type="submit"]');
-        setButtonLoading(button, true, "Đang lưu...");
-        setStatus("Đang lưu capture...", "");
-
-        try {
-          const formData = new FormData(els.captureForm);
-          const attachment = formData.get("attachment");
-          let file = null;
-
-          if (attachment instanceof File && attachment.size > 0) {
-            setStatus(attachment.type.startsWith("image/") ? "Đang nén ảnh..." : "Đang đọc file...", "");
-            file = await prepareUploadFile(attachment);
-          }
-
-          const payload = {
-            raw_text: String(formData.get("raw_text") || "").trim(),
-            forced_type: String(formData.get("forced_type") || "").trim(),
-            domain: String(formData.get("domain") || "").trim(),
-            project: String(formData.get("project") || "").trim(),
-            mood: String(formData.get("mood") || "").trim(),
-            energy: String(formData.get("energy") || "").trim(),
-            tags: String(formData.get("tags") || "").trim(),
-            source: "GitHub Pages",
-            file: file,
-          };
-
-          const result = await apiPost("captures.create", payload);
-          setStatus("Đã lưu " + (result.capture && result.capture.auto_type ? result.capture.auto_type.toLowerCase() : "capture"), "ok");
-          els.captureForm.reset();
-          await loadBootstrap();
-        } catch (error) {
-          setStatus("Lỗi lưu capture: " + error.message, "error");
-        } finally {
-          setButtonLoading(button, false);
-        }
-      }
-
-      async function handleDailySubmit(event) {
-        event.preventDefault();
-        const button = event.submitter || els.dailyLogForm.querySelector('button[type="submit"]');
-        setButtonLoading(button, true, "Đang lưu...");
-        const isCheckout = document.querySelector('.mode-panel[data-mode-panel="checkout"].active') !== null;
-        setStatus(isCheckout ? "Đang lưu check-out..." : "Đang lưu khởi động...", "");
-
-        try {
-          const formData = new FormData(els.dailyLogForm);
-          const currentDaily = (state.bootstrap && state.bootstrap.today) || {};
-          const payload = {
-            date: getSelectedDate(),
-            main_focus: String(formData.get("main_focus") || "").trim(),
-            top1: String(formData.get("top1") || "").trim(),
-            top2: String(formData.get("top2") || "").trim(),
-            top3: String(formData.get("top3") || "").trim(),
-            energy: String(formData.get("energy") || "").trim(),
-            mood: String(formData.get("mood") || "").trim(),
-            life_axis_family: isCheckout ? String(formData.get("family") || "").trim() : currentDaily.life_axis_family || "",
-            life_axis_work: isCheckout ? String(formData.get("work") || "").trim() : currentDaily.life_axis_work || "",
-            life_axis_health: isCheckout ? String(formData.get("health") || "").trim() : currentDaily.life_axis_health || "",
-            life_axis_creative: isCheckout ? String(formData.get("creative") || "").trim() : currentDaily.life_axis_creative || "",
-            life_axis_learning: isCheckout ? String(formData.get("learning") || "").trim() : currentDaily.life_axis_learning || "",
-            day_plan: String(formData.get("day_plan") || "").trim(),
-            done_summary: isCheckout ? String(formData.get("done_summary") || "").trim() : currentDaily.done_summary || "",
-            stuck_summary: isCheckout ? String(formData.get("stuck_summary") || "").trim() : currentDaily.stuck_summary || "",
-            tomorrow_hint: isCheckout ? String(formData.get("tomorrow_hint") || "").trim() : currentDaily.tomorrow_hint || "",
-          };
-
-          await apiPost("daily.save", payload);
-
-          if (isCheckout) {
-            await apiPost("habits.checkin", {
-              date: getSelectedDate(),
-              family: formData.get("family"),
-              work: formData.get("work"),
-              health: formData.get("health"),
-              creative: formData.get("creative"),
-              learning: formData.get("learning"),
-              movement: formData.get("movement"),
-              reading_learning: formData.get("reading_learning"),
-              photo_memory: formData.get("photo_memory"),
-              deep_work: formData.get("deep_work"),
-              tea_pause: formData.get("tea_pause"),
-              note: "",
-            });
-          }
-
-          setStatus(isCheckout ? "Đã lưu check-out" : "Đã lưu khởi động", "ok");
-          await loadBootstrap();
-        } catch (error) {
-          setStatus("Lỗi lưu ngày: " + error.message, "error");
-        } finally {
-          setButtonLoading(button, false);
-        }
-      }
-
-      function createMorningReminder() {
-        const start = new Date();
-        start.setDate(start.getDate() + 1);
-        start.setHours(7, 0, 0, 0);
-
-        const formatIcsDate = (date) =>
-          date
-            .toISOString()
-            .replace(/[-:]/g, "")
-            .replace(/\.\d{3}Z$/, "Z");
-
-        const appUrl = location.href.split("#")[0];
-        const ics = [
-          "BEGIN:VCALENDAR",
-          "VERSION:2.0",
-          "PRODID:-//NTV.OS Life//Morning Reminder//VI",
-          "BEGIN:VEVENT",
-          `UID:ntv-os-life-morning-${Date.now()}@ntv-os-life`,
-          `DTSTAMP:${formatIcsDate(new Date())}`,
-          `DTSTART:${formatIcsDate(start)}`,
-          "RRULE:FREQ=DAILY",
-          "SUMMARY:Mo NTV.OS Life",
-          `DESCRIPTION:Mo app tai ${appUrl}`,
-          `URL:${appUrl}`,
-          "BEGIN:VALARM",
-          "TRIGGER:-PT0M",
-          "ACTION:DISPLAY",
-          "DESCRIPTION:Mo NTV.OS Life",
-          "END:VALARM",
-          "END:VEVENT",
-          "END:VCALENDAR",
-        ].join("\r\n");
-
-        const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.download = "ntv-os-life-nhac-sang.ics";
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(link.href);
-        setStatus("Đã tạo file nhắc sáng", "ok");
-      }
-
-      function activateTab(tab, shouldScroll) {
-        const button = document.querySelector(`.tab-button[data-tab="${tab}"]`);
-        const pane = document.getElementById("tab-" + tab);
-        if (!button || !pane) return;
-
-        document.querySelectorAll(".tab-button").forEach((item) => item.classList.remove("active"));
-        document.querySelectorAll(".tab-pane").forEach((item) => item.classList.remove("active"));
-        button.classList.add("active");
-        pane.classList.add("active");
-        if (location.hash !== "#" + tab) {
-          history.replaceState(null, "", "#" + tab);
-        }
-        if (shouldScroll) {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-      }
-
-      function activateDayMode(mode) {
-        document.querySelectorAll("[data-day-mode]").forEach((button) => {
-          button.classList.toggle("active", button.dataset.dayMode === mode);
-        });
-        document.querySelectorAll("[data-mode-panel]").forEach((panel) => {
-          panel.classList.toggle("active", panel.dataset.modePanel === mode);
-        });
-      }
-
-      function bindTabs() {
-        document.querySelectorAll(".tab-button").forEach((button) => {
-          button.addEventListener("click", () => {
-            activateTab(button.dataset.tab, true);
-          });
-        });
-      }
-
-      function bindRangeOutputs() {
-        document.querySelectorAll('input[type="range"]').forEach((input) => {
-          const target = document.querySelector(`[data-range-value="${input.name}"]`);
-          if (target) target.textContent = input.value;
-          input.addEventListener("input", () => {
-            if (target) target.textContent = input.value;
-          });
-        });
-      }
-
-      function bindEvents() {
-        bindTabs();
-        bindRangeOutputs();
-        setSelectedDate(todayYmd());
-        activateTab((location.hash || "#today").slice(1), false);
-        document.querySelectorAll("[data-day-mode]").forEach((button) => {
-          button.addEventListener("click", () => activateDayMode(button.dataset.dayMode));
-        });
-        document.querySelectorAll("[data-switch-mode]").forEach((button) => {
-          button.addEventListener("click", () => activateDayMode(button.dataset.switchMode));
-        });
-        els.captureForm.addEventListener("submit", handleCaptureSubmit);
-        els.dailyLogForm.addEventListener("submit", handleDailySubmit);
-        els.syncButton.addEventListener("click", loadBootstrap);
-        els.setupWorkbookBtn.addEventListener("click", setupWorkbook);
-        els.morningReminderBtn.addEventListener("click", createMorningReminder);
-        els.prevDayBtn.addEventListener("click", async () => {
-          setSelectedDate(addDays(getSelectedDate(), -1));
-          await loadBootstrap();
-        });
-        els.todayBtn.addEventListener("click", async () => {
-          setSelectedDate(todayYmd());
-          await loadBootstrap();
-        });
-        els.viewDateInput.addEventListener("change", async () => {
-          setSelectedDate(els.viewDateInput.value || todayYmd());
-          await loadBootstrap();
-        });
-        document.getElementById("clearCaptureBtn").addEventListener("click", () => els.captureForm.reset());
-      }
-
-      async function bootstrap() {
-        bindEvents();
-        try {
-          await healthCheck();
-          await loadBootstrap();
-        } catch (error) {
-          console.error(error);
-        }
-      }
-
-      bootstrap();
-    </script>
-  </body>
+    <form id="detailForm" class="stack"></form>
+  </aside>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbwNqmXQ4nIZ7eDpi7FX1Y-PX--a6XYrmsAFOopzABPyuIah9XTqrZmDXmc01Q4LS7OW/exec";
+const API_TOKEN = "";
+const state = { data:null, selectedDate:"", toastTimer:null, currentDetail:null };
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+function esc(v){return String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;")}
+function toast(msg, kind=""){clearTimeout(state.toastTimer);const el=$("#toast");el.textContent=msg;el.className="toast "+kind;state.toastTimer=setTimeout(()=>el.className="toast hidden",kind==="error"?5600:2200)}
+function toYmd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function today(){return toYmd(new Date())}
+function addDays(ymd,n){const d=new Date(`${ymd}T12:00:00`);d.setDate(d.getDate()+n);return toYmd(d)}
+function setDate(ymd){state.selectedDate=ymd||today();$("#viewDateInput").value=state.selectedDate}
+function buildUrl(action, params={}){const u=new URL(API_URL);u.searchParams.set("action", action);Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=="")u.searchParams.set(k,v)});if(API_TOKEN)u.searchParams.set("token",API_TOKEN);return u.toString()}
+async function apiGet(action, params={}){const r=await fetch(buildUrl(action,params),{method:"GET",redirect:"follow"});const j=await r.json();if(!j.ok)throw new Error(j.error||"API lỗi");return j.data}
+async function apiPost(action, payload={}){const body=JSON.stringify(API_TOKEN?{...payload,token:API_TOKEN}:payload);const r=await fetch(buildUrl(action),{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body});const j=await r.json();if(!j.ok)throw new Error(j.error||"API lỗi");return j.data}
+function fileToBase64(file){return new Promise((res,rej)=>{const rd=new FileReader();rd.onload=()=>res(String(rd.result||"").split(",")[1]||"");rd.onerror=()=>rej(new Error("Không đọc được file"));rd.readAsDataURL(file)})}
+
+function renderCards(id, items, fn, empty="Chưa có dữ liệu"){const el=document.getElementById(id);if(!el)return;if(!items||!items.length){el.innerHTML=`<div class="empty">${esc(empty)}</div>`;return}el.innerHTML=items.map(fn).join("")}
+function itemCard(type,item){const title=item.title||"Không có tiêu đề";const id=item.task_id||item.decision_id||item.idea_id||item.life_id||item.capture_id||"";const meta=[item.status,item.priority,item.domain,item.project,item.date].filter(Boolean).join(" · ");return `<article class="item clickable" data-type="${esc(type)}" data-id="${esc(id)}"><h3>${esc(title)}</h3><p class="meta">${esc(meta)}</p>${item.note?`<p class="body">${esc(item.note)}</p>`:""}<div class="tags">${item.due_date?`<span class="tag">Hạn ${esc(item.due_date)}</span>`:""}${item.file_url?`<span class="tag">Có file</span>`:""}</div></article>`}
+const taskCard=t=>itemCard("task",t), decisionCard=d=>itemCard("decision",d), ideaCard=i=>itemCard("idea",i), lifeCard=l=>itemCard("life",l);
+
+function render(data){
+  state.data=data; setDate(data.viewDate||state.selectedDate||today());
+  const d=data.today||{};
+  $("#focusPreview").textContent=d.main_focus||"Chưa đặt trọng tâm";
+  $("#mainFocusQuick").value=d.main_focus||"";
+  populateDaily(d);
+  const urgent=[...(data.overdueTasks||[]),...(data.todayTasks||[]),...(data.waitingTasks||[])];
+  const seen=new Set(); const uniq=urgent.filter(x=>{const id=x.task_id||x.title;if(seen.has(id))return false;seen.add(id);return true});
+  renderCards("urgentTasksList",uniq.slice(0,5),taskCard,"Chưa có việc cần nhìn.");
+  renderCards("newTasksList",data.newTasks||[],taskCard,"Chưa có việc mới.");
+  renderCards("waitingTasksList",data.waitingTasks||[],taskCard,"Không có việc đang chờ.");
+  renderCards("openDecisionsList",data.openDecisionsList||[],decisionCard,"Không có quyết định đang mở.");
+  renderCards("recentIdeasList",data.recentIdeas||[],ideaCard,"Chưa có ý tưởng.");
+  renderCards("recentLifeList",data.recentLife||[],lifeCard,"Chưa có tư liệu.");
+  renderAnalysis(data);
+  bindCardClicks();
+}
+function populateDaily(d){const f=$("#dailyLogForm");["main_focus","top1","top2","top3","energy","mood","day_plan","done_summary","stuck_summary","tomorrow_hint","top1_status","top2_status","top3_status","top1_note","top2_note","top3_note","life_axis_family","life_axis_work","life_axis_health","life_axis_creative","life_axis_learning"].forEach(n=>{if(f.elements[n])f.elements[n].value=d[n]||f.elements[n].defaultValue||""});bindRanges()}
+function renderAnalysis(data){const a=data.analysis||{};const metrics=[["Capture",a.capture30||0,"capture"],["Ý tưởng",a.ideas30||0,"ideas"],["Tư liệu",a.life30||0,"life"],["Task xong",a.tasksDone30||0,"tasks-done"],["Decision",a.openDecisions||0,"decisions"],["Check-in",a.habits30||0,"habits"]];
+  $("#analysisMetrics").innerHTML=metrics.map(([l,v,k])=>`<button class="metric" data-drill="${k}"><span>${esc(l)}</span><b>${esc(v)}</b></button>`).join("");
+  const top=a.topDomains||[]; const max=Math.max(1,...top.map(x=>Number(x.count)||0));
+  renderCards("topDomainsList",top,x=>`<article class="item clickable" data-drill="domain" data-domain="${esc(x.domain||"")}"><h3>${esc(x.domain||"Chưa rõ")}</h3><p class="meta">${esc(x.count)} capture</p><div class="bar"><i style="width:${Math.max(5,(Number(x.count)||0)/max*100)}%"></i></div></article>`,"Chưa đủ dữ liệu.");
+  const ins=[]; if((data.overdueTasks||[]).length)ins.push({title:"Quá hạn",body:`${data.overdueTasks.length} việc cần xử lý.`}); if((data.waitingTasks||[]).length)ins.push({title:"Đang chờ",body:`${data.waitingTasks.length} việc phụ thuộc người khác.`}); if(top[0])ins.push({title:"Mảng nổi bật",body:`${top[0].domain} đang có nhiều capture nhất.`}); if(!ins.length)ins.push({title:"Ổn",body:"Chưa có điểm nghẽn lớn."});
+  renderCards("insightList",ins,i=>`<article class="item"><h3>${esc(i.title)}</h3><p class="body">${esc(i.body)}</p></article>`);
+}
+function bindRanges(){$$('input[type="range"]').forEach(i=>{const t=document.querySelector(`[data-range-value="${i.name}"]`);if(t)t.textContent=i.value;i.oninput=()=>{if(t)t.textContent=i.value}})}
+async function load(){try{$("#syncButton").textContent="…";const data=await apiGet("app.bootstrap",{date:state.selectedDate||today()});render(data);toast("Đã đồng bộ","ok")}catch(e){toast("Không đồng bộ: "+e.message,"error")}finally{$("#syncButton").textContent="↻"}}
+async function setupWorkbook(){try{await apiPost("workbook.setup",{});toast("Đã kiểm tra Sheet","ok");await load()}catch(e){toast("Lỗi Sheet: "+e.message,"error")}}
+async function saveDaily(e){if(e)e.preventDefault();const f=$("#dailyLogForm");const fd=new FormData(f);const payload={date:state.selectedDate||today()};for(const [k,v] of fd.entries())payload[k]=String(v||"").trim();try{await apiPost("daily.save",payload);toast("Đã lưu","ok");await load()}catch(err){toast("Lỗi lưu: "+err.message,"error")}}
+async function saveQuickFocus(){const f=$("#dailyLogForm");f.elements.main_focus.value=$("#mainFocusQuick").value;await saveDaily()}
+async function captureSubmit(e){e.preventDefault();const f=$("#captureForm");const fd=new FormData(f);let payload={source:"GitHub Pages"};for(const [k,v] of fd.entries()){if(k!=="attachment")payload[k]=String(v||"").trim()}const file=fd.get("attachment");try{if(file instanceof File && file.size>0){toast("Đang đọc file...");payload.file={file_name:file.name,mime_type:file.type||"application/octet-stream",file_data:await fileToBase64(file)}}const result=await apiPost("captures.create",payload);$("#lastCaptureResult").className="item";$("#lastCaptureResult").innerHTML=`<h3>${esc(result.capture?.auto_type||result.auto_type||"Đã lưu")}</h3><p class="meta">${esc(result.capture?.domain||payload.domain||"Tự nhận diện")} · ${esc(result.capture?.project||payload.project||"")}</p><p class="body">${esc(payload.raw_text)}</p>`;f.reset();toast("Đã lưu","ok");await load()}catch(err){toast("Lỗi capture: "+err.message,"error")}}
+function openDetail(type,id){const data=state.data||{};let item=null;if(type==="task")item=[...(data.todayTasks||[]),...(data.newTasks||[]),...(data.waitingTasks||[]),...(data.overdueTasks||[])].find(x=>x.task_id===id);if(type==="decision")item=(data.openDecisionsList||[]).find(x=>x.decision_id===id);if(type==="idea")item=(data.recentIdeas||[]).find(x=>x.idea_id===id);if(type==="life")item=(data.recentLife||[]).find(x=>x.life_id===id);if(!item)return toast("Không tìm thấy dữ liệu","error");state.currentDetail={type,id,item};$("#drawerType").textContent=type==="task"?"Việc":type==="decision"?"Quyết định":type==="idea"?"Ý tưởng":"Tư liệu";$("#drawerTitle").textContent=item.title||"Chi tiết";renderDetailForm(type,item);$("#drawerBackdrop").classList.add("open");$("#detailDrawer").classList.add("open")}
+function renderDetailForm(type,item){const extra=type==="task"?`<div class="grid2"><label>Ưu tiên<input name="priority" value="${esc(item.priority||"")}"></label><label>Hạn<input name="due_date" type="date" value="${esc(item.due_date||"")}"></label></div><label>Bước tiếp<input name="next_action" value="${esc(item.next_action||"")}"></label>`:"";$("#detailForm").innerHTML=`<label>Tiêu đề<input name="title" value="${esc(item.title||"")}"></label><div class="grid2"><label>Mảng<input name="domain" value="${esc(item.domain||"")}"></label><label>Dự án<input name="project" value="${esc(item.project||"")}"></label></div><label>Trạng thái<input name="status" value="${esc(item.status||"")}"></label>${extra}<label>Ghi chú<textarea name="note">${esc(item.note||item.final_decision||item.criteria||"")}</textarea></label><div class="actions"><button class="btn btn-primary" type="submit">Lưu</button><button class="btn btn-soft" type="button" id="markDoneBtn">Xong</button><button class="btn btn-danger" type="button" id="deleteItemBtn">Xóa</button></div>`;$("#markDoneBtn").onclick=()=>quickUpdateDetail("status",type==="decision"?"Đã quyết":"Xong");$("#deleteItemBtn").onclick=()=>quickUpdateDetail("deleted_at",new Date().toISOString())}
+function closeDrawer(){$("#drawerBackdrop").classList.remove("open");$("#detailDrawer").classList.remove("open")}
+async function quickUpdateDetail(k,v){const {type,id}=state.currentDetail||{};if(!type)return;const action=type==="task"?"tasks.update":type==="decision"?"decisions.update":type==="idea"?"ideas.update":"life.update";try{await apiPost(action,{id,[k]:v});toast("Đã cập nhật","ok");closeDrawer();await load()}catch(e){toast("Backend chưa hỗ trợ: "+e.message,"error")}}
+async function saveDetail(e){e.preventDefault();const {type,id}=state.currentDetail||{};const fd=new FormData(e.currentTarget);let payload={id};for(const [k,v] of fd.entries())payload[k]=String(v||"").trim();const action=type==="task"?"tasks.update":type==="decision"?"decisions.update":type==="idea"?"ideas.update":"life.update";try{await apiPost(action,payload);toast("Đã lưu","ok");closeDrawer();await load()}catch(err){toast("Backend chưa hỗ trợ sửa: "+err.message,"error")}}
+function bindCardClicks(){$$(".item.clickable[data-type]").forEach(el=>el.onclick=()=>openDetail(el.dataset.type,el.dataset.id));$$("[data-drill]").forEach(el=>el.onclick=()=>openDrill(el.dataset.drill,el.dataset.domain))}
+function openDrill(kind,domain){let data=state.data||{};let items=[];let title="Dữ liệu";if(kind==="decisions"){items=data.openDecisionsList||[];title="Quyết định"}else if(kind==="ideas"){items=data.recentIdeas||[];title="Ý tưởng"}else if(kind==="life"){items=data.recentLife||[];title="Tư liệu"}else if(kind==="domain"){items=[...(data.todayTasks||[]),...(data.newTasks||[]),...(data.waitingTasks||[]),...(data.openDecisionsList||[]),...(data.recentIdeas||[]),...(data.recentLife||[])].filter(x=>x.domain===domain);title=domain||"Domain"}else{title="Cần backend drill-down"}$("#drawerType").textContent="Danh sách";$("#drawerTitle").textContent=title;$("#detailForm").innerHTML=items.length?items.map(x=>`<article class="item"><h3>${esc(x.title||"Không tiêu đề")}</h3><p class="meta">${esc([x.status,x.domain,x.project].filter(Boolean).join(" · "))}</p></article>`).join(""):`<div class="empty">Chưa có danh sách hoặc backend chưa trả drill-down.</div>`;$("#drawerBackdrop").classList.add("open");$("#detailDrawer").classList.add("open")}
+function activateTab(tab){$$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));$$(".pane").forEach(p=>p.classList.toggle("active",p.id==="pane-"+tab));history.replaceState(null,"","#"+tab);scrollTo({top:0,behavior:"smooth"})}
+function bind(){$$(".tab").forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));$$("[data-jump]").forEach(b=>b.onclick=()=>activateTab(b.dataset.jump));$("#syncButton").onclick=load;$("#setupWorkbookBtn").onclick=setupWorkbook;$("#prevDayBtn").onclick=()=>{setDate(addDays(state.selectedDate,-1));load()};$("#todayBtn").onclick=()=>{setDate(today());load()};$("#viewDateInput").onchange=()=>{setDate($("#viewDateInput").value||today());load()};$("#dailyLogForm").onsubmit=saveDaily;$("#quickFocusSave").onclick=saveQuickFocus;$("#captureForm").onsubmit=captureSubmit;$("#clearCaptureBtn").onclick=()=>$("#captureForm").reset();$("#closeDrawer").onclick=closeDrawer;$("#drawerBackdrop").onclick=closeDrawer;$("#detailForm").onsubmit=saveDetail;bindRanges();setDate(today());activateTab((location.hash||"#today").slice(1)||"today")}
+bind();load();
+</script>
+</body>
 </html>
