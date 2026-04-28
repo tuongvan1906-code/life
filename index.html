@@ -1,868 +1,261 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#eef8f1" />
-  <title>NTV.OS Life</title>
-  <style>
-    :root {
-      --bg: #eef8f1;
-      --bg-2: #f7fbf5;
-      --card: rgba(255,255,255,.88);
-      --card-strong: #ffffff;
-      --line: rgba(15, 91, 70, .14);
-      --text: #123029;
-      --muted: #687a72;
-      --green: #0f766e;
-      --green-2: #059669;
-      --green-3: #14b8a6;
-      --mint: #dff7ea;
-      --mint-2: #ecfdf5;
-      --bluegreen: #0e7490;
-      --danger: #b42318;
-      --ok: #027a48;
-      --shadow: 0 16px 48px rgba(17, 78, 65, .10);
-      --r-xl: 24px;
-      --r-lg: 18px;
-      --r-md: 14px;
-    }
-
-    * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      min-height: 100vh;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 12% 0%, rgba(20,184,166,.18), transparent 34%),
-        radial-gradient(circle at 90% 12%, rgba(5,150,105,.14), transparent 34%),
-        linear-gradient(180deg, var(--bg) 0%, #f7fbf5 52%, #ffffff 100%);
-      font-family: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
-    }
-
-    button, input, select, textarea { font: inherit; }
-    button { cursor: pointer; -webkit-tap-highlight-color: transparent; }
-    input, select, textarea {
-      width: 100%;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.92);
-      border-radius: var(--r-md);
-      padding: 13px 14px;
-      color: var(--text);
-      outline: none;
-      font-size: 16px;
-    }
-    textarea { resize: vertical; min-height: 94px; line-height: 1.45; }
-    input:focus, select:focus, textarea:focus {
-      border-color: var(--green-3);
-      box-shadow: 0 0 0 4px rgba(20,184,166,.16);
-    }
-
-    .app {
-      width: min(720px, calc(100% - 22px));
-      margin: 0 auto;
-      padding: 10px 0 calc(92px + env(safe-area-inset-bottom));
-    }
-
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 12;
-      background: rgba(247,251,245,.88);
-      backdrop-filter: blur(18px);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-      border-radius: 0 0 var(--r-xl) var(--r-xl);
-      padding: 12px;
-      margin: 0 -1px 12px;
-    }
-
-    .brand-line {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-    }
-
-    .mark {
-      width: 42px;
-      height: 42px;
-      border-radius: 16px;
-      display: grid;
-      place-items: center;
-      background: linear-gradient(135deg, var(--green-3), var(--green));
-      color: white;
-      font-weight: 950;
-      box-shadow: 0 12px 30px rgba(15,118,110,.24);
-      flex: 0 0 auto;
-    }
-
-    h1, h2, h3, p { margin: 0; }
-    h1 {
-      font-size: 1.18rem;
-      letter-spacing: -.03em;
-      line-height: 1.1;
-      white-space: nowrap;
-    }
-
-    .date-row {
-      display: grid;
-      grid-template-columns: 42px 1fr 68px 42px;
-      gap: 8px;
-      align-items: center;
-      margin-top: 10px;
-    }
-
-    .icon-btn {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      border: 1px solid var(--line);
-      border-radius: var(--r-md);
-      background: rgba(255,255,255,.88);
-      color: var(--green);
-      font-weight: 900;
-    }
-
-    .btn {
-      border: 0;
-      border-radius: var(--r-md);
-      padding: 13px 14px;
-      font-weight: 850;
-      min-height: 44px;
-    }
-    .btn-primary {
-      color: #fff;
-      background: linear-gradient(135deg, var(--green-2), var(--green));
-      box-shadow: 0 12px 24px rgba(5,150,105,.20);
-    }
-    .btn-soft {
-      color: var(--green);
-      background: rgba(255,255,255,.88);
-      border: 1px solid var(--line);
-    }
-    .btn-muted {
-      color: var(--muted);
-      background: rgba(255,255,255,.56);
-      border: 1px dashed var(--line);
-    }
-    .btn-danger {
-      color: var(--danger);
-      background: #fff1f2;
-      border: 1px solid #fecdd3;
-    }
-
-    .tabs {
-      position: fixed;
-      left: 10px;
-      right: 10px;
-      bottom: 10px;
-      z-index: 20;
-      display: grid;
-      grid-template-columns: repeat(5, minmax(0, 1fr));
-      gap: 6px;
-      padding: 8px;
-      background: rgba(255,255,255,.92);
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      backdrop-filter: blur(22px);
-      box-shadow: 0 18px 60px rgba(15,118,110,.18);
-    }
-
-    .tab {
-      border: 0;
-      border-radius: 15px;
-      background: transparent;
-      color: var(--muted);
-      font-size: .79rem;
-      line-height: 1.15;
-      font-weight: 850;
-      padding: 10px 5px;
-      min-height: 48px;
-    }
-    .tab.active {
-      color: white;
-      background: linear-gradient(135deg, var(--green-3), var(--green));
-    }
-
-    .pane { display: none; }
-    .pane.active { display: block; }
-
-    .panel, .card, .drawer {
-      background: var(--card);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--line);
-      box-shadow: var(--shadow);
-    }
-
-    .panel {
-      border-radius: var(--r-xl);
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-
-    .step-title {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 12px;
-    }
-
-    .step-no {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: white;
-      background: linear-gradient(135deg, var(--green-3), var(--green));
-      font-weight: 950;
-      font-size: .86rem;
-      flex: 0 0 auto;
-    }
-
-    h2 { font-size: 1.08rem; letter-spacing: -.02em; }
-    h3 { font-size: 1rem; letter-spacing: -.02em; }
-    .hint {
-      color: var(--muted);
-      font-size: .88rem;
-      line-height: 1.4;
-      margin-top: 4px;
-    }
-
-    label {
-      display: grid;
-      gap: 7px;
-      color: var(--green);
-      font-weight: 800;
-      font-size: .9rem;
-    }
-
-    .stack { display: grid; gap: 10px; }
-    .grid2 { display: grid; gap: 10px; grid-template-columns: 1fr; }
-    .grid3 { display: grid; gap: 10px; grid-template-columns: 1fr; }
-
-    .focus-card {
-      color: white;
-      background:
-        radial-gradient(circle at 100% 0%, rgba(255,255,255,.16), transparent 32%),
-        linear-gradient(135deg, #064e3b, #0f766e 58%, #14b8a6);
-      border-radius: 26px;
-      padding: 16px;
-      box-shadow: 0 18px 50px rgba(15,118,110,.22);
-      margin-bottom: 12px;
-    }
-
-    .focus-label {
-      color: rgba(255,255,255,.72);
-      font-size: .75rem;
-      text-transform: uppercase;
-      letter-spacing: .12em;
-      font-weight: 900;
-    }
-
-    .focus-value {
-      font-size: 1.55rem;
-      line-height: 1.13;
-      font-weight: 950;
-      letter-spacing: -.05em;
-      margin: 7px 0 14px;
-      min-height: 56px;
-    }
-
-    .focus-card input {
-      background: rgba(255,255,255,.94);
-      border: 0;
-    }
-
-    .top-grid {
-      display: grid;
-      gap: 10px;
-    }
-
-    .top-card {
-      display: grid;
-      grid-template-columns: 34px 1fr;
-      gap: 9px;
-      align-items: start;
-      padding: 12px;
-      border-radius: var(--r-lg);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.72);
-    }
-
-    .num {
-      width: 31px;
-      height: 31px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      background: var(--green);
-      color: white;
-      font-weight: 950;
-    }
-
-    .checkout-card {
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.72);
-      border-radius: var(--r-lg);
-      padding: 12px;
-      display: grid;
-      gap: 10px;
-    }
-
-    .range-row {
-      display: grid;
-      grid-template-columns: 84px 1fr 34px;
-      gap: 8px;
-      align-items: center;
-      padding: 6px 0;
-    }
-    .range-row span:last-child {
-      text-align: right;
-      color: var(--green);
-      font-weight: 950;
-    }
-    input[type="range"] {
-      padding: 0;
-      accent-color: var(--green);
-      box-shadow: none;
-      border: 0;
-      background: transparent;
-    }
-
-    .item-list { display: grid; gap: 10px; }
-    .item {
-      background: rgba(255,255,255,.86);
-      border: 1px solid var(--line);
-      border-radius: var(--r-lg);
-      padding: 13px;
-    }
-    .item.clickable { cursor: pointer; transition: .18s; }
-    .item.clickable:active { transform: scale(.99); }
-    .item h3 { font-size: 1rem; line-height: 1.32; }
-    .meta {
-      margin-top: 7px;
-      color: var(--muted);
-      font-size: .86rem;
-      line-height: 1.45;
-    }
-    .body {
-      margin-top: 9px;
-      white-space: pre-wrap;
-      line-height: 1.48;
-      font-size: .95rem;
-    }
-    .tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 9px;
-    }
-    .tag {
-      display: inline-flex;
-      align-items: center;
-      border-radius: 999px;
-      background: var(--mint);
-      color: #047857;
-      padding: 6px 9px;
-      font-size: .78rem;
-      font-weight: 850;
-    }
-
-    .empty {
-      padding: 14px;
-      border-radius: var(--r-md);
-      background: rgba(255,255,255,.54);
-      color: var(--muted);
-      line-height: 1.4;
-    }
-
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
-
-    .capture-textarea { min-height: 170px; }
-
-    .metric-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 10px;
-    }
-    .metric {
-      text-align: left;
-      background: rgba(255,255,255,.86);
-      border: 1px solid var(--line);
-      border-radius: var(--r-lg);
-      padding: 13px;
-      color: var(--text);
-    }
-    .metric span {
-      color: var(--muted);
-      font-size: .8rem;
-      font-weight: 800;
-    }
-    .metric b {
-      display: block;
-      color: var(--green);
-      font-size: 1.8rem;
-      margin-top: 6px;
-    }
-
-    .bar {
-      height: 9px;
-      background: var(--mint);
-      border-radius: 999px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-    .bar i {
-      display: block;
-      height: 100%;
-      background: linear-gradient(90deg, var(--green-3), var(--green));
-      width: 20%;
-    }
-
-    .toast {
-      position: fixed;
-      left: 10px;
-      right: 10px;
-      bottom: calc(86px + env(safe-area-inset-bottom));
-      z-index: 40;
-      padding: 12px 14px;
-      border-radius: var(--r-md);
-      background: #123029;
-      color: white;
-      box-shadow: var(--shadow);
-    }
-    .toast.ok { background: var(--ok); }
-    .toast.error { background: var(--danger); }
-    .hidden { display: none !important; }
-
-    .drawer-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(18,48,41,.30);
-      z-index: 50;
-      display: none;
-    }
-    .drawer-backdrop.open { display: block; }
-
-    .drawer {
-      position: fixed;
-      inset: 0 0 0 auto;
-      z-index: 60;
-      width: min(520px, 100%);
-      overflow: auto;
-      background: #fbfefb;
-      border-radius: 26px 0 0 26px;
-      padding: 16px;
-      transform: translateX(105%);
-      transition: .22s ease;
-    }
-    .drawer.open { transform: translateX(0); }
-    .drawer-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      align-items: flex-start;
-      margin-bottom: 14px;
-    }
-    .drawer h2 { line-height: 1.18; }
-    .detail-form { display: grid; gap: 11px; }
-
-    @media (min-width: 760px) {
-      .app { padding-bottom: 28px; }
-      .tabs {
-        position: static;
-        margin-bottom: 14px;
-      }
-      .grid2 { grid-template-columns: 1fr 1fr; }
-      .grid3 { grid-template-columns: repeat(3, 1fr); }
-      .metric-grid { grid-template-columns: repeat(6, 1fr); }
-      .top-grid { grid-template-columns: repeat(3, 1fr); }
-      .checkout-grid { grid-template-columns: repeat(3, 1fr); display: grid; gap: 10px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#ecfdf5">
+<title>NTV.OS</title>
+<style>
+:root{
+  --bg:#eef9f0;--card:#ffffffed;--line:#cfe7dc;--text:#12332a;--muted:#6d7b73;
+  --g:#0f766e;--g2:#059669;--g3:#22c7ad;--mint:#e3faec;--soft:#f6fff9;
+  --red:#b42318;--ok:#027a48;--shadow:0 16px 48px rgba(16,52,43,.10);
+  --r:22px;--r2:15px;
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:"Avenir Next","Segoe UI",system-ui,sans-serif;color:var(--text);background:
+radial-gradient(circle at 10% 0,rgba(34,199,173,.18),transparent 33%),
+radial-gradient(circle at 100% 8%,rgba(5,150,105,.13),transparent 31%),
+linear-gradient(180deg,#f0fdf4 0%,#f8fbf6 62%,#fff 100%)}
+button,input,select,textarea{font:inherit}button{-webkit-tap-highlight-color:transparent;cursor:pointer}
+input,select,textarea{width:100%;border:1px solid var(--line);background:#fff;border-radius:15px;padding:13px 14px;color:var(--text);font-size:16px;outline:none}
+textarea{resize:vertical;min-height:90px;line-height:1.45}
+input:focus,select:focus,textarea:focus{border-color:var(--g3);box-shadow:0 0 0 4px rgba(34,199,173,.14)}
+.app{width:min(720px,calc(100% - 20px));margin:0 auto;padding:10px 0 calc(94px + env(safe-area-inset-bottom))}
+.top{position:sticky;top:0;z-index:20;background:#f8fbf6e8;backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:var(--shadow);border-radius:0 0 24px 24px;padding:12px;margin-bottom:12px}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:10px}.logo{display:flex;align-items:center;gap:10px}.mark{width:42px;height:42px;border-radius:16px;background:linear-gradient(135deg,var(--g3),var(--g));display:grid;place-items:center;color:#fff;font-weight:950}
+h1,h2,h3,p{margin:0}h1{font-size:1.16rem;letter-spacing:-.03em}
+.datebar{display:grid;grid-template-columns:42px 1fr 72px 42px;gap:8px;margin-top:10px}.icon{width:42px;height:42px;border-radius:15px;border:1px solid var(--line);background:#fff;color:var(--g);font-weight:950}
+.btn{border:0;border-radius:15px;padding:13px 15px;min-height:44px;font-weight:900}.primary{background:linear-gradient(135deg,var(--g2),var(--g));color:#fff;box-shadow:0 10px 24px rgba(5,150,105,.18)}.soft{background:#fff;color:var(--g);border:1px solid var(--line)}.danger{background:#fff1f2;color:var(--red);border:1px solid #fecdd3}
+.tabs{position:fixed;left:10px;right:10px;bottom:10px;z-index:30;display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:8px;background:#ffffffef;border:1px solid var(--line);border-radius:22px;backdrop-filter:blur(20px);box-shadow:0 18px 60px rgba(15,118,110,.16)}
+.tab{border:0;background:transparent;border-radius:16px;color:var(--muted);font-size:.82rem;font-weight:950;line-height:1.15;padding:10px 4px;min-height:50px}.tab.active{background:linear-gradient(135deg,var(--g3),var(--g));color:#fff}
+.pane{display:none}.pane.active{display:block}.panel,.item,.drawer{background:var(--card);border:1px solid var(--line);box-shadow:var(--shadow);backdrop-filter:blur(12px)}
+.panel{border-radius:var(--r);padding:14px;margin-bottom:12px}.step{display:flex;align-items:center;gap:9px;margin-bottom:12px}.no{width:29px;height:29px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--g3),var(--g));color:#fff;font-weight:950;flex:0 0 auto}h2{font-size:1.06rem;letter-spacing:-.02em}
+label{display:grid;gap:7px;color:var(--g);font-weight:850;font-size:.9rem}.stack{display:grid;gap:10px}.grid2,.grid3{display:grid;gap:10px;grid-template-columns:1fr}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.focus{background:linear-gradient(135deg,#064e3b,#0f766e 62%,#14b8a6);border-radius:26px;padding:16px;color:#fff;box-shadow:0 18px 50px rgba(15,118,110,.22);margin-bottom:12px}.focus small{text-transform:uppercase;letter-spacing:.12em;color:#c8fff0;font-weight:950}.focus-text{font-size:1.45rem;line-height:1.13;font-weight:950;letter-spacing:-.04em;margin:7px 0 13px;min-height:50px}.focus input{border:0;background:#fffffff0}.sync-note{font-size:.82rem;color:#c8fff0;margin-top:8px}
+.topgrid{display:grid;gap:10px}.top-item,.check-item{background:#fff;border:1px solid var(--line);border-radius:17px;padding:12px}.top-item{display:grid;grid-template-columns:34px 1fr;gap:9px;align-items:start}.num{width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:var(--g);color:#fff;font-weight:950}
+.range-row{display:grid;grid-template-columns:84px 1fr 34px;gap:8px;align-items:center;padding:5px 0}.range-row span:last-child{text-align:right;color:var(--g);font-weight:950}input[type=range]{padding:0;border:0;background:transparent;accent-color:var(--g);box-shadow:none}
+.item-list{display:grid;gap:10px}.item{border-radius:17px;padding:12px}.item.clickable{cursor:pointer}.item:active{transform:scale(.99)}.item h3{font-size:1rem;line-height:1.32}.meta{margin-top:7px;color:var(--muted);font-size:.86rem;line-height:1.45}.body{white-space:pre-wrap;margin-top:8px;line-height:1.45}.tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.tag{background:var(--mint);color:#047857;border-radius:999px;padding:6px 9px;font-size:.78rem;font-weight:900}.empty{padding:14px;border-radius:15px;background:#ffffff96;color:var(--muted);line-height:1.4}
+.capture{min-height:170px}.metric-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.metric{text-align:left;background:#fff;border:1px solid var(--line);border-radius:17px;padding:13px;color:var(--text)}.metric span{font-size:.8rem;color:var(--muted);font-weight:900}.metric b{display:block;color:var(--g);font-size:1.75rem;margin-top:6px}.bar{height:9px;background:var(--mint);border-radius:999px;overflow:hidden;margin-top:9px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--g3),var(--g));width:20%}
+.toast{position:fixed;left:10px;right:10px;bottom:calc(88px + env(safe-area-inset-bottom));z-index:40;padding:12px 14px;border-radius:15px;background:#12342b;color:#fff;box-shadow:var(--shadow)}.toast.ok{background:var(--ok)}.toast.error{background:var(--red)}.hidden{display:none!important}
+.drawer-bg{position:fixed;inset:0;background:rgba(16,52,43,.32);z-index:50;display:none}.drawer-bg.open{display:block}.drawer{position:fixed;inset:0 0 0 auto;z-index:60;width:min(520px,100%);overflow:auto;background:#fbfffb;border-radius:26px 0 0 26px;padding:16px;transform:translateX(105%);transition:.22s}.drawer.open{transform:translateX(0)}.drawer-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}.drawer-form{display:grid;gap:10px}.hint{color:var(--muted);font-size:.85rem}
+@media(min-width:760px){.app{padding-bottom:28px}.tabs{position:static;margin-bottom:14px}.grid2{grid-template-columns:1fr 1fr}.grid3{grid-template-columns:repeat(3,1fr)}.metric-grid{grid-template-columns:repeat(6,1fr)}.topgrid{grid-template-columns:repeat(3,1fr)}}
+</style>
 </head>
-
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand-line">
-        <div class="brand">
-          <div class="mark">N</div>
-          <div>
-            <h1>NTV.OS Life</h1>
-          </div>
-        </div>
-        <button class="icon-btn" id="syncButton" type="button" title="Đồng bộ">↻</button>
-      </div>
+<div class="app">
+<header class="top">
+  <div class="brand"><div class="logo"><div class="mark">N</div><h1>NTV.OS</h1></div><button class="icon" id="syncBtn">↻</button></div>
+  <div class="datebar"><button class="icon" id="prevBtn">‹</button><input id="dateInput" type="date"><button class="btn soft" id="todayBtn">Hôm nay</button><button class="icon" id="setupBtn">▦</button></div>
+</header>
 
-      <div class="date-row">
-        <button class="icon-btn" id="prevDayBtn" type="button">‹</button>
-        <input id="viewDateInput" type="date" />
-        <button class="btn btn-soft" id="todayBtn" type="button">Hôm nay</button>
-        <button class="icon-btn" id="setupWorkbookBtn" type="button" title="Tạo Sheet">▦</button>
-      </div>
-    </header>
+<div id="toast" class="toast hidden"></div>
 
-    <div id="toast" class="toast hidden"></div>
+<nav class="tabs">
+  <button class="tab active" data-tab="day">1<br>Ngày</button>
+  <button class="tab" data-tab="inbox">2<br>Ghi</button>
+  <button class="tab" data-tab="work">3<br>Xử lý</button>
+  <button class="tab" data-tab="data">4<br>Dữ liệu</button>
+</nav>
 
-    <nav class="tabs">
-      <button class="tab active" data-tab="today" type="button">1<br>Ngày</button>
-      <button class="tab" data-tab="capture" type="button">2<br>Ghi</button>
-      <button class="tab" data-tab="process" type="button">3<br>Xử lý</button>
-      <button class="tab" data-tab="library" type="button">4<br>Tư liệu</button>
-      <button class="tab" data-tab="analysis" type="button">5<br>Số liệu</button>
-    </nav>
-
-    <section class="pane active" id="pane-today">
-      <div class="focus-card">
-        <div class="focus-label">Trọng tâm</div>
-        <div class="focus-value" id="focusPreview">Chưa đặt trọng tâm</div>
-        <label>
-          <input id="mainFocusQuick" placeholder="Việc quan trọng nhất hôm nay" />
-        </label>
-        <div class="actions">
-          <button class="btn btn-soft" id="quickFocusSave" type="button">Lưu</button>
-          <button class="btn btn-soft" data-jump="capture" type="button">Ghi nhanh</button>
-        </div>
-      </div>
-
-      <div class="panel">
-        <div class="step-title">
-          <span class="step-no">1</span>
-          <h2>Khởi động</h2>
-        </div>
-
-        <form id="dailyLogForm" class="stack">
-          <div class="grid2">
-            <label>Năng lượng
-              <select name="energy">
-                <option value="">—</option>
-                <option>Thấp</option>
-                <option>Vừa</option>
-                <option>Cao</option>
-              </select>
-            </label>
-            <label>Tâm trạng
-              <select name="mood">
-                <option value="">—</option>
-                <option>Ổn</option>
-                <option>Căng</option>
-                <option>Phân tán</option>
-                <option>Hào hứng</option>
-                <option>Mệt</option>
-                <option>Bình an</option>
-              </select>
-            </label>
-          </div>
-
-          <label>Trọng tâm
-            <input name="main_focus" placeholder="Một câu giữ hướng cả ngày" />
-          </label>
-
-          <div class="top-grid">
-            <div class="top-card">
-              <span class="num">1</span>
-              <label>Top 1<input name="top1" /></label>
-            </div>
-            <div class="top-card">
-              <span class="num">2</span>
-              <label>Top 2<input name="top2" /></label>
-            </div>
-            <div class="top-card">
-              <span class="num">3</span>
-              <label>Top 3<input name="top3" /></label>
-            </div>
-          </div>
-
-          <label>Kế hoạch ngắn
-            <textarea name="day_plan" rows="3"></textarea>
-          </label>
-
-          <div class="step-title" style="margin-top:8px">
-            <span class="step-no">2</span>
-            <h2>Check-out</h2>
-          </div>
-
-          <div class="checkout-grid">
-            <div class="checkout-card">
-              <label>Top 1
-                <select name="top1_status">
-                  <option value="">Chưa check</option>
-                  <option>Xong</option>
-                  <option>Một phần</option>
-                  <option>Chưa làm</option>
-                  <option>Bỏ/đổi hướng</option>
-                </select>
-              </label>
-              <textarea name="top1_note" rows="2" placeholder="Ghi chú"></textarea>
-            </div>
-            <div class="checkout-card">
-              <label>Top 2
-                <select name="top2_status">
-                  <option value="">Chưa check</option>
-                  <option>Xong</option>
-                  <option>Một phần</option>
-                  <option>Chưa làm</option>
-                  <option>Bỏ/đổi hướng</option>
-                </select>
-              </label>
-              <textarea name="top2_note" rows="2" placeholder="Ghi chú"></textarea>
-            </div>
-            <div class="checkout-card">
-              <label>Top 3
-                <select name="top3_status">
-                  <option value="">Chưa check</option>
-                  <option>Xong</option>
-                  <option>Một phần</option>
-                  <option>Chưa làm</option>
-                  <option>Bỏ/đổi hướng</option>
-                </select>
-              </label>
-              <textarea name="top3_note" rows="2" placeholder="Ghi chú"></textarea>
-            </div>
-          </div>
-
-          <div class="grid3">
-            <label>Đã xong<textarea name="done_summary" rows="3"></textarea></label>
-            <label>Đang kẹt<textarea name="stuck_summary" rows="3"></textarea></label>
-            <label>Ngày mai<textarea name="tomorrow_hint" rows="3"></textarea></label>
-          </div>
-
-          <div class="step-title" style="margin-top:8px">
-            <span class="step-no">3</span>
-            <h2>Nhịp sống</h2>
-          </div>
-
-          <div class="range-row"><span>Gia đình</span><input type="range" name="life_axis_family" min="0" max="10" value="0"><span data-range-value="life_axis_family">0</span></div>
-          <div class="range-row"><span>Công việc</span><input type="range" name="life_axis_work" min="0" max="10" value="0"><span data-range-value="life_axis_work">0</span></div>
-          <div class="range-row"><span>Sức khỏe</span><input type="range" name="life_axis_health" min="0" max="10" value="0"><span data-range-value="life_axis_health">0</span></div>
-          <div class="range-row"><span>Sáng tạo</span><input type="range" name="life_axis_creative" min="0" max="10" value="0"><span data-range-value="life_axis_creative">0</span></div>
-          <div class="range-row"><span>Học tập</span><input type="range" name="life_axis_learning" min="0" max="10" value="0"><span data-range-value="life_axis_learning">0</span></div>
-
-          <button class="btn btn-primary" type="submit">Lưu ngày</button>
-        </form>
-      </div>
-
-      <div class="panel">
-        <div class="step-title">
-          <span class="step-no">4</span>
-          <h2>Cần nhìn</h2>
-        </div>
-        <div class="item-list" id="urgentTasksList"></div>
-      </div>
-    </section>
-
-    <section class="pane" id="pane-capture">
-      <div class="panel">
-        <div class="step-title">
-          <span class="step-no">1</span>
-          <h2>Ghi nhanh</h2>
-        </div>
-
-        <form id="captureForm" class="stack">
-          <label>Nội dung
-            <textarea class="capture-textarea" name="raw_text" placeholder="Gõ nhanh hoặc dán đoạn chat AI..." required></textarea>
-          </label>
-
-          <div class="grid3">
-            <label>Loại
-              <select name="forced_type">
-                <option value="">Tự nhận diện</option>
-                <option>Việc</option>
-                <option>Quyết định</option>
-                <option>Ý tưởng</option>
-                <option>Ghi nhận đời sống</option>
-                <option>Tip AI</option>
-                <option>Quan sát</option>
-                <option>Ảnh</option>
-                <option>Ghi chú</option>
-              </select>
-            </label>
-            <label>Mảng
-              <select name="domain">
-                <option value="">Tự nhận diện</option>
-                <option>Kiro/Sunbot</option>
-                <option>VJT</option>
-                <option>Pefso</option>
-                <option>Gia đình</option>
-                <option>Sức khỏe</option>
-                <option>Sáng tạo</option>
-                <option>Học tập</option>
-                <option>Cá nhân</option>
-              </select>
-            </label>
-            <label>Dự án
-              <select name="project">
-                <option value="">Tự nhận diện</option>
-                <option>Sunbot HTML Factory</option>
-                <option>Sunbot Festival</option>
-                <option>CRM & Hotline</option>
-                <option>VJT 11 tháng</option>
-                <option>Pefso B2B</option>
-                <option>Personal OS</option>
-                <option>AI Workflow</option>
-                <option>Khảo sát-Đi công tác</option>
-              </select>
-            </label>
-          </div>
-
-          <div class="grid2">
-            <label>Tags<input name="tags" /></label>
-            <label>Địa điểm<input name="location" /></label>
-          </div>
-
-          <label>Ảnh/file<input name="attachment" type="file" /></label>
-
-          <div class="actions">
-            <button class="btn btn-primary" type="submit">Lưu</button>
-            <button class="btn btn-soft" id="clearCaptureBtn" type="button">Xóa</button>
-          </div>
-        </form>
-      </div>
-
-      <div class="panel">
-        <div class="step-title">
-          <span class="step-no">2</span>
-          <h2>Vừa lưu</h2>
-        </div>
-        <div id="lastCaptureResult" class="empty">Chưa có dữ liệu mới.</div>
-      </div>
-    </section>
-
-    <section class="pane" id="pane-process">
-      <div class="panel">
-        <div class="step-title"><span class="step-no">1</span><h2>Việc mới</h2></div>
-        <div class="item-list" id="newTasksList"></div>
-      </div>
-      <div class="panel">
-        <div class="step-title"><span class="step-no">2</span><h2>Đang chờ</h2></div>
-        <div class="item-list" id="waitingTasksList"></div>
-      </div>
-      <div class="panel">
-        <div class="step-title"><span class="step-no">3</span><h2>Quyết định</h2></div>
-        <div class="item-list" id="openDecisionsList"></div>
-      </div>
-      <div class="panel">
-        <div class="step-title"><span class="step-no">4</span><h2>Ý tưởng</h2></div>
-        <div class="item-list" id="recentIdeasList"></div>
-      </div>
-    </section>
-
-    <section class="pane" id="pane-library">
-      <div class="panel">
-        <div class="step-title"><span class="step-no">1</span><h2>Tư liệu</h2></div>
-        <div class="item-list" id="recentLifeList"></div>
-      </div>
-    </section>
-
-    <section class="pane" id="pane-analysis">
-      <div class="panel">
-        <div class="step-title"><span class="step-no">1</span><h2>Chỉ số</h2></div>
-        <div class="metric-grid" id="analysisMetrics"></div>
-      </div>
-
-      <div class="panel">
-        <div class="step-title"><span class="step-no">2</span><h2>Mảng</h2></div>
-        <div class="item-list" id="topDomainsList"></div>
-      </div>
-
-      <div class="panel">
-        <div class="step-title"><span class="step-no">3</span><h2>Nhìn lại</h2></div>
-        <div class="item-list" id="insightList"></div>
-      </div>
-    </section>
+<section class="pane active" id="pane-day">
+  <div class="focus">
+    <small>Trọng tâm</small>
+    <div class="focus-text" id="focusText">Chưa đặt trọng tâm</div>
+    <input id="focusQuick" placeholder="Việc quan trọng nhất hôm nay">
+    <div class="actions"><button class="btn soft" id="saveFocusBtn">Lưu</button><button class="btn soft" data-jump="inbox">Ghi nhanh</button></div>
+    <div class="sync-note" id="syncNote"></div>
   </div>
 
-  <div class="drawer-backdrop" id="drawerBackdrop"></div>
-  <aside class="drawer" id="detailDrawer" aria-hidden="true">
-    <div class="drawer-head">
-      <div>
-        <p class="hint" id="drawerType">Chi tiết</p>
-        <h2 id="drawerTitle">—</h2>
+  <div class="panel">
+    <form id="dayForm" class="stack">
+      <div class="step"><span class="no">1</span><h2>Sáng</h2></div>
+      <div class="grid2"><label>Năng lượng<select name="energy"><option></option><option>Thấp</option><option>Vừa</option><option>Cao</option></select></label><label>Tâm trạng<select name="mood"><option></option><option>Ổn</option><option>Căng</option><option>Phân tán</option><option>Hào hứng</option><option>Mệt</option><option>Bình an</option></select></label></div>
+      <label>Trọng tâm<input name="main_focus" placeholder="Một câu giữ hướng"></label>
+      <div class="topgrid">
+        <div class="top-item"><span class="num">1</span><label>Top 1<input name="top1"></label></div>
+        <div class="top-item"><span class="num">2</span><label>Top 2<input name="top2"></label></div>
+        <div class="top-item"><span class="num">3</span><label>Top 3<input name="top3"></label></div>
       </div>
-      <button class="icon-btn" id="closeDrawer" type="button">×</button>
-    </div>
-    <form id="detailForm" class="stack"></form>
-  </aside>
+      <label>Kế hoạch<textarea name="day_plan" rows="3"></textarea></label>
+
+      <div class="step" style="margin-top:8px"><span class="no">2</span><h2>Tối</h2></div>
+      <div class="topgrid">
+        <div class="check-item"><label>Top 1<select name="top1_status"><option></option><option>Xong</option><option>Một phần</option><option>Chưa làm</option><option>Bỏ/đổi hướng</option></select></label><textarea name="top1_note" rows="2" placeholder="Ghi chú"></textarea></div>
+        <div class="check-item"><label>Top 2<select name="top2_status"><option></option><option>Xong</option><option>Một phần</option><option>Chưa làm</option><option>Bỏ/đổi hướng</option></select></label><textarea name="top2_note" rows="2" placeholder="Ghi chú"></textarea></div>
+        <div class="check-item"><label>Top 3<select name="top3_status"><option></option><option>Xong</option><option>Một phần</option><option>Chưa làm</option><option>Bỏ/đổi hướng</option></select></label><textarea name="top3_note" rows="2" placeholder="Ghi chú"></textarea></div>
+      </div>
+      <div class="grid3"><label>Đã xong<textarea name="done_summary"></textarea></label><label>Đang kẹt<textarea name="stuck_summary"></textarea></label><label>Ngày mai<textarea name="tomorrow_hint"></textarea></label></div>
+
+      <div class="step" style="margin-top:8px"><span class="no">3</span><h2>Nhịp sống</h2></div>
+      <div class="range-row"><span>Gia đình</span><input type="range" name="life_axis_family" min="0" max="10" value="0"><span data-range="life_axis_family">0</span></div>
+      <div class="range-row"><span>Công việc</span><input type="range" name="life_axis_work" min="0" max="10" value="0"><span data-range="life_axis_work">0</span></div>
+      <div class="range-row"><span>Sức khỏe</span><input type="range" name="life_axis_health" min="0" max="10" value="0"><span data-range="life_axis_health">0</span></div>
+      <div class="range-row"><span>Sáng tạo</span><input type="range" name="life_axis_creative" min="0" max="10" value="0"><span data-range="life_axis_creative">0</span></div>
+      <div class="range-row"><span>Học tập</span><input type="range" name="life_axis_learning" min="0" max="10" value="0"><span data-range="life_axis_learning">0</span></div>
+
+      <button class="btn primary" type="submit">Lưu ngày</button>
+    </form>
+  </div>
+
+  <div class="panel"><div class="step"><span class="no">4</span><h2>Cần nhìn</h2></div><div class="item-list" id="urgentList"></div></div>
+</section>
+
+<section class="pane" id="pane-inbox">
+  <div class="panel">
+    <div class="step"><span class="no">1</span><h2>Ghi nhanh</h2></div>
+    <form id="captureForm" class="stack">
+      <label>Nội dung<textarea class="capture" name="raw_text" placeholder="Gõ nhanh hoặc dán đoạn chat AI..." required></textarea></label>
+      <div class="grid3"><label>Loại<select name="forced_type"><option value="">Tự nhận diện</option><option>Việc</option><option>Quyết định</option><option>Ý tưởng</option><option>Ghi nhận đời sống</option><option>Tip AI</option><option>Quan sát</option><option>Ảnh</option><option>Ghi chú</option></select></label><label>Mảng<select name="domain"><option value="">Tự nhận diện</option><option>Kiro/Sunbot</option><option>VJT</option><option>Pefso</option><option>Gia đình</option><option>Sức khỏe</option><option>Sáng tạo</option><option>Học tập</option><option>Cá nhân</option></select></label><label>Dự án<select name="project"><option value="">Tự nhận diện</option><option>Sunbot HTML Factory</option><option>Sunbot Festival</option><option>CRM & Hotline</option><option>VJT 11 tháng</option><option>Pefso B2B</option><option>Personal OS</option><option>AI Workflow</option><option>Khảo sát-Đi công tác</option></select></label></div>
+      <div class="grid2"><label>Tags<input name="tags"></label><label>Địa điểm<input name="location"></label></div>
+      <label>Ảnh/file<input name="attachment" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx"></label>
+      <div class="actions"><button class="btn primary" type="submit">Lưu</button><button class="btn soft" id="clearCaptureBtn" type="button">Xóa</button></div>
+    </form>
+  </div>
+  <div class="panel"><div class="step"><span class="no">2</span><h2>Vừa ghi</h2></div><div id="lastCapture" class="empty">Chưa có dữ liệu mới.</div></div>
+</section>
+
+<section class="pane" id="pane-work">
+  <div class="panel"><div class="step"><span class="no">1</span><h2>Việc mới</h2></div><div class="item-list" id="newTasks"></div></div>
+  <div class="panel"><div class="step"><span class="no">2</span><h2>Đang chờ</h2></div><div class="item-list" id="waitingTasks"></div></div>
+  <div class="panel"><div class="step"><span class="no">3</span><h2>Quyết định</h2></div><div class="item-list" id="decisions"></div></div>
+  <div class="panel"><div class="step"><span class="no">4</span><h2>Ý tưởng</h2></div><div class="item-list" id="ideas"></div></div>
+</section>
+
+<section class="pane" id="pane-data">
+  <div class="panel"><div class="step"><span class="no">1</span><h2>Ngày đã ghi</h2></div><div class="item-list" id="dayList"></div></div>
+  <div class="panel"><div class="step"><span class="no">2</span><h2>Chỉ số</h2></div><div class="metric-grid" id="metrics"></div></div>
+  <div class="panel"><div class="step"><span class="no">3</span><h2>Mảng</h2></div><div class="item-list" id="domains"></div></div>
+  <div class="panel"><div class="step"><span class="no">4</span><h2>Tư liệu</h2></div><div class="item-list" id="life"></div></div>
+</section>
+</div>
+
+<div class="drawer-bg" id="drawerBg"></div>
+<aside class="drawer" id="drawer"><div class="drawer-head"><div><p class="hint" id="drawerType">Chi tiết</p><h2 id="drawerTitle">—</h2></div><button class="icon" id="closeDrawer">×</button></div><form id="drawerForm" class="drawer-form"></form></aside>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbwNqmXQ4nIZ7eDpi7FX1Y-PX--a6XYrmsAFOopzABPyuIah9XTqrZmDXmc01Q4LS7OW/exec";
-const API_TOKEN = "";
-const state = { data:null, selectedDate:"", toastTimer:null, currentDetail:null };
-const $ = s => document.querySelector(s);
-const $$ = s => Array.from(document.querySelectorAll(s));
+const API_URL="https://script.google.com/macros/s/AKfycbxCGU_tE-DnblUeN6IkGmoR-4GzdKt804twxOJMTbifc0giB6mpxzLwS0Tl_8pWoqI4/exec";
+const API_TOKEN="";
+const state={data:null,date:"",timer:null,detail:null,hydrating:false,lastCreated:null};
 
+const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 function esc(v){return String(v||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#39;")}
-function toast(msg, kind=""){clearTimeout(state.toastTimer);const el=$("#toast");el.textContent=msg;el.className="toast "+kind;state.toastTimer=setTimeout(()=>el.className="toast hidden",kind==="error"?5600:2200)}
-function toYmd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
-function today(){return toYmd(new Date())}
-function addDays(ymd,n){const d=new Date(`${ymd}T12:00:00`);d.setDate(d.getDate()+n);return toYmd(d)}
-function setDate(ymd){state.selectedDate=ymd||today();$("#viewDateInput").value=state.selectedDate}
-function buildUrl(action, params={}){const u=new URL(API_URL);u.searchParams.set("action", action);Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=="")u.searchParams.set(k,v)});if(API_TOKEN)u.searchParams.set("token",API_TOKEN);return u.toString()}
-async function apiGet(action, params={}){const r=await fetch(buildUrl(action,params),{method:"GET",redirect:"follow"});const j=await r.json();if(!j.ok)throw new Error(j.error||"API lỗi");return j.data}
-async function apiPost(action, payload={}){const body=JSON.stringify(API_TOKEN?{...payload,token:API_TOKEN}:payload);const r=await fetch(buildUrl(action),{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body});const j=await r.json();if(!j.ok)throw new Error(j.error||"API lỗi");return j.data}
+function toast(msg,kind=""){clearTimeout(state.timer);const el=$("#toast");el.textContent=msg;el.className="toast "+kind;state.timer=setTimeout(()=>el.className="toast hidden",kind==="error"?6000:2300)}
+function ymd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`}
+function today(){return ymd(new Date())}
+function addDays(s,n){const d=new Date(`${s}T12:00:00`);d.setDate(d.getDate()+n);return ymd(d)}
+function setDate(s){state.date=s||today();$("#dateInput").value=state.date}
+function url(action,params={}){const u=new URL(API_URL);u.searchParams.set("action",action);Object.entries(params).forEach(([k,v])=>{if(v!==undefined&&v!==null&&v!=="")u.searchParams.set(k,v)});if(API_TOKEN)u.searchParams.set("token",API_TOKEN);return u.toString()}
+async function apiGet(action,params={}){const r=await fetch(url(action,params),{method:"GET",redirect:"follow"});const j=await r.json();if(!j.ok)throw new Error(j.error||"API lỗi");return j.data}
+async function apiPost(action,payload={}){const body=JSON.stringify(API_TOKEN?{...payload,token:API_TOKEN}:payload);const r=await fetch(url(action),{method:"POST",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},body});const j=await r.json();if(!j.ok)throw new Error(j.error||"API lỗi");return j.data}
+function key(d=state.date){return "ntv_day_"+d}
+function indexKey(){return "ntv_day_index"}
+function capKey(){return "ntv_capture_history"}
+function idx(){try{return JSON.parse(localStorage.getItem(indexKey())||"[]")}catch(e){return[]}}
+function setIdx(a){localStorage.setItem(indexKey(),JSON.stringify([...new Set(a)].sort().reverse()))}
+function readDay(d=state.date){try{return JSON.parse(localStorage.getItem(key(d))||"{}")}catch(e){return{}}}
+function saveDayLocal(p,synced=false){const date=p.date||state.date||today();const old=readDay(date);const next={...old,...p,date,_saved_at:new Date().toISOString(),_synced:synced};localStorage.setItem(key(date),JSON.stringify(next));const a=idx();if(!a.includes(date)){a.push(date);setIdx(a)}}
+function caps(){try{return JSON.parse(localStorage.getItem(capKey())||"[]")}catch(e){return[]}}
+function addCap(p,result={}){const a=caps();a.unshift({date:state.date||today(),created_at:new Date().toISOString(),raw_text:p.raw_text||"",type:result.capture?.auto_type||p.forced_type||"Ghi",domain:result.capture?.domain||p.domain||"",project:result.capture?.project||p.project||""});localStorage.setItem(capKey(),JSON.stringify(a.slice(0,80)))}
 function fileToBase64(file){return new Promise((res,rej)=>{const rd=new FileReader();rd.onload=()=>res(String(rd.result||"").split(",")[1]||"");rd.onerror=()=>rej(new Error("Không đọc được file"));rd.readAsDataURL(file)})}
+function loadImage(file){return new Promise((res,rej)=>{const u=URL.createObjectURL(file);const img=new Image();img.onload=()=>{URL.revokeObjectURL(u);res(img)};img.onerror=()=>{URL.revokeObjectURL(u);rej(new Error("Không đọc được ảnh"))};img.src=u})}
+function canvasBlob(c,q){return new Promise((res,rej)=>c.toBlob(b=>b?res(b):rej(new Error("Không nén được ảnh")),"image/jpeg",q))}
+function blobToBase64(blob){return new Promise((res,rej)=>{const rd=new FileReader();rd.onload=()=>res(String(rd.result||"").split(",")[1]||"");rd.onerror=()=>rej(new Error("Không đọc được ảnh nén"));rd.readAsDataURL(blob)})}
+async function prepareFile(file){if(!file.type.startsWith("image/"))return{file_name:file.name,mime_type:file.type||"application/octet-stream",file_data:await fileToBase64(file)};const img=await loadImage(file);const c=document.createElement("canvas"),ctx=c.getContext("2d");let maxSide=Math.min(Math.max(img.naturalWidth,img.naturalHeight),1600),best=null;while(maxSide>=360){const sc=Math.min(1,maxSide/Math.max(img.naturalWidth,img.naturalHeight));c.width=Math.round(img.naturalWidth*sc);c.height=Math.round(img.naturalHeight*sc);ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);ctx.drawImage(img,0,0,c.width,c.height);for(const q of [.82,.72,.62,.52]){const b=await canvasBlob(c,q);best=b;if(b.size<=450*1024)return{file_name:file.name.replace(/\.[^.]+$/,"")+".jpg",mime_type:"image/jpeg",file_data:await blobToBase64(b),original_size:file.size,optimized_size:b.size}}maxSide=Math.floor(maxSide*.78)}return{file_name:file.name.replace(/\.[^.]+$/,"")+".jpg",mime_type:"image/jpeg",file_data:await blobToBase64(best),original_size:file.size,optimized_size:best.size}}
 
-function renderCards(id, items, fn, empty="Chưa có dữ liệu"){const el=document.getElementById(id);if(!el)return;if(!items||!items.length){el.innerHTML=`<div class="empty">${esc(empty)}</div>`;return}el.innerHTML=items.map(fn).join("")}
-function itemCard(type,item){const title=item.title||"Không có tiêu đề";const id=item.task_id||item.decision_id||item.idea_id||item.life_id||item.capture_id||"";const meta=[item.status,item.priority,item.domain,item.project,item.date].filter(Boolean).join(" · ");return `<article class="item clickable" data-type="${esc(type)}" data-id="${esc(id)}"><h3>${esc(title)}</h3><p class="meta">${esc(meta)}</p>${item.note?`<p class="body">${esc(item.note)}</p>`:""}<div class="tags">${item.due_date?`<span class="tag">Hạn ${esc(item.due_date)}</span>`:""}${item.file_url?`<span class="tag">Có file</span>`:""}</div></article>`}
-const taskCard=t=>itemCard("task",t), decisionCard=d=>itemCard("decision",d), ideaCard=i=>itemCard("idea",i), lifeCard=l=>itemCard("life",l);
+function formPayload(){const f=$("#dayForm"),fd=new FormData(f),p={date:state.date};for(const [k,v] of fd.entries())p[k]=String(v||"").trim();return p}
+function updateFocusVisual(p){$("#focusText").textContent=p.main_focus||"Chưa đặt trọng tâm";$("#focusQuick").value=p.main_focus||"";$("#syncNote").textContent=p._saved_at?(p._synced?"Đã đồng bộ ":"Lưu trên máy ")+new Date(p._saved_at).toLocaleTimeString("vi-VN"):""}
+function hydrateDay(server={}){state.hydrating=true;const local=readDay(state.date);const p={...server,...local,date:state.date};const f=$("#dayForm");["energy","mood","main_focus","top1","top2","top3","day_plan","top1_status","top1_note","top2_status","top2_note","top3_status","top3_note","done_summary","stuck_summary","tomorrow_hint","life_axis_family","life_axis_work","life_axis_health","life_axis_creative","life_axis_learning"].forEach(n=>{if(f.elements[n])f.elements[n].value=p[n]||f.elements[n].defaultValue||""});updateFocusVisual(p);bindRanges();state.hydrating=false}
+function renderCards(id,items,fn,empty){const el=$("#"+id);if(!items||!items.length){el.innerHTML=`<div class="empty">${esc(empty||"Chưa có dữ liệu")}</div>`;return}el.innerHTML=items.map(fn).join("")}
+function card(type,item){const title=item.title||"Không tiêu đề",id=item.task_id||item.decision_id||item.idea_id||item.life_id||"";const meta=[item.status,item.priority,item.domain,item.project,item.date].filter(Boolean).join(" · ");return`<article class="item clickable" data-type="${esc(type)}" data-id="${esc(id)}"><h3>${esc(title)}</h3><p class="meta">${esc(meta)}</p>${item.note?`<p class="body">${esc(item.note)}</p>`:""}<div class="tags">${item.due_date?`<span class="tag">Hạn ${esc(item.due_date)}</span>`:""}${item.file_url?`<span class="tag">Có file</span>`:""}</div></article>`}
+function render(data){state.data=data;setDate(data.viewDate||state.date||today());hydrateDay(data.today||{});const urgent=[...(data.overdueTasks||[]),...(data.todayTasks||[]),...(data.waitingTasks||[])];const seen=new Set();const uniq=urgent.filter(x=>{const id=x.task_id||x.title;if(seen.has(id))return false;seen.add(id);return true});renderCards("urgentList",uniq.slice(0,5),x=>card("task",x),"Chưa có việc cần nhìn.");renderCards("newTasks",data.newTasks||[],x=>card("task",x),"Chưa có việc mới.");renderCards("waitingTasks",data.waitingTasks||[],x=>card("task",x),"Không có việc đang chờ.");renderCards("decisions",data.openDecisionsList||[],x=>card("decision",x),"Không có quyết định.");renderCards("ideas",data.recentIdeas||[],x=>card("idea",x),"Chưa có ý tưởng.");renderCards("life",data.recentLife||[],x=>card("life",x),"Chưa có tư liệu.");renderMetrics(data);renderDayList();bindItems()}
+function renderDayList(){const days=idx().map(d=>readDay(d)).filter(x=>x.date).sort((a,b)=>String(b.date).localeCompare(String(a.date))).slice(0,30);renderCards("dayList",days,d=>`<article class="item clickable" data-day="${esc(d.date)}"><h3>${esc(d.date)} · ${esc(d.main_focus||d.top1||"Chưa có trọng tâm")}</h3><p class="meta">${d._synced?"Đã đồng bộ":"Lưu trên máy"} · ${esc(d.energy||"—")}</p>${d.done_summary?`<p class="body">${esc(d.done_summary)}</p>`:""}</article>`,"Chưa có ngày đã ghi.");$$("[data-day]").forEach(el=>el.onclick=()=>{setDate(el.dataset.day);hydrateDay({});load();tab("day")})}
+function renderMetrics(data){const a=data.analysis||{};const m=[["Capture",a.capture30||0],["Ý tưởng",a.ideas30||0],["Tư liệu",a.life30||0],["Task xong",a.tasksDone30||0],["Decision",a.openDecisions||0],["Check-in",a.habits30||0]];$("#metrics").innerHTML=m.map(([l,v])=>`<button class="metric"><span>${esc(l)}</span><b>${esc(v)}</b></button>`).join("");const top=a.topDomains||[],max=Math.max(1,...top.map(x=>Number(x.count)||0));renderCards("domains",top,x=>`<article class="item"><h3>${esc(x.domain||"Chưa rõ")}</h3><p class="meta">${esc(x.count)} capture</p><div class="bar"><i style="width:${Math.max(5,(Number(x.count)||0)/max*100)}%"></i></div></article>`,"Chưa đủ dữ liệu.")}
+async function load(){try{$("#syncBtn").textContent="…";const d=await apiGet("app.bootstrap",{date:state.date||today()});render(d);toast("Đã đồng bộ","ok")}catch(e){hydrateDay({});renderDayList();toast("Lỗi đồng bộ, vẫn dùng dữ liệu trên máy: "+e.message,"error")}finally{$("#syncBtn").textContent="↻"}}
+async function saveDay(e){if(e)e.preventDefault();const p=formPayload();saveDayLocal(p,false);hydrateDay(p);renderDayList();try{await apiPost("daily.save",p);saveDayLocal(p,true);hydrateDay(readDay(state.date));toast("Đã lưu","ok");await load()}catch(err){toast("Đã lưu trên máy. Chưa đồng bộ Sheet: "+err.message,"error")}}
+async function captureSubmit(e){e.preventDefault();const f=$("#captureForm"),fd=new FormData(f);let p={source:"GitHub Pages"};for(const [k,v] of fd.entries())if(k!=="attachment")p[k]=String(v||"").trim();const file=fd.get("attachment");try{if(file instanceof File&&file.size>0){toast("Đang xử lý file...");p.file=await prepareFile(file)}const result=await apiPost("captures.create",p);
+addCap(p,result);
+renderLastCreated(normalizeCreated(result,p));
+f.reset();
+toast("Đã lưu capture","ok");
+await load();
+}catch(err){
+  const localResult={capture:{auto_type:p.forced_type||"Ghi",domain:p.domain||"",project:p.project||""}};
+  addCap(p,localResult);
+  renderLastCreated(normalizeCreated(localResult,p));
+  toast("Đã giữ trên máy. Chưa đồng bộ: "+err.message,"error");
+}}
+function bindRanges(){$$('input[type="range"]').forEach(i=>{const t=document.querySelector(`[data-range="${i.name}"]`);if(t)t.textContent=i.value;i.oninput=()=>{if(t)t.textContent=i.value;if(!state.hydrating)saveDayLocal(formPayload(),false)}})}
+function bindItems(){$$(".item.clickable[data-type]").forEach(el=>el.onclick=()=>openDetail(el.dataset.type,el.dataset.id))}
 
-function render(data){
-  state.data=data; setDate(data.viewDate||state.selectedDate||today());
-  const d=data.today||{};
-  $("#focusPreview").textContent=d.main_focus||"Chưa đặt trọng tâm";
-  $("#mainFocusQuick").value=d.main_focus||"";
-  populateDaily(d);
-  const urgent=[...(data.overdueTasks||[]),...(data.todayTasks||[]),...(data.waitingTasks||[])];
-  const seen=new Set(); const uniq=urgent.filter(x=>{const id=x.task_id||x.title;if(seen.has(id))return false;seen.add(id);return true});
-  renderCards("urgentTasksList",uniq.slice(0,5),taskCard,"Chưa có việc cần nhìn.");
-  renderCards("newTasksList",data.newTasks||[],taskCard,"Chưa có việc mới.");
-  renderCards("waitingTasksList",data.waitingTasks||[],taskCard,"Không có việc đang chờ.");
-  renderCards("openDecisionsList",data.openDecisionsList||[],decisionCard,"Không có quyết định đang mở.");
-  renderCards("recentIdeasList",data.recentIdeas||[],ideaCard,"Chưa có ý tưởng.");
-  renderCards("recentLifeList",data.recentLife||[],lifeCard,"Chưa có tư liệu.");
-  renderAnalysis(data);
-  bindCardClicks();
+function pluralAction(type,verb){
+  const map={task:"tasks",decision:"decisions",idea:"ideas",life:"life",capture:"captures"};
+  return (map[type]||type)+"."+verb;
 }
-function populateDaily(d){const f=$("#dailyLogForm");["main_focus","top1","top2","top3","energy","mood","day_plan","done_summary","stuck_summary","tomorrow_hint","top1_status","top2_status","top3_status","top1_note","top2_note","top3_note","life_axis_family","life_axis_work","life_axis_health","life_axis_creative","life_axis_learning"].forEach(n=>{if(f.elements[n])f.elements[n].value=d[n]||f.elements[n].defaultValue||""});bindRanges()}
-function renderAnalysis(data){const a=data.analysis||{};const metrics=[["Capture",a.capture30||0,"capture"],["Ý tưởng",a.ideas30||0,"ideas"],["Tư liệu",a.life30||0,"life"],["Task xong",a.tasksDone30||0,"tasks-done"],["Decision",a.openDecisions||0,"decisions"],["Check-in",a.habits30||0,"habits"]];
-  $("#analysisMetrics").innerHTML=metrics.map(([l,v,k])=>`<button class="metric" data-drill="${k}"><span>${esc(l)}</span><b>${esc(v)}</b></button>`).join("");
-  const top=a.topDomains||[]; const max=Math.max(1,...top.map(x=>Number(x.count)||0));
-  renderCards("topDomainsList",top,x=>`<article class="item clickable" data-drill="domain" data-domain="${esc(x.domain||"")}"><h3>${esc(x.domain||"Chưa rõ")}</h3><p class="meta">${esc(x.count)} capture</p><div class="bar"><i style="width:${Math.max(5,(Number(x.count)||0)/max*100)}%"></i></div></article>`,"Chưa đủ dữ liệu.");
-  const ins=[]; if((data.overdueTasks||[]).length)ins.push({title:"Quá hạn",body:`${data.overdueTasks.length} việc cần xử lý.`}); if((data.waitingTasks||[]).length)ins.push({title:"Đang chờ",body:`${data.waitingTasks.length} việc phụ thuộc người khác.`}); if(top[0])ins.push({title:"Mảng nổi bật",body:`${top[0].domain} đang có nhiều capture nhất.`}); if(!ins.length)ins.push({title:"Ổn",body:"Chưa có điểm nghẽn lớn."});
-  renderCards("insightList",ins,i=>`<article class="item"><h3>${esc(i.title)}</h3><p class="body">${esc(i.body)}</p></article>`);
+function normalizeCreated(result,payload){
+  const linkedType=result.linked_type || result.type || result.capture?.linked_type || result.capture?.auto_type || payload.forced_type || "capture";
+  const rawType=String(linkedType).toLowerCase();
+  let type="capture";
+  if(rawType.includes("việc")||rawType.includes("task")) type="task";
+  else if(rawType.includes("quyết")||rawType.includes("decision")) type="decision";
+  else if(rawType.includes("ý")||rawType.includes("idea")||rawType.includes("tip")||rawType.includes("quan sát")) type="idea";
+  else if(rawType.includes("đời")||rawType.includes("ảnh")||rawType.includes("life")) type="life";
+  const id=result.linked_id || result.item?.task_id || result.item?.decision_id || result.item?.idea_id || result.item?.life_id || result.capture?.linked_id || result.capture_id || result.capture?.capture_id || "";
+  const title=result.item?.title || payload.raw_text || "Ghi nhận mới";
+  return {type,id,item:{...(result.item||{}),title,domain:result.capture?.domain||payload.domain||"",project:result.capture?.project||payload.project||"",status:result.item?.status||"",note:payload.raw_text||"",capture_id:result.capture_id||result.capture?.capture_id||""}};
 }
-function bindRanges(){$$('input[type="range"]').forEach(i=>{const t=document.querySelector(`[data-range-value="${i.name}"]`);if(t)t.textContent=i.value;i.oninput=()=>{if(t)t.textContent=i.value}})}
-async function load(){try{$("#syncButton").textContent="…";const data=await apiGet("app.bootstrap",{date:state.selectedDate||today()});render(data);toast("Đã đồng bộ","ok")}catch(e){toast("Không đồng bộ: "+e.message,"error")}finally{$("#syncButton").textContent="↻"}}
-async function setupWorkbook(){try{await apiPost("workbook.setup",{});toast("Đã kiểm tra Sheet","ok");await load()}catch(e){toast("Lỗi Sheet: "+e.message,"error")}}
-async function saveDaily(e){if(e)e.preventDefault();const f=$("#dailyLogForm");const fd=new FormData(f);const payload={date:state.selectedDate||today()};for(const [k,v] of fd.entries())payload[k]=String(v||"").trim();try{await apiPost("daily.save",payload);toast("Đã lưu","ok");await load()}catch(err){toast("Lỗi lưu: "+err.message,"error")}}
-async function saveQuickFocus(){const f=$("#dailyLogForm");f.elements.main_focus.value=$("#mainFocusQuick").value;await saveDaily()}
-async function captureSubmit(e){e.preventDefault();const f=$("#captureForm");const fd=new FormData(f);let payload={source:"GitHub Pages"};for(const [k,v] of fd.entries()){if(k!=="attachment")payload[k]=String(v||"").trim()}const file=fd.get("attachment");try{if(file instanceof File && file.size>0){toast("Đang đọc file...");payload.file={file_name:file.name,mime_type:file.type||"application/octet-stream",file_data:await fileToBase64(file)}}const result=await apiPost("captures.create",payload);$("#lastCaptureResult").className="item";$("#lastCaptureResult").innerHTML=`<h3>${esc(result.capture?.auto_type||result.auto_type||"Đã lưu")}</h3><p class="meta">${esc(result.capture?.domain||payload.domain||"Tự nhận diện")} · ${esc(result.capture?.project||payload.project||"")}</p><p class="body">${esc(payload.raw_text)}</p>`;f.reset();toast("Đã lưu","ok");await load()}catch(err){toast("Lỗi capture: "+err.message,"error")}}
-function openDetail(type,id){const data=state.data||{};let item=null;if(type==="task")item=[...(data.todayTasks||[]),...(data.newTasks||[]),...(data.waitingTasks||[]),...(data.overdueTasks||[])].find(x=>x.task_id===id);if(type==="decision")item=(data.openDecisionsList||[]).find(x=>x.decision_id===id);if(type==="idea")item=(data.recentIdeas||[]).find(x=>x.idea_id===id);if(type==="life")item=(data.recentLife||[]).find(x=>x.life_id===id);if(!item)return toast("Không tìm thấy dữ liệu","error");state.currentDetail={type,id,item};$("#drawerType").textContent=type==="task"?"Việc":type==="decision"?"Quyết định":type==="idea"?"Ý tưởng":"Tư liệu";$("#drawerTitle").textContent=item.title||"Chi tiết";renderDetailForm(type,item);$("#drawerBackdrop").classList.add("open");$("#detailDrawer").classList.add("open")}
-function renderDetailForm(type,item){const extra=type==="task"?`<div class="grid2"><label>Ưu tiên<input name="priority" value="${esc(item.priority||"")}"></label><label>Hạn<input name="due_date" type="date" value="${esc(item.due_date||"")}"></label></div><label>Bước tiếp<input name="next_action" value="${esc(item.next_action||"")}"></label>`:"";$("#detailForm").innerHTML=`<label>Tiêu đề<input name="title" value="${esc(item.title||"")}"></label><div class="grid2"><label>Mảng<input name="domain" value="${esc(item.domain||"")}"></label><label>Dự án<input name="project" value="${esc(item.project||"")}"></label></div><label>Trạng thái<input name="status" value="${esc(item.status||"")}"></label>${extra}<label>Ghi chú<textarea name="note">${esc(item.note||item.final_decision||item.criteria||"")}</textarea></label><div class="actions"><button class="btn btn-primary" type="submit">Lưu</button><button class="btn btn-soft" type="button" id="markDoneBtn">Xong</button><button class="btn btn-danger" type="button" id="deleteItemBtn">Xóa</button></div>`;$("#markDoneBtn").onclick=()=>quickUpdateDetail("status",type==="decision"?"Đã quyết":"Xong");$("#deleteItemBtn").onclick=()=>quickUpdateDetail("deleted_at",new Date().toISOString())}
-function closeDrawer(){$("#drawerBackdrop").classList.remove("open");$("#detailDrawer").classList.remove("open")}
-async function quickUpdateDetail(k,v){const {type,id}=state.currentDetail||{};if(!type)return;const action=type==="task"?"tasks.update":type==="decision"?"decisions.update":type==="idea"?"ideas.update":"life.update";try{await apiPost(action,{id,[k]:v});toast("Đã cập nhật","ok");closeDrawer();await load()}catch(e){toast("Backend chưa hỗ trợ: "+e.message,"error")}}
-async function saveDetail(e){e.preventDefault();const {type,id}=state.currentDetail||{};const fd=new FormData(e.currentTarget);let payload={id};for(const [k,v] of fd.entries())payload[k]=String(v||"").trim();const action=type==="task"?"tasks.update":type==="decision"?"decisions.update":type==="idea"?"ideas.update":"life.update";try{await apiPost(action,payload);toast("Đã lưu","ok");closeDrawer();await load()}catch(err){toast("Backend chưa hỗ trợ sửa: "+err.message,"error")}}
-function bindCardClicks(){$$(".item.clickable[data-type]").forEach(el=>el.onclick=()=>openDetail(el.dataset.type,el.dataset.id));$$("[data-drill]").forEach(el=>el.onclick=()=>openDrill(el.dataset.drill,el.dataset.domain))}
-function openDrill(kind,domain){let data=state.data||{};let items=[];let title="Dữ liệu";if(kind==="decisions"){items=data.openDecisionsList||[];title="Quyết định"}else if(kind==="ideas"){items=data.recentIdeas||[];title="Ý tưởng"}else if(kind==="life"){items=data.recentLife||[];title="Tư liệu"}else if(kind==="domain"){items=[...(data.todayTasks||[]),...(data.newTasks||[]),...(data.waitingTasks||[]),...(data.openDecisionsList||[]),...(data.recentIdeas||[]),...(data.recentLife||[])].filter(x=>x.domain===domain);title=domain||"Domain"}else{title="Cần backend drill-down"}$("#drawerType").textContent="Danh sách";$("#drawerTitle").textContent=title;$("#detailForm").innerHTML=items.length?items.map(x=>`<article class="item"><h3>${esc(x.title||"Không tiêu đề")}</h3><p class="meta">${esc([x.status,x.domain,x.project].filter(Boolean).join(" · "))}</p></article>`).join(""):`<div class="empty">Chưa có danh sách hoặc backend chưa trả drill-down.</div>`;$("#drawerBackdrop").classList.add("open");$("#detailDrawer").classList.add("open")}
-function activateTab(tab){$$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));$$(".pane").forEach(p=>p.classList.toggle("active",p.id==="pane-"+tab));history.replaceState(null,"","#"+tab);scrollTo({top:0,behavior:"smooth"})}
-function bind(){$$(".tab").forEach(b=>b.onclick=()=>activateTab(b.dataset.tab));$$("[data-jump]").forEach(b=>b.onclick=()=>activateTab(b.dataset.jump));$("#syncButton").onclick=load;$("#setupWorkbookBtn").onclick=setupWorkbook;$("#prevDayBtn").onclick=()=>{setDate(addDays(state.selectedDate,-1));load()};$("#todayBtn").onclick=()=>{setDate(today());load()};$("#viewDateInput").onchange=()=>{setDate($("#viewDateInput").value||today());load()};$("#dailyLogForm").onsubmit=saveDaily;$("#quickFocusSave").onclick=saveQuickFocus;$("#captureForm").onsubmit=captureSubmit;$("#clearCaptureBtn").onclick=()=>$("#captureForm").reset();$("#closeDrawer").onclick=closeDrawer;$("#drawerBackdrop").onclick=closeDrawer;$("#detailForm").onsubmit=saveDetail;bindRanges();setDate(today());activateTab((location.hash||"#today").slice(1)||"today")}
+function renderLastCreated(obj){
+  state.lastCreated=obj;
+  const el=$("#lastCapture");
+  if(!obj || !obj.id){
+    el.className="item";
+    el.innerHTML=`<h3>Đã lưu</h3><p class="body">${esc(obj?.item?.note||"")}</p>`;
+    return;
+  }
+  el.className="item clickable";
+  el.dataset.type=obj.type;
+  el.dataset.id=obj.id;
+  el.innerHTML=`<h3>${esc(obj.item.title||"Đã lưu")}</h3><p class="meta">${esc([obj.type,obj.item.domain,obj.item.project].filter(Boolean).join(" · "))}</p><p class="body">${esc(obj.item.note||"")}</p><div class="tags"><span class="tag">Bấm để sửa</span></div>`;
+  el.onclick=()=>openDetail(obj.type,obj.id);
+}
+function openDetail(type,id){const d=state.data||{};let item=null;if(type==="task")item=[...(d.todayTasks||[]),...(d.newTasks||[]),...(d.waitingTasks||[]),...(d.overdueTasks||[])].find(x=>x.task_id===id);if(type==="decision")item=(d.openDecisionsList||[]).find(x=>x.decision_id===id);if(type==="idea")item=(d.recentIdeas||[]).find(x=>x.idea_id===id);if(type==="life")item=(d.recentLife||[]).find(x=>x.life_id===id);if(!item && state.lastCreated && state.lastCreated.type===type && state.lastCreated.id===id) item=state.lastCreated.item;
+if(!item)return toast("Không tìm thấy dữ liệu","error");state.detail={type,id,item};$("#drawerType").textContent=type;$("#drawerTitle").textContent=item.title||"Chi tiết";$("#drawerForm").innerHTML=`<label>Tiêu đề<input name="title" value="${esc(item.title||"")}"></label><div class="grid2"><label>Mảng<input name="domain" value="${esc(item.domain||"")}"></label><label>Dự án<input name="project" value="${esc(item.project||"")}"></label></div><label>Trạng thái<input name="status" value="${esc(item.status||"")}"></label><label>Ghi chú<textarea name="note">${esc(item.note||item.criteria||item.final_decision||"")}</textarea></label><div class="actions"><button class="btn primary" type="submit">Lưu</button><button class="btn soft" type="button" id="doneBtn">Xong</button><button class="btn danger" type="button" id="delBtn">Xóa</button></div>`;$("#doneBtn").onclick=()=>quickUpdate("status",type==="decision"?"Đã quyết":"Xong");$("#delBtn").onclick=()=>quickUpdate("deleted_at",new Date().toISOString());$("#drawerBg").classList.add("open");$("#drawer").classList.add("open")}
+async function quickUpdate(k,v){
+  const {type,id}=state.detail||{};
+  const action = k==="deleted_at" ? pluralAction(type,"delete") : pluralAction(type,"update");
+  const payload = k==="deleted_at" ? {id} : {id,[k]:v};
+  try{
+    await apiPost(action,payload);
+    if(k==="deleted_at" && state.lastCreated && state.lastCreated.type===type && state.lastCreated.id===id){
+      state.lastCreated=null;
+      $("#lastCapture").className="empty";
+      $("#lastCapture").textContent="Bản ghi vừa tạo đã được xóa.";
+    }
+    toast(k==="deleted_at"?"Đã xóa":"Đã cập nhật","ok");
+    closeDrawer();
+    await load();
+  }catch(e){toast("Chưa đồng bộ được: "+e.message,"error")}
+}
+async function saveDetail(e){
+  e.preventDefault();
+  const {type,id}=state.detail||{};
+  const fd=new FormData(e.currentTarget),p={id};
+  for(const [k,v] of fd.entries())p[k]=String(v||"").trim();
+  const action=pluralAction(type,"update");
+  try{
+    await apiPost(action,p);
+    if(state.lastCreated && state.lastCreated.type===type && state.lastCreated.id===id){
+      state.lastCreated.item={...state.lastCreated.item,...p};
+      renderLastCreated(state.lastCreated);
+    }
+    toast("Đã lưu","ok");
+    closeDrawer();
+    await load();
+  }catch(err){toast("Chưa đồng bộ được: "+err.message,"error")}
+}
+function closeDrawer(){$("#drawerBg").classList.remove("open");$("#drawer").classList.remove("open")}
+function tab(t){$$(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===t));$$(".pane").forEach(p=>p.classList.toggle("active",p.id==="pane-"+t));history.replaceState(null,"","#"+t);scrollTo({top:0,behavior:"smooth"})}
+function bind(){$$(".tab").forEach(b=>b.onclick=()=>tab(b.dataset.tab));$$("[data-jump]").forEach(b=>b.onclick=()=>tab(b.dataset.jump));$("#syncBtn").onclick=load;$("#setupBtn").onclick=async()=>{try{await apiPost("workbook.setup",{});toast("Đã kiểm tra Sheet","ok");await load()}catch(e){toast("Lỗi setup: "+e.message,"error")}};$("#prevBtn").onclick=()=>{setDate(addDays(state.date,-1));hydrateDay({});load()};$("#todayBtn").onclick=()=>{setDate(today());hydrateDay({});load()};$("#dateInput").onchange=()=>{setDate($("#dateInput").value||today());hydrateDay({});load()};$("#dayForm").onsubmit=saveDay;$("#focusQuick").oninput=()=>{const f=$("#dayForm");f.elements.main_focus.value=$("#focusQuick").value;$("#focusText").textContent=$("#focusQuick").value||"Chưa đặt trọng tâm";saveDayLocal(formPayload(),false);renderDayList()};$("#saveFocusBtn").onclick=saveDay;$("#captureForm").onsubmit=captureSubmit;$("#clearCaptureBtn").onclick=()=>$("#captureForm").reset();$("#closeDrawer").onclick=closeDrawer;$("#drawerBg").onclick=closeDrawer;$("#drawerForm").onsubmit=saveDetail;$$('#dayForm input,#dayForm textarea,#dayForm select').forEach(el=>el.addEventListener("input",()=>{if(!state.hydrating){saveDayLocal(formPayload(),false);hydrateDay(readDay(state.date));renderDayList()}}));bindRanges();setDate(today());hydrateDay({});renderDayList();tab((location.hash||"#day").slice(1)||"day")}
 bind();load();
 </script>
 </body>
