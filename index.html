@@ -1,0 +1,1529 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>NTV.OS Life</title>
+    <style>
+      :root {
+        --bg: #fff6ed;
+        --bg-soft: #fffaf5;
+        --card: rgba(255, 255, 255, 0.78);
+        --card-strong: #fffdfb;
+        --line: rgba(124, 45, 18, 0.12);
+        --text: #312018;
+        --muted: #7c5f4d;
+        --accent: #ea580c;
+        --accent-strong: #c2410c;
+        --accent-soft: rgba(251, 146, 60, 0.14);
+        --danger: #b42318;
+        --ok: #027a48;
+        --shadow: 0 24px 72px rgba(194, 65, 12, 0.12);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 16px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(249, 115, 22, 0.22), transparent 30%),
+          radial-gradient(circle at top right, rgba(245, 158, 11, 0.2), transparent 24%),
+          linear-gradient(180deg, #fff8f1 0%, var(--bg) 48%, #fff3e4 100%);
+        font-family: "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+
+      .app {
+        width: min(1080px, calc(100% - 24px));
+        margin: 0 auto;
+        padding: 18px 0 calc(92px + env(safe-area-inset-bottom));
+      }
+
+      .topbar,
+      .panel,
+      .metric-card,
+      .item-card,
+      .axis-card,
+      .tab-pane {
+        background: var(--card);
+        backdrop-filter: blur(14px);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 18px;
+        border-radius: var(--radius-xl);
+        margin-bottom: 18px;
+      }
+
+      .brand-row,
+      .status-row,
+      .panel-header,
+      .mini-actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .brand-row {
+        align-items: flex-start;
+      }
+
+      .eyebrow {
+        margin: 0 0 6px;
+        font-size: 0.76rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--accent-strong);
+      }
+
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+
+      h1 {
+        font-size: clamp(1.9rem, 5vw, 3.4rem);
+        line-height: 0.96;
+        letter-spacing: -0.04em;
+        max-width: 9ch;
+      }
+
+      .hero-copy {
+        margin-top: 12px;
+        color: var(--muted);
+        max-width: 62ch;
+        line-height: 1.55;
+      }
+
+      .status-row {
+        margin-top: 16px;
+        flex-wrap: wrap;
+      }
+
+      .status-badge,
+      .pill,
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: var(--accent-soft);
+        color: var(--accent-strong);
+        font-size: 0.92rem;
+      }
+
+      .status-badge.error {
+        background: rgba(180, 35, 24, 0.09);
+        color: var(--danger);
+      }
+
+      .status-badge.ok {
+        background: rgba(2, 122, 72, 0.09);
+        color: var(--ok);
+      }
+
+      .tab-nav {
+        position: fixed;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        z-index: 20;
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 8px;
+        padding: 10px;
+        background: rgba(255, 253, 250, 0.92);
+        border: 1px solid var(--line);
+        border-radius: 22px;
+        backdrop-filter: blur(20px);
+        box-shadow: 0 18px 60px rgba(124, 45, 18, 0.16);
+      }
+
+      .tab-button {
+        border: 0;
+        border-radius: 16px;
+        background: transparent;
+        color: var(--muted);
+        padding: 12px 8px;
+        font-size: 0.86rem;
+        font-weight: 700;
+      }
+
+      .tab-button.active {
+        background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+        color: white;
+      }
+
+      .tab-pane {
+        display: none;
+        border-radius: var(--radius-xl);
+        padding: 18px;
+        margin-bottom: 18px;
+      }
+
+      .tab-pane.active {
+        display: block;
+      }
+
+      .section-title {
+        margin-bottom: 14px;
+      }
+
+      .section-title p {
+        margin-top: 8px;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .panel {
+        border-radius: var(--radius-lg);
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .panel-header {
+        margin-bottom: 14px;
+      }
+
+      .panel-header p {
+        color: var(--muted);
+      }
+
+      .grid,
+      .metric-grid,
+      .axis-grid,
+      .two-col {
+        display: grid;
+        gap: 14px;
+      }
+
+      .metric-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .axis-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .two-col {
+        grid-template-columns: 1fr;
+      }
+
+      .metric-card,
+      .axis-card,
+      .item-card {
+        border-radius: 20px;
+        padding: 16px;
+      }
+
+      .metric-card .metric-value {
+        margin-top: 10px;
+        font-size: 2rem;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+
+      .metric-card .metric-label,
+      .meta,
+      .hint {
+        color: var(--muted);
+      }
+
+      .item-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .item-card h3 {
+        font-size: 1.02rem;
+        line-height: 1.3;
+      }
+
+      .item-card .meta {
+        margin-top: 8px;
+        font-size: 0.9rem;
+      }
+
+      .item-card .body {
+        margin-top: 10px;
+        line-height: 1.55;
+        white-space: pre-wrap;
+      }
+
+      .tag-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .tag {
+        padding: 7px 10px;
+        font-size: 0.84rem;
+      }
+
+      .empty {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, 0.45);
+        color: var(--muted);
+      }
+
+      form {
+        display: grid;
+        gap: 14px;
+      }
+
+      label {
+        display: grid;
+        gap: 8px;
+        font-weight: 600;
+      }
+
+      input,
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid rgba(124, 45, 18, 0.14);
+        background: rgba(255, 255, 255, 0.84);
+        border-radius: 18px;
+        padding: 14px 15px;
+        color: var(--text);
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 110px;
+      }
+
+      .capture-textarea {
+        min-height: 220px;
+      }
+
+      .button-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .btn {
+        appearance: none;
+        border: 0;
+        border-radius: 999px;
+        padding: 13px 18px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #fb923c 0%, #ea580c 100%);
+        color: white;
+      }
+
+      .btn-soft {
+        background: rgba(255, 255, 255, 0.78);
+        color: var(--accent-strong);
+        border: 1px solid rgba(234, 88, 12, 0.16);
+      }
+
+      .btn-ghost {
+        background: transparent;
+        color: var(--muted);
+        border: 1px dashed rgba(124, 45, 18, 0.16);
+      }
+
+      .inline-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+
+      .triple-fields {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .range-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .range-row {
+        display: grid;
+        grid-template-columns: 112px 1fr 40px;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .range-row span:last-child {
+        text-align: right;
+        color: var(--accent-strong);
+        font-weight: 700;
+      }
+
+      .mini-actions {
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .link-inline {
+        color: var(--accent-strong);
+        text-decoration: none;
+      }
+
+      .footer-note {
+        margin-top: 14px;
+        color: var(--muted);
+        line-height: 1.55;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        border: 0;
+      }
+
+      @media (min-width: 760px) {
+        .app {
+          padding-top: 22px;
+          padding-bottom: 34px;
+        }
+
+        .tab-nav {
+          position: static;
+          margin-bottom: 18px;
+        }
+
+        .two-col {
+          grid-template-columns: 1.15fr 0.85fr;
+        }
+
+        .triple-fields {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .metric-grid {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .axis-grid {
+          grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand-row">
+          <div>
+            <p class="eyebrow">NTV.OS Life</p>
+            <h1>Điều hành ngày sống và công việc.</h1>
+            <p class="hero-copy">
+              Ghi nhanh khi đang di chuyển, dán chat AI dài, lưu ảnh/file, và đẩy toàn bộ dữ liệu về Google Sheet để nhìn lại nhiều tháng sau.
+            </p>
+          </div>
+          <div class="button-row">
+            <button class="btn btn-soft" id="refreshAllBtn" type="button">Làm mới</button>
+            <button class="btn btn-ghost" id="setupWorkbookBtn" type="button">Tạo Sheet</button>
+          </div>
+        </div>
+
+        <div class="status-row">
+          <span class="status-badge" id="statusBadge">Chưa kết nối API</span>
+          <span class="pill" id="transportBadge">Ưu tiên fetch JSON</span>
+          <span class="pill" id="apiModeBadge">Đang chờ kiểm tra</span>
+        </div>
+      </header>
+
+      <nav class="tab-nav" aria-label="Điều hướng">
+        <button class="tab-button active" data-tab="today" type="button">Hôm nay</button>
+        <button class="tab-button" data-tab="capture" type="button">Ghi nhanh</button>
+        <button class="tab-button" data-tab="work" type="button">Công việc</button>
+        <button class="tab-button" data-tab="life" type="button">Đời sống</button>
+        <button class="tab-button" data-tab="analysis" type="button">Phân tích</button>
+      </nav>
+
+      <section class="tab-pane active" id="tab-today">
+        <div class="section-title">
+          <h2>Hôm nay</h2>
+          <p>Nhìn nhanh trọng tâm, năng lượng, 3 việc quan trọng nhất, và nhịp sống cần giữ.</p>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Tóm tắt hôm nay</h3>
+                  <p>Bám nhịp ngày hiện tại, không để app trở thành nơi nhập liệu nặng.</p>
+                </div>
+              </div>
+
+              <div class="metric-grid" id="todayMetrics"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>3 việc cần làm nhất</h3>
+                  <p>Ưu tiên trực diện, dễ nhìn trên điện thoại.</p>
+                </div>
+              </div>
+              <div class="item-list" id="topTasksList"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Việc quá hạn</h3>
+                  <p>Những gì đang kéo tụt hệ thống xuống.</p>
+                </div>
+              </div>
+              <div class="item-list" id="overdueTasksList"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Nhịp sống cần giữ</h3>
+                  <p>Gia đình, công việc, sức khỏe, sáng tạo, học tập.</p>
+                </div>
+              </div>
+              <div class="axis-grid" id="lifeAxisGrid"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Cập nhật ngày</h3>
+                  <p>Lưu nhanh trọng tâm, energy, mood, top 3 và cuối ngày.</p>
+                </div>
+              </div>
+              <form id="dailyLogForm">
+                <label>
+                  Trọng tâm hôm nay
+                  <input name="main_focus" type="text" placeholder="Ví dụ: khóa 3 việc kéo hệ thống tiến lên" />
+                </label>
+
+                <div class="inline-fields">
+                  <label>
+                    Energy
+                    <input name="energy" type="number" min="1" max="10" value="7" />
+                  </label>
+                  <label>
+                    Mood
+                    <input name="mood" type="number" min="1" max="10" value="7" />
+                  </label>
+                </div>
+
+                <div class="triple-fields">
+                  <label>
+                    Top 1
+                    <input name="top1" type="text" />
+                  </label>
+                  <label>
+                    Top 2
+                    <input name="top2" type="text" />
+                  </label>
+                  <label>
+                    Top 3
+                    <input name="top3" type="text" />
+                  </label>
+                </div>
+
+                <div class="triple-fields">
+                  <label>
+                    Kế hoạch ngày
+                    <textarea name="day_plan"></textarea>
+                  </label>
+                  <label>
+                    Đã xong gì
+                    <textarea name="done_summary"></textarea>
+                  </label>
+                  <label>
+                    Đang kẹt gì
+                    <textarea name="stuck_summary"></textarea>
+                  </label>
+                </div>
+
+                <label>
+                  Ngày mai cần chỉnh gì
+                  <textarea name="tomorrow_hint"></textarea>
+                </label>
+
+                <div class="button-row">
+                  <button class="btn btn-primary" type="submit">Lưu ngày hôm nay</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-pane" id="tab-capture">
+        <div class="section-title">
+          <h2>Ghi nhanh</h2>
+          <p>Ưu tiên nhập cực nhẹ. Nếu chưa biết phân loại, cứ dán nguyên đoạn chat AI hoặc ý đang nghĩ.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>Capture mới</h3>
+              <p>Backend sẽ tự phân loại thành việc, quyết định, ý tưởng, ghi nhận đời sống hoặc tip AI nếu đủ tín hiệu.</p>
+            </div>
+          </div>
+
+          <form id="captureForm">
+            <label>
+              Nội dung
+              <textarea class="capture-textarea" name="raw_text" placeholder="Gõ nhanh hoặc dán đoạn chat AI dài vào đây..." required></textarea>
+            </label>
+
+            <div class="triple-fields">
+              <label>
+                Loại
+                <select name="forced_type">
+                  <option value="">Tự nhận diện</option>
+                  <option value="Việc">Việc</option>
+                  <option value="Quyết định">Quyết định</option>
+                  <option value="Ý tưởng">Ý tưởng</option>
+                  <option value="Ghi nhận đời sống">Ghi nhận đời sống</option>
+                  <option value="Tip AI">Tip AI</option>
+                  <option value="Quan sát">Quan sát</option>
+                  <option value="Ảnh">Ảnh</option>
+                  <option value="Ghi chú">Ghi chú</option>
+                </select>
+              </label>
+
+              <label>
+                Mảng
+                <select name="domain">
+                  <option value="">Tự nhận diện</option>
+                  <option value="Kiro/Sunbot">Kiro-Sunbot</option>
+                  <option value="VJT">VJT</option>
+                  <option value="Pefso">Pefso</option>
+                  <option value="Gia đình">Gia đình</option>
+                  <option value="Sức khỏe">Sức khỏe</option>
+                  <option value="Sáng tạo">Sáng tạo</option>
+                  <option value="Học tập">Học tập</option>
+                  <option value="Cá nhân">Cá nhân</option>
+                </select>
+              </label>
+
+              <label>
+                Dự án
+                <select name="project">
+                  <option value="">Tự nhận diện</option>
+                  <option value="Sunbot HTML Factory">Sunbot HTML Factory</option>
+                  <option value="Sunbot Festival">Sunbot Festival</option>
+                  <option value="CRM & Hotline">CRM & Hotline</option>
+                  <option value="VJT 11 tháng">VJT 11 tháng</option>
+                  <option value="Pefso B2B">Pefso B2B</option>
+                  <option value="Personal OS">Personal OS</option>
+                  <option value="AI Workflow">AI Workflow</option>
+                  <option value="Khảo sát-Đi công tác">Khảo sát-Đi công tác</option>
+                </select>
+              </label>
+            </div>
+
+            <div class="inline-fields">
+              <label>
+                Mood
+                <input name="mood" type="text" placeholder="Ví dụ: tỉnh, căng, ổn" />
+              </label>
+              <label>
+                Energy
+                <input name="energy" type="text" placeholder="Ví dụ: 8/10" />
+              </label>
+            </div>
+
+            <label>
+              Tags
+              <input name="tags" type="text" placeholder="Ví dụ: AI, khảo sát, quyết định gấp" />
+            </label>
+
+            <label>
+              Ảnh hoặc file đính kèm
+              <input name="attachment" type="file" />
+            </label>
+
+            <div class="button-row">
+              <button class="btn btn-primary" type="submit">Lưu capture</button>
+              <button class="btn btn-soft" id="clearCaptureBtn" type="button">Xóa nội dung</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <section class="tab-pane" id="tab-work">
+        <div class="section-title">
+          <h2>Công việc</h2>
+          <p>Nhìn rõ việc hôm nay, việc mới, việc đang chờ, quyết định đang mở và ý tưởng gần đây.</p>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Việc hôm nay</h3>
+                  <p>3 việc quan trọng nhất cần kéo đi.</p>
+                </div>
+              </div>
+              <div class="item-list" id="todayTasksList"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Việc mới</h3>
+                  <p>Những việc vừa phát sinh từ capture hoặc nhập trước đó.</p>
+                </div>
+              </div>
+              <div class="item-list" id="newTasksList"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Đang chờ</h3>
+                  <p>Điểm nghẽn do phụ thuộc người khác hoặc thiếu thông tin.</p>
+                </div>
+              </div>
+              <div class="item-list" id="waitingTasksList"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Quyết định đang mở</h3>
+                  <p>Những lựa chọn chưa chốt, cần quay lại đúng lúc.</p>
+                </div>
+              </div>
+              <div class="item-list" id="openDecisionsList"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Ý tưởng gần đây</h3>
+                  <p>Không để trôi mất những mầm quan trọng.</p>
+                </div>
+              </div>
+              <div class="item-list" id="recentIdeasList"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-pane" id="tab-life">
+        <div class="section-title">
+          <h2>Đời sống</h2>
+          <p>Giữ nhịp và lưu lại khoảnh khắc, thay vì chỉ quản lý việc.</p>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Khoảnh khắc gần đây</h3>
+                  <p>Ảnh, công tác, khảo sát, điều đáng nhớ.</p>
+                </div>
+              </div>
+              <div class="item-list" id="recentLifeList"></div>
+            </div>
+          </div>
+
+          <div>
+            <div class="panel">
+              <div class="panel-header">
+                <div>
+                  <h3>Habit check-in</h3>
+                  <p>Đánh dấu nhanh để biết nhịp sống có đang giữ được không.</p>
+                </div>
+              </div>
+
+              <form id="habitForm">
+                <div class="range-grid">
+                  <div class="range-row">
+                    <span>Gia đình</span>
+                    <input type="range" name="family" min="0" max="10" value="7" />
+                    <span data-range-value="family">7</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Công việc</span>
+                    <input type="range" name="work" min="0" max="10" value="7" />
+                    <span data-range-value="work">7</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Sức khỏe</span>
+                    <input type="range" name="health" min="0" max="10" value="7" />
+                    <span data-range-value="health">7</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Sáng tạo</span>
+                    <input type="range" name="creative" min="0" max="10" value="6" />
+                    <span data-range-value="creative">6</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Học tập</span>
+                    <input type="range" name="learning" min="0" max="10" value="6" />
+                    <span data-range-value="learning">6</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Vận động</span>
+                    <input type="range" name="movement" min="0" max="10" value="5" />
+                    <span data-range-value="movement">5</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Đọc / học</span>
+                    <input type="range" name="reading_learning" min="0" max="10" value="5" />
+                    <span data-range-value="reading_learning">5</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Ảnh nhớ</span>
+                    <input type="range" name="photo_memory" min="0" max="10" value="5" />
+                    <span data-range-value="photo_memory">5</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Deep work</span>
+                    <input type="range" name="deep_work" min="0" max="10" value="5" />
+                    <span data-range-value="deep_work">5</span>
+                  </div>
+                  <div class="range-row">
+                    <span>Tea pause</span>
+                    <input type="range" name="tea_pause" min="0" max="10" value="5" />
+                    <span data-range-value="tea_pause">5</span>
+                  </div>
+                </div>
+
+                <label>
+                  Ghi chú
+                  <textarea name="note" placeholder="Ví dụ: hôm nay mất nhịp vì chạy nhiều việc lắt nhắt"></textarea>
+                </label>
+
+                <div class="button-row">
+                  <button class="btn btn-primary" type="submit">Lưu habit check-in</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-pane" id="tab-analysis">
+        <div class="section-title">
+          <h2>Phân tích</h2>
+          <p>Đủ nhẹ để xem trên điện thoại, nhưng đủ thật để nhìn ra nhịp hệ thống.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <h3>30 ngày gần đây</h3>
+              <p>Số lượng capture, task xong, decision mở, idea và life log.</p>
+            </div>
+          </div>
+          <div class="metric-grid" id="analysisMetrics"></div>
+        </div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Top domains theo capture</h3>
+                <p>Đang đổ lực vào đâu nhiều nhất.</p>
+              </div>
+            </div>
+            <div class="item-list" id="topDomainsList"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <h3>Gợi ý nhìn lại</h3>
+                <p>Điểm nghẽn, mất cân bằng, và thứ cần lặp lại.</p>
+              </div>
+            </div>
+            <div class="item-list" id="insightList"></div>
+          </div>
+        </div>
+
+        <p class="footer-note">
+          Nếu `fetch` đọc JSON trực tiếp từ Apps Script bị chặn bởi CORS ở trình duyệt nào đó, app sẽ tự fallback:
+          đọc bằng JSONP và ghi bằng form ẩn + iframe bridge. Cách này thực dụng hơn là buộc người dùng dựng thêm proxy ngay từ đầu.
+        </p>
+      </section>
+    </div>
+
+    <script>
+      const API_URL = "https://script.google.com/macros/s/AKfycbzXGJf-uKXn0BWLmLnAUv7CGRmA-hDC5XZQimgUpWOod6kAiED584F6kT7mSdmv1P4u/exec";
+      const API_TOKEN = "";
+
+      const state = {
+        transportMode: "fetch",
+        readMode: "fetch-json",
+        bootstrap: null,
+      };
+
+      const els = {
+        statusBadge: document.getElementById("statusBadge"),
+        transportBadge: document.getElementById("transportBadge"),
+        apiModeBadge: document.getElementById("apiModeBadge"),
+        refreshAllBtn: document.getElementById("refreshAllBtn"),
+        setupWorkbookBtn: document.getElementById("setupWorkbookBtn"),
+        captureForm: document.getElementById("captureForm"),
+        dailyLogForm: document.getElementById("dailyLogForm"),
+        habitForm: document.getElementById("habitForm"),
+      };
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#39;");
+      }
+
+      function setStatus(message, kind) {
+        els.statusBadge.textContent = message;
+        els.statusBadge.className = "status-badge" + (kind ? " " + kind : "");
+      }
+
+      function setTransportBadge(message) {
+        els.transportBadge.textContent = message;
+      }
+
+      function setApiModeBadge(message) {
+        els.apiModeBadge.textContent = message;
+      }
+
+      function setButtonLoading(button, loading, text) {
+        if (!button) return;
+        if (!button.dataset.defaultLabel) {
+          button.dataset.defaultLabel = button.textContent;
+        }
+
+        button.disabled = loading;
+        button.textContent = loading ? text : button.dataset.defaultLabel;
+      }
+
+      function todayYmd() {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      function buildUrl(action, params = {}) {
+        const url = new URL(API_URL);
+        url.searchParams.set("action", action);
+
+        Object.entries(params).forEach(([key, value]) => {
+          if (value !== undefined && value !== null && value !== "") {
+            url.searchParams.set(key, value);
+          }
+        });
+
+        if (API_TOKEN) {
+          url.searchParams.set("token", API_TOKEN);
+        }
+
+        return url.toString();
+      }
+
+      async function parseJsonResponse(response) {
+        const data = await response.json();
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || "API không trả về dữ liệu hợp lệ");
+        }
+        return data.data;
+      }
+
+      function shouldFallback(error) {
+        const text = String(error && error.message ? error.message : error || "");
+        return (
+          error instanceof TypeError ||
+          /cors/i.test(text) ||
+          /network/i.test(text) ||
+          /load failed/i.test(text) ||
+          /failed to fetch/i.test(text)
+        );
+      }
+
+      function jsonpGet(action, params = {}) {
+        return new Promise((resolve, reject) => {
+          const callbackName = "__ntvJsonp_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+          const script = document.createElement("script");
+          const cleanup = () => {
+            delete window[callbackName];
+            script.remove();
+          };
+
+          window[callbackName] = (payload) => {
+            cleanup();
+            if (!payload || !payload.ok) {
+              reject(new Error((payload && payload.error) || "JSONP trả lỗi"));
+              return;
+            }
+            resolve(payload.data);
+          };
+
+          script.onerror = () => {
+            cleanup();
+            reject(new Error("JSONP không tải được"));
+          };
+
+          const url = new URL(buildUrl(action, params));
+          url.searchParams.set("prefix", callbackName);
+          script.src = url.toString();
+          document.body.appendChild(script);
+        });
+      }
+
+      async function apiGet(action, params = {}) {
+        try {
+          const response = await fetch(buildUrl(action, params), {
+            method: "GET",
+            redirect: "follow",
+          });
+          state.readMode = "fetch-json";
+          setApiModeBadge("Đọc: fetch JSON");
+          return await parseJsonResponse(response);
+        } catch (error) {
+          if (!shouldFallback(error)) throw error;
+          state.readMode = "jsonp";
+          setApiModeBadge("Đọc: JSONP fallback");
+          return jsonpGet(action, params);
+        }
+      }
+
+      function iframePost(action, payload) {
+        return new Promise((resolve, reject) => {
+          const requestId = "req_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+          const iframe = document.createElement("iframe");
+          const form = document.createElement("form");
+          const timeout = window.setTimeout(() => {
+            cleanup();
+            reject(new Error("Fallback form bridge hết thời gian chờ"));
+          }, 45000);
+
+          function cleanup() {
+            window.clearTimeout(timeout);
+            window.removeEventListener("message", onMessage);
+            iframe.remove();
+            form.remove();
+          }
+
+          function onMessage(event) {
+            const data = event.data;
+            if (!data || data.source !== "ntv-os-life" || data.requestId !== requestId) {
+              return;
+            }
+
+            cleanup();
+
+            if (!data.ok) {
+              reject(new Error(data.error || "Form bridge trả lỗi"));
+              return;
+            }
+
+            resolve(data.data);
+          }
+
+          iframe.name = requestId;
+          iframe.className = "sr-only";
+
+          form.method = "POST";
+          form.action = buildUrl(action);
+          form.target = requestId;
+          form.className = "sr-only";
+
+          const transportInput = document.createElement("input");
+          transportInput.type = "hidden";
+          transportInput.name = "transport";
+          transportInput.value = "form";
+
+          const requestIdInput = document.createElement("input");
+          requestIdInput.type = "hidden";
+          requestIdInput.name = "request_id";
+          requestIdInput.value = requestId;
+
+          const payloadInput = document.createElement("input");
+          payloadInput.type = "hidden";
+          payloadInput.name = "payload";
+          payloadInput.value = JSON.stringify(payload || {});
+
+          form.appendChild(transportInput);
+          form.appendChild(requestIdInput);
+          form.appendChild(payloadInput);
+
+          document.body.appendChild(iframe);
+          document.body.appendChild(form);
+          window.addEventListener("message", onMessage);
+          form.submit();
+        });
+      }
+
+      async function apiPost(action, payload = {}) {
+        const safePayload = API_TOKEN ? { ...payload, token: API_TOKEN } : payload;
+
+        try {
+          const response = await fetch(buildUrl(action), {
+            method: "POST",
+            redirect: "follow",
+            headers: {
+              "Content-Type": "text/plain;charset=utf-8",
+            },
+            body: JSON.stringify(safePayload),
+          });
+
+          state.transportMode = "fetch";
+          setTransportBadge("Ghi: fetch JSON");
+          return await parseJsonResponse(response);
+        } catch (error) {
+          if (!shouldFallback(error)) throw error;
+          state.transportMode = "iframe";
+          setTransportBadge("Ghi: form bridge fallback");
+          return iframePost(action, safePayload);
+        }
+      }
+
+      function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+
+          reader.onload = () => {
+            const result = String(reader.result || "");
+            resolve(result.split(",")[1] || "");
+          };
+
+          reader.onerror = () => reject(new Error("Không đọc được file"));
+          reader.readAsDataURL(file);
+        });
+      }
+
+      function renderCards(containerId, items, renderFn, emptyText) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        if (!items || !items.length) {
+          container.innerHTML = `<div class="empty">${escapeHtml(emptyText || "Chưa có dữ liệu")}</div>`;
+          return;
+        }
+
+        container.innerHTML = items.map(renderFn).join("");
+      }
+
+      function taskCard(task) {
+        return `
+          <article class="item-card">
+            <h3>${escapeHtml(task.title || "Không có tiêu đề")}</h3>
+            <p class="meta">${escapeHtml(task.status || "")} • ${escapeHtml(task.priority || "P2 Bình thường")} • ${escapeHtml(task.domain || "Chưa rõ mảng")}</p>
+            <div class="tag-row">
+              ${task.project ? `<span class="tag">${escapeHtml(task.project)}</span>` : ""}
+              ${task.due_date ? `<span class="tag">Hạn ${escapeHtml(task.due_date)}</span>` : ""}
+            </div>
+            ${task.note ? `<p class="body">${escapeHtml(task.note)}</p>` : ""}
+          </article>
+        `;
+      }
+
+      function decisionCard(item) {
+        return `
+          <article class="item-card">
+            <h3>${escapeHtml(item.title || "Quyết định")}</h3>
+            <p class="meta">${escapeHtml(item.status || "")} • ${escapeHtml(item.domain || "Chưa rõ mảng")}</p>
+            ${item.final_decision ? `<p class="body">${escapeHtml(item.final_decision)}</p>` : item.criteria ? `<p class="body">${escapeHtml(item.criteria)}</p>` : ""}
+          </article>
+        `;
+      }
+
+      function ideaCard(item) {
+        return `
+          <article class="item-card">
+            <h3>${escapeHtml(item.title || "Ý tưởng")}</h3>
+            <p class="meta">${escapeHtml(item.status || "")} • ${escapeHtml(item.domain || "Chưa rõ mảng")}</p>
+            ${item.note ? `<p class="body">${escapeHtml(item.note)}</p>` : ""}
+          </article>
+        `;
+      }
+
+      function lifeCard(item) {
+        const fileHtml = item.file_url
+          ? `<div class="mini-actions"><a class="link-inline" href="${escapeHtml(item.file_url)}" target="_blank" rel="noreferrer">Mở ảnh / file</a></div>`
+          : "";
+
+        return `
+          <article class="item-card">
+            <h3>${escapeHtml(item.title || "Khoảnh khắc")}</h3>
+            <p class="meta">${escapeHtml(item.category || "Đời sống")} • ${escapeHtml(item.domain || "Cá nhân")} • ${escapeHtml(item.date || "")}</p>
+            ${item.note ? `<p class="body">${escapeHtml(item.note)}</p>` : ""}
+            ${fileHtml}
+          </article>
+        `;
+      }
+
+      function renderBootstrap(data) {
+        state.bootstrap = data;
+
+        const today = data.today || {};
+        const metrics = [
+          { label: "Energy", value: today.energy || "-" },
+          { label: "Mood", value: today.mood || "-" },
+          { label: "Capture 30 ngày", value: data.analysis.capture30 || 0 },
+          { label: "Task xong 30 ngày", value: data.analysis.tasksDone30 || 0 },
+          { label: "Decision mở", value: data.analysis.openDecisions || 0 },
+          { label: "Life log 30 ngày", value: data.analysis.life30 || 0 },
+        ];
+
+        document.getElementById("todayMetrics").innerHTML = metrics
+          .map((item) => `
+            <article class="metric-card">
+              <div class="metric-label">${escapeHtml(item.label)}</div>
+              <div class="metric-value">${escapeHtml(item.value)}</div>
+            </article>
+          `)
+          .join("");
+
+        const axisLabels = [
+          ["Gia đình", today.life_axis_family],
+          ["Công việc", today.life_axis_work],
+          ["Sức khỏe", today.life_axis_health],
+          ["Sáng tạo", today.life_axis_creative],
+          ["Học tập", today.life_axis_learning],
+        ];
+
+        document.getElementById("lifeAxisGrid").innerHTML = axisLabels
+          .map(([label, value]) => `
+            <article class="axis-card">
+              <div class="metric-label">${escapeHtml(label)}</div>
+              <div class="metric-value">${escapeHtml(value || "-")}</div>
+            </article>
+          `)
+          .join("");
+
+        renderCards("topTasksList", data.todayTasks || [], taskCard, "Chưa có top task hôm nay.");
+        renderCards("overdueTasksList", data.overdueTasks || [], taskCard, "Không có việc quá hạn.");
+        renderCards("todayTasksList", data.todayTasks || [], taskCard, "Chưa có việc trạng thái Hôm nay.");
+        renderCards("newTasksList", data.newTasks || [], taskCard, "Chưa có việc mới.");
+        renderCards("waitingTasksList", data.waitingTasks || [], taskCard, "Không có việc đang chờ.");
+        renderCards("openDecisionsList", data.openDecisionsList || [], decisionCard, "Không có quyết định đang mở.");
+        renderCards("recentIdeasList", data.recentIdeas || [], ideaCard, "Chưa có ý tưởng gần đây.");
+        renderCards("recentLifeList", data.recentLife || [], lifeCard, "Chưa có ghi nhận đời sống gần đây.");
+
+        const analysisMetrics = [
+          ["Capture", data.analysis.capture30 || 0],
+          ["Ý tưởng", data.analysis.ideas30 || 0],
+          ["Life log", data.analysis.life30 || 0],
+          ["Task xong", data.analysis.tasksDone30 || 0],
+          ["Decision mở", data.analysis.openDecisions || 0],
+          ["Habit check-in", data.analysis.habits30 || 0],
+        ];
+
+        document.getElementById("analysisMetrics").innerHTML = analysisMetrics
+          .map(([label, value]) => `
+            <article class="metric-card">
+              <div class="metric-label">${escapeHtml(label)}</div>
+              <div class="metric-value">${escapeHtml(value)}</div>
+            </article>
+          `)
+          .join("");
+
+        renderCards(
+          "topDomainsList",
+          data.analysis.topDomains || [],
+          (item) => `
+            <article class="item-card">
+              <h3>${escapeHtml(item.domain || "Chưa rõ")}</h3>
+              <p class="meta">${escapeHtml(item.count)} capture trong 30 ngày</p>
+            </article>
+          `,
+          "Chưa có đủ dữ liệu domain."
+        );
+
+        const insights = [];
+        if ((data.overdueTasks || []).length) {
+          insights.push({ title: "Việc quá hạn đang tồn", body: `${data.overdueTasks.length} việc cần xử lý hoặc đổi trạng thái.` });
+        }
+        if ((data.waitingTasks || []).length) {
+          insights.push({ title: "Có cụm việc đang chờ", body: `${data.waitingTasks.length} việc phụ thuộc người khác hoặc thiếu thông tin.` });
+        }
+        if ((data.analysis.topDomains || [])[0]) {
+          insights.push({
+            title: "Mảng đang hút lực mạnh nhất",
+            body: `${data.analysis.topDomains[0].domain} đang có nhiều capture nhất trong 30 ngày gần đây.`,
+          });
+        }
+        if (!insights.length) {
+          insights.push({ title: "Hệ thống đang nhẹ", body: "Chưa thấy điểm nghẽn lớn từ dữ liệu hiện tại." });
+        }
+
+        renderCards(
+          "insightList",
+          insights,
+          (item) => `
+            <article class="item-card">
+              <h3>${escapeHtml(item.title)}</h3>
+              <p class="body">${escapeHtml(item.body)}</p>
+            </article>
+          `,
+          "Chưa có insight."
+        );
+
+        populateTodayForm(today);
+      }
+
+      function populateTodayForm(today) {
+        const form = els.dailyLogForm;
+        if (!form || !today) return;
+
+        const fields = [
+          "main_focus",
+          "top1",
+          "top2",
+          "top3",
+          "energy",
+          "mood",
+          "day_plan",
+          "done_summary",
+          "stuck_summary",
+          "tomorrow_hint",
+        ];
+
+        fields.forEach((name) => {
+          if (form.elements[name] && today[name] !== undefined && today[name] !== null) {
+            form.elements[name].value = today[name];
+          }
+        });
+      }
+
+      async function loadBootstrap() {
+        setStatus("Đang tải dữ liệu...", "");
+        const data = await apiGet("app.bootstrap");
+        renderBootstrap(data);
+        setStatus("Đã tải dữ liệu thành công", "ok");
+      }
+
+      async function healthCheck() {
+        try {
+          await apiGet("health");
+          setStatus("API sẵn sàng", "ok");
+        } catch (error) {
+          setStatus("Không kết nối được API: " + error.message, "error");
+          throw error;
+        }
+      }
+
+      async function setupWorkbook() {
+        const button = els.setupWorkbookBtn;
+        setButtonLoading(button, true, "Đang tạo...");
+
+        try {
+          const data = await apiPost("workbook.setup", {});
+          setStatus("Đã tạo hoặc kiểm tra workbook xong", "ok");
+          await loadBootstrap();
+          return data;
+        } finally {
+          setButtonLoading(button, false);
+        }
+      }
+
+      async function handleCaptureSubmit(event) {
+        event.preventDefault();
+        const button = event.submitter || els.captureForm.querySelector('button[type="submit"]');
+        setButtonLoading(button, true, "Đang lưu...");
+        setStatus("Đang lưu capture...", "");
+
+        try {
+          const formData = new FormData(els.captureForm);
+          const attachment = formData.get("attachment");
+          let file = null;
+
+          if (attachment instanceof File && attachment.size > 0) {
+            file = {
+              file_name: attachment.name,
+              mime_type: attachment.type || "application/octet-stream",
+              file_data: await fileToBase64(attachment),
+            };
+          }
+
+          const payload = {
+            raw_text: String(formData.get("raw_text") || "").trim(),
+            forced_type: String(formData.get("forced_type") || "").trim(),
+            domain: String(formData.get("domain") || "").trim(),
+            project: String(formData.get("project") || "").trim(),
+            mood: String(formData.get("mood") || "").trim(),
+            energy: String(formData.get("energy") || "").trim(),
+            tags: String(formData.get("tags") || "").trim(),
+            source: "GitHub Pages",
+            file: file,
+          };
+
+          const result = await apiPost("captures.create", payload);
+          setStatus("Đã lưu capture: " + (result.capture && result.capture.auto_type ? result.capture.auto_type : "thành công"), "ok");
+          els.captureForm.reset();
+          await loadBootstrap();
+        } catch (error) {
+          setStatus("Lỗi lưu capture: " + error.message, "error");
+        } finally {
+          setButtonLoading(button, false);
+        }
+      }
+
+      async function handleDailySubmit(event) {
+        event.preventDefault();
+        const button = event.submitter || els.dailyLogForm.querySelector('button[type="submit"]');
+        setButtonLoading(button, true, "Đang lưu...");
+        setStatus("Đang lưu log ngày...", "");
+
+        try {
+          const formData = new FormData(els.dailyLogForm);
+          const payload = {
+            date: todayYmd(),
+            main_focus: String(formData.get("main_focus") || "").trim(),
+            top1: String(formData.get("top1") || "").trim(),
+            top2: String(formData.get("top2") || "").trim(),
+            top3: String(formData.get("top3") || "").trim(),
+            energy: String(formData.get("energy") || "").trim(),
+            mood: String(formData.get("mood") || "").trim(),
+            day_plan: String(formData.get("day_plan") || "").trim(),
+            done_summary: String(formData.get("done_summary") || "").trim(),
+            stuck_summary: String(formData.get("stuck_summary") || "").trim(),
+            tomorrow_hint: String(formData.get("tomorrow_hint") || "").trim(),
+          };
+
+          await apiPost("daily.save", payload);
+          setStatus("Đã lưu Daily Log", "ok");
+          await loadBootstrap();
+        } catch (error) {
+          setStatus("Lỗi lưu Daily Log: " + error.message, "error");
+        } finally {
+          setButtonLoading(button, false);
+        }
+      }
+
+      async function handleHabitSubmit(event) {
+        event.preventDefault();
+        const button = event.submitter || els.habitForm.querySelector('button[type="submit"]');
+        setButtonLoading(button, true, "Đang lưu...");
+        setStatus("Đang lưu habit check-in...", "");
+
+        try {
+          const formData = new FormData(els.habitForm);
+          const payload = {
+            date: todayYmd(),
+            family: formData.get("family"),
+            work: formData.get("work"),
+            health: formData.get("health"),
+            creative: formData.get("creative"),
+            learning: formData.get("learning"),
+            movement: formData.get("movement"),
+            reading_learning: formData.get("reading_learning"),
+            photo_memory: formData.get("photo_memory"),
+            deep_work: formData.get("deep_work"),
+            tea_pause: formData.get("tea_pause"),
+            note: String(formData.get("note") || "").trim(),
+          };
+
+          await apiPost("habits.checkin", payload);
+          setStatus("Đã lưu habit check-in", "ok");
+          els.habitForm.reset();
+          bindRangeOutputs();
+          await loadBootstrap();
+        } catch (error) {
+          setStatus("Lỗi lưu habit check-in: " + error.message, "error");
+        } finally {
+          setButtonLoading(button, false);
+        }
+      }
+
+      function bindTabs() {
+        document.querySelectorAll(".tab-button").forEach((button) => {
+          button.addEventListener("click", () => {
+            const tab = button.dataset.tab;
+            document.querySelectorAll(".tab-button").forEach((item) => item.classList.remove("active"));
+            document.querySelectorAll(".tab-pane").forEach((pane) => pane.classList.remove("active"));
+            button.classList.add("active");
+            document.getElementById("tab-" + tab).classList.add("active");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          });
+        });
+      }
+
+      function bindRangeOutputs() {
+        document.querySelectorAll('input[type="range"]').forEach((input) => {
+          const target = document.querySelector(`[data-range-value="${input.name}"]`);
+          if (target) target.textContent = input.value;
+          input.addEventListener("input", () => {
+            if (target) target.textContent = input.value;
+          });
+        });
+      }
+
+      function bindEvents() {
+        bindTabs();
+        bindRangeOutputs();
+        els.captureForm.addEventListener("submit", handleCaptureSubmit);
+        els.dailyLogForm.addEventListener("submit", handleDailySubmit);
+        els.habitForm.addEventListener("submit", handleHabitSubmit);
+        els.refreshAllBtn.addEventListener("click", loadBootstrap);
+        els.setupWorkbookBtn.addEventListener("click", setupWorkbook);
+        document.getElementById("clearCaptureBtn").addEventListener("click", () => els.captureForm.reset());
+      }
+
+      async function bootstrap() {
+        bindEvents();
+        try {
+          await healthCheck();
+          await loadBootstrap();
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      bootstrap();
+    </script>
+  </body>
+</html>
